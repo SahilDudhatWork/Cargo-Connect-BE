@@ -1,0 +1,14 @@
+const { STATUS_CODE, ERROR_MSGS } = require('./constant');
+const Response = require('./response');
+
+const handleException = async (req, res, error) => {
+  const obj = {
+    req, res,
+    stack: `${error.stack || null}`,
+    status: STATUS_CODE.INTERNAL_SERVER_ERROR,
+    msg: error.message || ERROR_MSGS.INTERNAL_SERVER_ERROR,
+  };
+  return Response.error(obj);
+};
+
+module.exports = { handleException };

@@ -1,0 +1,66 @@
+const Carrier = require("../../../model/carrier/carrier");
+const { handleException } = require("../../../helper/exception");
+const { encrypt, decrypt } = require("../../../helper/encrypt-decrypt");
+const Response = require("../../../helper/response");
+const {
+  emailAndPasswordVerification,
+} = require("../../../helper/joi-validation");
+const {
+  STATUS_CODE,
+  ERROR_MSGS,
+  INFO_MSGS,
+} = require("../../../helper/constant");
+
+/**
+ * Register a new carrier with email and password
+ */
+const signUp = async (req, res) => {
+  const { logger } = req;
+  try {
+    const { email, password } = req.body;
+
+    const { error } = emailAndPasswordVerification({
+      email,
+      password,
+    });
+    if (error) {
+      const obj = {
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: error.details[0].message,
+      };
+      return Response.error(obj);
+    }
+
+    const carrierEmailExist = await Carrier.findOne({
+      email: email,
+    });
+    if (carrierEmailExist) {
+      const obj = {
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: ERROR_MSGS.ACCOUNT_EXISTS,
+      };
+      return Response.error(obj);
+    }
+
+    const passwordHash = encrypt(password, process.env.PASSWORD_ENCRYPTION_KEY);
+
+    req.body.password = passwordHash;
+    await Carrier.create(req.body);
+
+    const obj = {
+      res,
+      status: STATUS_CODE.CREATED,
+      msg: INFO_MSGS.SUCCESSFUL_REGISTER,
+    };
+    return Response.success(obj);
+  } catch (error) {
+    console.log("error--->", error);
+    return handleException(logger, res, error);
+  }
+};
+
+module.exports = {
+  signUp,
+};
