@@ -1,23 +1,22 @@
-const User = require("../../../model/user/user");
-const { handleException } = require("../../../helper/exception");
-const Response = require("../../../helper/response");
-const { paginationResponse } = require("../../../utils/paginationFormate")
-
-const {
-  emailAndPasswordVerification,
-} = require("../../../helper/joi-validation");
+const { handleException } = require("../../../../helper/exception");
+const Response = require("../../../../helper/response");
+const { paginationResponse } = require("../../../../utils/paginationFormate")
+const { hendleModel } = require("../../../../utils/hendleModel");
 const {
   STATUS_CODE,
   ERROR_MSGS,
   INFO_MSGS,
-} = require("../../../helper/constant");
+} = require("../../../../helper/constant");
 
-const fetchUser = async (req, res) => {
+const fetchData = async (req, res) => {
   let { logger } = req;
   try {
     let { keyWord, page, limit, sortBy } = req.query;
-    let qry = {};
+    const { type } = req.params;
 
+    const Model = await hendleModel(res, type);
+    let qry = {};
+    
     if (keyWord) {
       qry = {
         $or: [
@@ -40,7 +39,7 @@ const fetchUser = async (req, res) => {
     offset = page || 1;
     limit = limit || 10;
     const skip = limit * (offset - 1);
-    const getData = await User.aggregate([
+    const getData = await Model.aggregate([
       { $match: qry },
       { $sort: sortBy },
       {
@@ -89,5 +88,5 @@ const fetchUser = async (req, res) => {
 };
 
 module.exports = {
-  fetchUser,
+  fetchData,
 };

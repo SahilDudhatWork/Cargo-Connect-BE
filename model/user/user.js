@@ -3,6 +3,13 @@ const { ObjectId } = Types;
 
 const collectionSchema = new Schema(
   {
+    accountId: {
+      type: Number,
+      lowercase: true,
+      default: null,
+      trim: true,
+      unique: true,
+    },
     companyName: {
       type: String,
       lowercase: true,

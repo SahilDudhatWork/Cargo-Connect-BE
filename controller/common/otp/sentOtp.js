@@ -1,6 +1,4 @@
 const Otp = require("../../../model/common/otp");
-const User = require("../../../model/user/user");
-const Carrier = require("../../../model/carrier/carrier");
 const Response = require("../../../helper/response");
 const {
   STATUS_CODE,
@@ -9,65 +7,66 @@ const {
 } = require("../../../helper/constant");
 const { handleException } = require("../../../helper/exception");
 const { VerificationEmail } = require("../../../utils/emailVerification");
+const { hendleModel } = require("../../../utils/hendleModel");
 
 const sentOtp = async (req, res) => {
   const { logger } = req;
   try {
-    const { email, type } = req.body;
+    const { email } = req.body;
+    const { type } = req.params;
 
-    let Model;
-    if (type === "user") {
-      Model = User;
-    } else if (type === "carrier") {
-      Model = Carrier;
-    }
+    const Model = await hendleModel(res, type);
 
-    const checkEmailExists = await Model.aggregate([
-      { $match: { email: email } },
-    ]);
-    if (checkEmailExists.length === 0) {
-      let obj = {
+    const checkEmailExists = await Model.exists({ email });
+
+    if (!checkEmailExists) {
+      if (type === "admin") {
+        return Response.error({
+          res,
+          status: STATUS_CODE.BAD_REQUEST,
+          msg: ERROR_MSGS.PERMISSIONS_DENIED,
+        });
+      }
+      return Response.error({
         res,
         status: STATUS_CODE.BAD_REQUEST,
         msg: ERROR_MSGS.ACCOUNT_NOT_FOUND,
-      };
-      return Response.error(obj);
+      });
     }
 
-    let otp = Math.floor(100000 + Math.random() * 900000);
-    var otpData = {
-      email,
-      otp,
-    };
+    // Generate OTP
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    const otpData = { email, otp };
+
+    // Send OTP to email
     await VerificationEmail(email, otp);
 
-    //Handle success
-    await Otp.findOneAndDelete({ email: email });
-    let saveData = await Otp.create(otpData);
+    await Otp.findOneAndDelete({ email });
+    const saveData = await Otp.create(otpData);
+
     if (!saveData) {
-      const obj = {
+      return Response.error({
         res,
         status: STATUS_CODE.BAD_REQUEST,
         msg: ERROR_MSGS.WENT_WRONG,
-      };
-      return Response.error(obj);
+      });
     }
+
+    // Schedule OTP expiration
     setTimeout(
       async () => {
-        await Otp.findOneAndDelete({
-          otp,
-        });
+        await Otp.findOneAndDelete({ otp });
       },
       5 * 60 * 1000
-    );
-    const obj = {
+    ); // 5 minutes
+
+    return Response.success({
       res,
       status: STATUS_CODE.CREATED,
       msg: INFO_MSGS.OTP_SENT_SUCC,
-    };
-    return Response.success(obj);
+    });
   } catch (error) {
-    console.log("error--->", error);
+    console.error("Error:", error);
     return handleException(logger, res, error);
   }
 };

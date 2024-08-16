@@ -1,4 +1,4 @@
-const User = require("../../../model/user/user");
+const Carrier = require("../../../model/carrier/carrier");
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -11,39 +11,37 @@ const { ObjectId } = require("mongoose").Types;
 const update = async (req, res) => {
   const { logger } = req;
   try {
-    const { id } = req.params;
-    const { email } = req.body;
+    const { carrierId } = req;
+    const { email, password, accountId } = req.body;
 
-    const fetchUser = await User.findById(id);
+    if (accountId || password) {
+      let errorMsg;
+      if (accountId) errorMsg = `AccountId ${ERROR_MSGS.NOT_EDITABLE}`;
+      else if (password) errorMsg = `Password ${ERROR_MSGS.NOT_EDITABLE}`;
 
-    if (!fetchUser) {
-      const obj = {
-        res,
-        status: STATUS_CODE.BAD_REQUEST,
-        msg: ERROR_MSGS.DATA_NOT_AVAILABLE,
-      };
+      const obj = { res, status: STATUS_CODE.BAD_REQUEST, msg: errorMsg };
       return Response.error(obj);
     }
 
-    const userEmailExist = await User.findOne({ email: email });
-    console.log(
-      "userEmailExist && userEmailExist._id != id :>> ",
-      userEmailExist && userEmailExist._id != id
-    );
-    if (userEmailExist && userEmailExist._id != id) {
-      const obj = {
+    const emailInUse = await Carrier.findOne({ email });
+    if (emailInUse && !emailInUse._id.equals(carrierId)) {
+      return Response.error({
         res,
         status: STATUS_CODE.BAD_REQUEST,
         msg: ERROR_MSGS.EMAIL_EXIST,
-      };
-      return Response.error(obj);
+      });
     }
-
-    const updateData = await User.findByIdAndUpdate(
-      { _id: new ObjectId(id) },
+    const updateData = await Carrier.findByIdAndUpdate(
+      { _id: new ObjectId(carrierId) },
       req.body,
       { new: true }
     );
+
+    const result = updateData.toObject();
+    delete result.password;
+    delete result.companyFormation;
+    delete result.token;
+    delete result.forgotPassword;
 
     const statusCode = updateData ? STATUS_CODE.OK : STATUS_CODE.BAD_REQUEST;
     const message = updateData
@@ -55,6 +53,7 @@ const update = async (req, res) => {
       res,
       status: statusCode,
       msg: message,
+      data: result,
     });
   } catch (error) {
     console.error("error:", error);

@@ -1,8 +1,8 @@
-const User = require("../../../model/user/user");
 const { validateResetPassword } = require("../../../helper/joi-validation");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { encrypt } = require("../../../helper/encrypt-decrypt");
+const { hendleModel } = require("../../../utils/hendleModel");
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -14,8 +14,9 @@ const resetPassword = async (req, res) => {
   try {
     const { password } = req.body;
     const { email } = req;
-    const { error } = validateResetPassword({ password });
+    const { type } = req.params;
 
+    const { error } = validateResetPassword({ password });
     if (error) {
       const obj = {
         res,
@@ -25,12 +26,14 @@ const resetPassword = async (req, res) => {
       return Response.error(obj);
     }
 
+    const Model = await hendleModel(res, type);
+
     const passwordHash = encrypt(password, process.env.PASSWORD_ENCRYPTION_KEY);
 
-    const userEmailExist = await User.findOne({
+    const checkEmailExist = await Model.findOne({
       email: email,
     });
-    if (!userEmailExist) {
+    if (!checkEmailExist) {
       const obj = {
         res,
         status: STATUS_CODE.BAD_REQUEST,
@@ -39,8 +42,8 @@ const resetPassword = async (req, res) => {
       return Response.error(obj);
     }
 
-    await User.findByIdAndUpdate(
-      { _id: userEmailExist._id },
+    await Model.findByIdAndUpdate(
+      { _id: checkEmailExist._id },
       {
         password: passwordHash,
         "forgotPassword.createdAt": Date.now(),

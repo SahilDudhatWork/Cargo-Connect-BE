@@ -43,9 +43,18 @@ const signUp = async (req, res) => {
       };
       return Response.error(obj);
     }
+    const generateAccountId = () => {
+      const timestamp = Date.now().toString();
+      const randomDigits = Array(6)
+        .fill(0)
+        .map(() => Math.floor(Math.random() * 10))
+        .join("");
+      return timestamp.slice(-10) + randomDigits;
+    };
 
     const passwordHash = encrypt(password, process.env.PASSWORD_ENCRYPTION_KEY);
 
+    req.body.accountId = generateAccountId();
     req.body.password = passwordHash;
     await User.create(req.body);
 

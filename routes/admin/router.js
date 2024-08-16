@@ -1,7 +1,8 @@
 const { Router } = require("express");
 const router = Router();
 const authRoute = require("./auth");
-const userRoute = require("./userManage");
+const commonCrudRoute = require("./commonCrud");
+const profileRoute = require("./profile");
 const { adminAuth } = require("../../middleware/adminAuth");
 
 router.get("/", (req, res) => {
@@ -10,6 +11,7 @@ router.get("/", (req, res) => {
 
 router.use("/auth", authRoute);
 router.use(adminAuth);
-router.use("/user", userRoute);
+router.use("/common", commonCrudRoute);
+router.use("/profile", profileRoute);
 
 module.exports = router;

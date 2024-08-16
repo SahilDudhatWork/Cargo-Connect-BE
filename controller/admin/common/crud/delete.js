@@ -1,17 +1,20 @@
-const User = require("../../../model/user/user");
+const Response = require("../../../../helper/response");
 const {
   STATUS_CODE,
   ERROR_MSGS,
   INFO_MSGS,
-} = require("../../../helper/constant");
-const { handleException } = require("../../../helper/exception");
-const Response = require("../../../helper/response");
+} = require("../../../../helper/constant");
+const { handleException } = require("../../../../helper/exception");
+const { hendleModel } = require("../../../../utils/hendleModel");
 
 const remove = async (req, res) => {
   const { logger } = req;
   try {
-    const { id } = req.params;
-    const deleteData = await User.findByIdAndDelete(id);
+    const { type, id } = req.params;
+
+    const Model = await hendleModel(res, type);
+
+    const deleteData = await Model.findByIdAndDelete(id);
 
     const statusCode = deleteData ? STATUS_CODE.OK : STATUS_CODE.BAD_REQUEST;
     const message = deleteData
