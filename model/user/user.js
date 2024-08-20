@@ -10,6 +10,10 @@ const collectionSchema = new Schema(
       trim: true,
       unique: true,
     },
+    profilePicture: {
+      type: String,
+      default: null,
+    },
     companyName: {
       type: String,
       lowercase: true,

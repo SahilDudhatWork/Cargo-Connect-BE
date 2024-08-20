@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 const { PORT } = process.env;
 const routes = require("./routes/v1");
+const path = require("path");
 const cors = require("cors");
 const logger = require("morgan");
 const MongoDBconnect = require("./library/db");
@@ -13,6 +14,12 @@ app.use(cors({ origin: "*" }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger("dev"));
+
+// For uploaded images acsses 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+const imageUploadRouter = require("./routes/common/imageUpload");
+app.use("/upload", imageUploadRouter);
 
 // Routers
 app.use("/v1", routes);
