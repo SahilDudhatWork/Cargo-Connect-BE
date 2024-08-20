@@ -50,7 +50,7 @@ const create = async (req, res) => {
     const statusCode = saveData ? STATUS_CODE.CREATED : STATUS_CODE.BAD_REQUEST;
     const message = saveData
       ? INFO_MSGS.CREATED_SUCCESSFULLY
-      : ERROR_MSGS.BAD_REQUEST;
+      : ERROR_MSGS.CREATE_ERR;
 
     return Response[statusCode === STATUS_CODE.OK ? "success" : "error"]({
       req,

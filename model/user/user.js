@@ -7,7 +7,6 @@ const collectionSchema = new Schema(
       type: Number,
       lowercase: true,
       default: null,
-      trim: true,
       unique: true,
     },
     profilePicture: {
@@ -18,24 +17,20 @@ const collectionSchema = new Schema(
       type: String,
       lowercase: true,
       default: null,
-      trim: true,
     },
     contactName: {
       type: String,
       lowercase: true,
       default: null,
-      trim: true,
     },
     contactNumber: {
       type: Number,
       default: null,
-      trim: true,
     },
     email: {
       type: String,
       lowercase: true,
       default: null,
-      trim: true,
       unique: true,
     },
     password: {

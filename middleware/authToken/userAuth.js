@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
-const User = require("../model/user/user");
-const Response = require("../helper/response");
-const { STATUS_CODE, ERROR_MSGS, INFO_MSGS } = require("../helper/constant");
-const { handleException } = require("../helper/exception");
-const { decrypt } = require("../helper/encrypt-decrypt");
+const User = require("../../model/user/user");
+const Response = require("../../helper/response");
+const { STATUS_CODE, ERROR_MSGS, INFO_MSGS } = require("../../helper/constant");
+const { handleException } = require("../../helper/exception");
+const { decrypt } = require("../../helper/encrypt-decrypt");
 
 //- For User Token Decode
 const userAuth = async (req, res, next) => {

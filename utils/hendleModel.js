@@ -1,6 +1,8 @@
 const User = require("../model/user/user");
 const Admin = require("../model/admin/admin");
 const Carrier = require("../model/carrier/carrier");
+const Operator = require("../model/operator/operator");
+const Vehicle = require("../model/vehicle/vehicle");
 const { handleException } = require("../helper/exception");
 
 const hendleModel = async (res, type) => {
@@ -12,6 +14,10 @@ const hendleModel = async (res, type) => {
       Model = Carrier;
     } else if (type === "admin") {
       Model = Admin;
+    } else if (type === "operator") {
+      Model = Operator;
+    } else if (type === "vehicle") {
+      Model = Vehicle;
     }
     return Model;
   } catch (error) {

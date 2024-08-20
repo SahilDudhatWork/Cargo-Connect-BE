@@ -10,6 +10,7 @@ const {
   ERROR_MSGS,
   INFO_MSGS,
 } = require("../../../helper/constant");
+const { generateAccountId } = require("../../../utils/generateUniqueId");
 
 /**
  * Register a new carrier with email and password
@@ -43,15 +44,6 @@ const signUp = async (req, res) => {
       };
       return Response.error(obj);
     }
-
-    const generateAccountId = () => {
-      const timestamp = Date.now().toString();
-      const randomDigits = Array(6)
-        .fill(0)
-        .map(() => Math.floor(Math.random() * 10))
-        .join("");
-      return timestamp.slice(-10) + randomDigits;
-    };
 
     const passwordHash = encrypt(password, process.env.PASSWORD_ENCRYPTION_KEY);
 

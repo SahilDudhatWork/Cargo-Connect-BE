@@ -2,7 +2,12 @@ const { Router } = require("express");
 const router = Router();
 const authRoute = require("./auth");
 const profileRoute = require("./profile");
-const {carrierAuth}= require("../../middleware/carrierAuth")
+const movementRoute = require("./movement");
+const operatorRoute = require("./operator");
+const { carrierAuth } = require("../../middleware/authToken/carrierAuth");
+const {
+  carrierPermission,
+} = require("../../middleware/permission/carrierPermission");
 
 router.get("/", (req, res) => {
   res.status(200).json({ message: "Carrier routes is working!!" });
@@ -12,5 +17,8 @@ router.use("/auth", authRoute);
 
 router.use(carrierAuth);
 router.use("/profile", profileRoute);
+router.use(carrierPermission);
+router.use("/movement", movementRoute);
+router.use("/operator", operatorRoute);
 
 module.exports = router;

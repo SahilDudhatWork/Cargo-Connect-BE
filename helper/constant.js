@@ -80,6 +80,7 @@ module.exports = {
     SUCCESS: "Request successful.",
     OTP_VERIFIED: "Otp verified successfully.",
     PASSWORD_CHANGED: "Your password has been changed successfully.",
+    SEND_USER_TO_CARRIER_REQUEST: "Your request is successfully send to carrier, wait for carrier to approve your request.",
     SUCCESSFUL_REGISTER: "Your registration with Cargo Connect is successful.",
     OTP_SENT_SUCC:
       "An OTP has been sent to your email address. Please check your inbox and use the OTP to proceed.",

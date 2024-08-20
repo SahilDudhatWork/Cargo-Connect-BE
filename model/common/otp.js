@@ -4,22 +4,22 @@ const otpSchema = new mongoose.Schema(
   {
     email: {
       type: String,
-      required: true
+      required: true,
     },
     otp: {
       type: Number,
-      required: true
+      required: true,
     },
     isDeleted: {
       date: {
         type: Date,
-        default: null
+        default: null,
       },
       status: {
         type: Boolean,
-        default: false
+        default: false,
       },
-    }
+    },
   },
   { timestamps: true }
 );

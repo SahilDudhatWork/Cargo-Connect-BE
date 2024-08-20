@@ -1,5 +1,6 @@
 const multer = require('multer');
 const path = require('path');
+const Response = require("../helper/response");
 
 // Set up storage engine
 const storage = multer.diskStorage({
