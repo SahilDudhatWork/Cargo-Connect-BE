@@ -1,0 +1,528 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CargoConnect User API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5555",
+      "description": "Local server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "User"
+    },
+    {
+      "name": "Auth"
+    },
+    {
+      "name": "Profile"
+    },
+    {
+      "name": "Service"
+    },
+    {
+      "name": "Order"
+    },
+    {
+      "name": "Common"
+    },
+    {
+      "name": "Otp"
+    },
+    {
+      "name": "Forgot Password"
+    },
+    {
+      "name": "Image Upload"
+    }
+  ],
+  "paths": {
+    "/v1/user/auth/signUp": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Sign Up",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "profilePicture": "",
+                  "companyName": "example company",
+                  "contactName": "john doe",
+                  "contactNumber": 1234567890,
+                  "email": "john.doe@example.com",
+                  "password": "P@ssw0rd123",
+                  "companyFormation": {
+                    "usa": {
+                      "w9_Form": "http://example.com/w9_form.pdf",
+                      "utility_Bill": "http://example.com/utility_bill.pdf"
+                    }
+                  },
+                  "commercialReference": [
+                    {
+                      "companyName": "reference company 1",
+                      "contactName": "reference contact 1",
+                      "emailAddress": "reference1@example.com",
+                      "countryCode": 1,
+                      "contactNo": 9876543210
+                    },
+                    {
+                      "companyName": "reference company 2",
+                      "contactName": "reference contact 2",
+                      "emailAddress": "reference2@example.com",
+                      "countryCode": 1,
+                      "contactNo": 1234567890
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/auth/logIn": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Log In",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "john.doe@example.com",
+                  "password": "P@ssw0rd123"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/auth/logOut": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Log Out",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": ""
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/profile": {
+      "get": {
+        "tags": ["Profile"],
+        "summary": "Profile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Profile"],
+        "summary": "update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "companyName": "example company",
+                  "contactName": "john doe",
+                  "contactNumber": 1234567890,
+                  "email": "john.doe@example.com",
+                  "scac": null,
+                  "insurancePolicycaat": null,
+                  "oea": null,
+                  "ctpat": null,
+                  "companyFormation": {
+                    "usa": {
+                      "w9_Form": "http://example.com/w9_form.pdf",
+                      "utility_Bill": "http://example.com/utility_bill.pdf"
+                    }
+                  },
+                  "commercialReference": [
+                    {
+                      "companyName": "reference company 1",
+                      "contactName": "reference contact 1",
+                      "emailAddress": "reference1@example.com",
+                      "countryCode": 1,
+                      "contactNo": 9876543210,
+                      "_id": "66bf2f403cfdbfd964a1280b"
+                    },
+                    {
+                      "companyName": "reference company 2",
+                      "contactName": "reference contact 2",
+                      "emailAddress": "reference2@example.com",
+                      "countryCode": 1,
+                      "contactNo": 1234567890,
+                      "_id": "66bf2f403cfdbfd964a1280c"
+                    }
+                  ],
+                  "verifyByAdmin": false,
+                  "isBlocked": false,
+                  "lastLogin": "2024-08-16T10:52:01.469Z",
+                  "createdAt": "2024-08-16T10:51:44.087Z",
+                  "updatedAt": "2024-08-16T10:52:01.480Z"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/service": {
+      "get": {
+        "tags": ["Service"],
+        "summary": "Fetch Service From Admin",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/order": {
+      "post": {
+        "tags": ["Order"],
+        "summary": "Create Order",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "port_BridgeOfCrossing": "Port of Los Angeles",
+                  "userReference": "USR123456",
+                  "specialRequirements": ["Handle with care", "Urgent"],
+                  "quantityForChains": "10",
+                  "quantityForStraps": "20",
+                  "quantityForTarps": "5",
+                  "restrictedTime": "2024-08-22T14:00:00Z",
+                  "schedule": {
+                    "date": "2024-08-22",
+                    "time": "14:00"
+                  },
+                  "addressDetails": {
+                    "buildinName": "Warehouse 12",
+                    "postalCode": 90001,
+                    "laneNumber": 5,
+                    "additionalDetails": "Near the main gate"
+                  },
+                  "contactDetails": {
+                    "contactName": "John Doe",
+                    "contactEmail": "john.doe@example.com",
+                    "contactNumber": 1234567890
+                  },
+                  "pickUpDetails": [
+                    {
+                      "addressDetails": {
+                        "buildinName": "Warehouse 5",
+                        "postalCode": 90002,
+                        "laneNumber": 3,
+                        "additionalDetails": "Back entrance"
+                      },
+                      "contactDetails": {
+                        "contactName": "Jane Smith",
+                        "contactEmail": "jane.smith@example.com",
+                        "contactNumber": 9876543210
+                      }
+                    }
+                  ],
+                  "dropDetails": [
+                    {
+                      "addressDetails": {
+                        "buildinName": "Office HQ",
+                        "postalCode": 90003,
+                        "laneNumber": 7,
+                        "additionalDetails": "Front desk"
+                      },
+                      "contactDetails": {
+                        "contactName": "Alice Johnson",
+                        "contactEmail": "alice.johnson@example.com",
+                        "contactNumber": 1122334455
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Order"],
+        "summary": "Fetch Order",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "10"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "InProgress"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/order/{orderId}": {
+      "get": {
+        "tags": ["Order"],
+        "summary": "Get Details",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/common/otp/sent/user": {
+      "post": {
+        "tags": ["Otp"],
+        "summary": "Sent Otp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "user@gmail.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/common/otp/verify": {
+      "post": {
+        "tags": ["Otp"],
+        "summary": "Verify Otp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "user@gmail.com",
+                  "otp": 527617
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/common/resetPassword/user": {
+      "post": {
+        "tags": ["Forgot Password"],
+        "summary": "Reset Password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "user@gmail.com",
+                  "password": "P@ssw0rd123",
+                  "otpToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTcyMzc5NzU1MSwiZXhwIjoxNzIzNzk3ODUxfQ.k0lGZ5Z2iQeJBoog3FKVqT1SmwXTeh_3TMUtkA33Bpc"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "application/json"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/common/imageUpload": {
+      "post": {
+        "tags": ["Image Upload"],
+        "summary": "imageUpload",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}
