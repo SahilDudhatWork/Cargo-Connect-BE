@@ -8,6 +8,10 @@
     {
       "url": "http://localhost:5555",
       "description": "Local server"
+    },
+    {
+      "url": "https://cargo-connect-be.vercel.app",
+      "description": "Live server"
     }
   ],
   "components": {
