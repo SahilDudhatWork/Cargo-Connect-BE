@@ -10,18 +10,62 @@ const {
 } = require("../../../helper/constant");
 
 const fetchMovement = async (req, res) => {
-  let { logger, carrierId } = req;
+  let { logger } = req;
   try {
-    let { page, limit, status } = req.query;
+    let { page, limit, keyWord } = req.query;
+
+    let qry = {};
+
+    if (keyWord) {
+      qry = {
+        $or: [{ movementId: { $regex: keyWord, $options: "i" } }],
+      };
+    }
 
     offset = page || 1;
     limit = limit || 10;
     const skip = limit * (offset - 1);
     const getData = await Movement.aggregate([
+      { $match: qry },
       {
-        $match: {
-          isAssign: false,
-          status: status,
+        $lookup: {
+          let: { operatorId: "$operatorId" },
+          from: "operators",
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$_id", "$$operatorId"] },
+              },
+            },
+            // { $project: { _id: 1, operatorNumber: 1, operatorName: 1 } },
+          ],
+          as: "operatorsData",
+        },
+      },
+      {
+        $unwind: {
+          path: "$operatorsData",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          let: { vehicleId: "$vehicleId" },
+          from: "vehicles",
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$_id", "$$vehicleId"] },
+              },
+            },
+          ],
+          as: "vehicleData",
+        },
+      },
+      {
+        $unwind: {
+          path: "$vehicleData",
+          preserveNullAndEmptyArrays: true,
         },
       },
       {

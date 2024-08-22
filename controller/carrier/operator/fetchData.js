@@ -1,29 +1,25 @@
-const Movement = require("../../../model/user/movement");
+const Operator = require("../../../model/operator/operator");
 const { handleException } = require("../../../helper/exception");
-const { paginationResponse } = require("../../../utils/paginationFormate");
-const { ObjectId } = require("mongoose").Types;
 const Response = require("../../../helper/response");
+const { paginationResponse } = require("../../../utils/paginationFormate");
 const {
   STATUS_CODE,
   ERROR_MSGS,
   INFO_MSGS,
 } = require("../../../helper/constant");
 
-const fetchMovement = async (req, res) => {
-  let { logger, carrierId } = req;
+const fetchData = async (req, res) => {
+  let { logger } = req;
   try {
-    let { page, limit, status } = req.query;
+    let { page, limit, sortBy } = req.query;
+
+    sortBy = sortBy === "recent" ? { createdAt: -1 } : { createdAt: 1 };
 
     offset = page || 1;
     limit = limit || 10;
     const skip = limit * (offset - 1);
-    const getData = await Movement.aggregate([
-      {
-        $match: {
-          isAssign: false,
-          status: status,
-        },
-      },
+    const getData = await Operator.aggregate([
+      { $sort: sortBy },
       {
         $facet: {
           paginatedResult: [
@@ -32,6 +28,9 @@ const fetchMovement = async (req, res) => {
             {
               $project: {
                 __v: 0,
+                password: 0,
+                forgotPassword: 0,
+                token: 0,
               },
             },
           ],
@@ -67,5 +66,5 @@ const fetchMovement = async (req, res) => {
 };
 
 module.exports = {
-  fetchMovement,
+  fetchData,
 };

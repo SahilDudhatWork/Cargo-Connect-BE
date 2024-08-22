@@ -12,17 +12,23 @@ const hendleRequest = async (req, res) => {
   const { logger, carrierId } = req;
   try {
     const { id } = req.params;
+    const { operatorId, vehicleId } = req.body;
 
+    // Convert IDs to ObjectId
+    req.body.carrierId = new ObjectId(carrierId);
+    req.body.operatorId = new ObjectId(operatorId);
+    req.body.vehicleId = new ObjectId(vehicleId);
+    req.body.status = "InProgress";
+    req.body.isAssign = true;
+
+    // Update the Movement document
     let updateData = await Movement.findByIdAndUpdate(
-      { _id: new ObjectId(id) },
-      {
-        carrierId: carrierId,
-        isAssign: true,
-      },
+      new ObjectId(id),
+      req.body,
       { new: true }
     );
 
-    const statusCode = updateData ? STATUS_CODE.OK : STATUS_CODE.OK;
+    const statusCode = updateData ? STATUS_CODE.OK : STATUS_CODE.INTERNAL_ERROR;
     const message = updateData
       ? INFO_MSGS.UPDATED_SUCCESSFULLY
       : ERROR_MSGS.UPDATE_ERR;
@@ -35,7 +41,7 @@ const hendleRequest = async (req, res) => {
       data: updateData || null,
     });
   } catch (error) {
-    console.error("error:", error);
+    console.error("Error in hendleRequest:", error);
     return handleException(logger, res, error);
   }
 };

@@ -1,6 +1,6 @@
 const { handleException } = require("../../../../helper/exception");
 const Response = require("../../../../helper/response");
-const { paginationResponse } = require("../../../../utils/paginationFormate")
+const { paginationResponse } = require("../../../../utils/paginationFormate");
 const { hendleModel } = require("../../../../utils/hendleModel");
 const {
   STATUS_CODE,
@@ -15,17 +15,17 @@ const fetchData = async (req, res) => {
     const { type } = req.params;
 
     const Model = await hendleModel(res, type);
+
     let qry = {};
-    
+
     if (keyWord) {
       qry = {
         $or: [
-          { companyName: { $regex: keyWord, $options: "i" } },
           { contactName: { $regex: keyWord, $options: "i" } },
           {
             $expr: {
               $regexMatch: {
-                input: { $toString: { $toLong: "$contactNumber" } },
+                input: { $toString: { $toLong: "$accountId" } },
                 regex: keyWord,
               },
             },
@@ -34,19 +34,30 @@ const fetchData = async (req, res) => {
       };
     }
 
-    sortBy = sortBy === "recent" ? { createdAt: -1 } : { createdAt: 1 };
+    let sortCriteria = {};
+    if (sortBy === "recent") {
+      sortCriteria = { createdAt: -1 };
+    } else if (sortBy === "blocked") {      
+      qry.isBlocked = true;
+      sortCriteria = { createdAt: -1 }; 
+    } else if (sortBy === "all") {
+      sortCriteria = { createdAt: 1 };
+    } else {
+      sortCriteria = { createdAt: 1 };
+    }
 
-    offset = page || 1;
-    limit = limit || 10;
+    const offset = parseInt(page) || 1;
+    limit = parseInt(limit) || 10;
     const skip = limit * (offset - 1);
+
     const getData = await Model.aggregate([
       { $match: qry },
-      { $sort: sortBy },
+      { $sort: sortCriteria },
       {
         $facet: {
           paginatedResult: [
             { $skip: skip },
-            { $limit: parseInt(limit) },
+            { $limit: limit },
             {
               $project: {
                 __v: 0,

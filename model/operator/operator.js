@@ -54,6 +54,10 @@ const collectionSchema = new Schema(
       type: Date,
       default: null,
     },
+    isAssigned: {
+      type: Boolean,
+      default: false,
+    },
     status: {
       type: String,
       default: "Active",

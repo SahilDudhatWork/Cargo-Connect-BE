@@ -16,6 +16,12 @@ const collectionSchema = new Schema(
       default: null,
       unique: true,
     },
+    operatorId: {
+      type: ObjectId,
+    },
+    vehicleId: {
+      type: ObjectId,
+    },
     port_BridgeOfCrossing: {
       type: String,
       default: null,
@@ -164,8 +170,8 @@ const collectionSchema = new Schema(
     ],
     status: {
       type: String,
-      default: "InProgress",
-      enum: ["Approved", "Completed", "InProgress"],
+      default: "Pending",
+      enum: ["Approved", "Completed", "InProgress", "Pending"],
     },
     isAssign: {
       type: Boolean,

@@ -4,6 +4,7 @@ const authRoute = require("./auth");
 const profileRoute = require("./profile");
 const movementRoute = require("./movement");
 const operatorRoute = require("./operator");
+const vehicleRoute = require("./vehicle");
 const { carrierAuth } = require("../../middleware/authToken/carrierAuth");
 const {
   carrierPermission,
@@ -20,5 +21,6 @@ router.use("/profile", profileRoute);
 router.use(carrierPermission);
 router.use("/movement", movementRoute);
 router.use("/operator", operatorRoute);
+router.use("/vehicle", vehicleRoute);
 
 module.exports = router;
