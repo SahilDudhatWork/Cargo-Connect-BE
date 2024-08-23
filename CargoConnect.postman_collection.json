@@ -1,0 +1,1953 @@
+{
+	"info": {
+		"_postman_id": "9b95bdde-d1e8-48da-a18c-0781662aedd4",
+		"name": "CargoConnect",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23566873",
+		"_collection_link": "https://galactic-moon-164578.postman.co/workspace/CargoConnect~0cd3cdb3-1eb5-4433-a1d3-710915e75c1b/collection/23566873-9b95bdde-d1e8-48da-a18c-0781662aedd4?action=share&source=collection_link&creator=23566873"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Log In",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var res = pm.response.json();\r",
+											"pm.environment.set('adminToken', res.data.accessToken);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"admin@gmail.com\",\r\n    \"password\":\"P@ssw0rd123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/admin/auth/logIn",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"auth",
+										"logIn"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "Fetch Profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{L}}/v1/admin/profile",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Manage User",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"companyName\": \"example company 3\",\r\n    \"contactName\": \"john doe\",\r\n    \"contactNumber\": 1234567890,\r\n    \"email\": \"john.doe3@example.com\",\r\n    \"password\": \"P@ssw0rd123\",\r\n    \"companyFormation\": {\r\n        \"usa\": {\r\n            \"w9_Form\": \"http://example.com/w9_form.pdf\",\r\n            \"utility_Bill\": \"http://example.com/utility_bill.pdf\"\r\n        }\r\n        // \"mexico\": {\r\n        //     \"copia_Rfc_Form\": \"http://example.com/copia_rfc_form.pdf\",\r\n        //     \"constance_Of_Fiscal_Situation\": \"http://example.com/constance_of_fiscal_situation.pdf\",\r\n        //     \"proof_of_Favorable\": \"http://example.com/proof_of_favorable.pdf\",\r\n        //     \"proof_Of_Address\": \"http://example.com/proof_of_address.pdf\"\r\n        // }\r\n    },\r\n    \"commercialReference\": [\r\n        {\r\n            \"companyName\": \"reference company 1\",\r\n            \"contactName\": \"reference contact 1\",\r\n            \"emailAddress\": \"reference1@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 9876543210\r\n        },\r\n        {\r\n            \"companyName\": \"reference company 2\",\r\n            \"contactName\": \"reference contact 2\",\r\n            \"emailAddress\": \"reference2@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 1234567890\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/admin/common/user",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"common",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/admin/common/user?keyWord&page=1&limit=10&sortBy=recent",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"common",
+										"user"
+									],
+									"query": [
+										{
+											"key": "keyWord",
+											"value": null
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "sortBy",
+											"value": "recent"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Details",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/admin/common/user/66bdc9e047167638dd7edae4",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"common",
+										"user",
+										"66bdc9e047167638dd7edae4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"companyName\": \"example company\",\r\n    \"contactName\": \"john doe\",\r\n    \"contactNumber\": 1234567890,\r\n    \"email\": \"john.doe@example.com\",\r\n    \"companyFormation\": {\r\n        \"usa\": {\r\n            \"w9_Form\": \"http://example.com/w9_form.pdf\",\r\n            \"utility_Bill\": \"http://example.com/utility_bill.pdf\"\r\n        }\r\n    },\r\n    \"commercialReference\": [\r\n        {\r\n            \"companyName\": \"reference company 1\",\r\n            \"contactName\": \"reference contact 1\",\r\n            \"emailAddress\": \"reference1@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 9876543210,\r\n            \"_id\": \"66bdc9e047167638dd7edae5\"\r\n        },\r\n        {\r\n            \"companyName\": \"reference company 2\",\r\n            \"contactName\": \"reference contact 2\",\r\n            \"emailAddress\": \"reference2@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 1234567890,\r\n            \"_id\": \"66bdc9e047167638dd7edae6\"\r\n        }\r\n    ],\r\n    \"verifyByAdmin\": false,\r\n    \"isBlocked\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/admin/common/user/66bdc9e047167638dd7edae4",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"common",
+										"user",
+										"66bdc9e047167638dd7edae4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/admin/common/user/66bf14bad9503dd95ee933d5",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"common",
+										"user",
+										"66bf14bad9503dd95ee933d5"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Manage Carrier",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"companyName\": \"example company\",\r\n    \"contactName\": \"john doe\",\r\n    \"contactNumber\": 1234567890,\r\n    \"email\": \"john.doea@example.com\",\r\n    \"password\": \"P@ssw0rd123\",\r\n    \"companyFormation\": {\r\n        \"usa\": {\r\n            \"w9_Form\": \"http://example.com/w9_form.pdf\",\r\n            \"utility_Bill\": \"http://example.com/utility_bill.pdf\"\r\n        }\r\n        // \"mexico\": {\r\n        //     \"copia_Rfc_Form\": \"http://example.com/copia_rfc_form.pdf\",\r\n        //     \"constance_Of_Fiscal_Situation\": \"http://example.com/constance_of_fiscal_situation.pdf\",\r\n        //     \"proof_of_Favorable\": \"http://example.com/proof_of_favorable.pdf\",\r\n        //     \"proof_Of_Address\": \"http://example.com/proof_of_address.pdf\"\r\n        // }\r\n    },\r\n    \"commercialReference\": [\r\n        {\r\n            \"companyName\": \"reference company 1\",\r\n            \"contactName\": \"reference contact 1\",\r\n            \"emailAddress\": \"reference1@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 9876543210\r\n        },\r\n        {\r\n            \"companyName\": \"reference company 2\",\r\n            \"contactName\": \"reference contact 2\",\r\n            \"emailAddress\": \"reference2@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 1234567890\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/admin/common/carrier",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"common",
+										"carrier"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fetch Carrier",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/admin/common/carrier?sortBy=blocked&page=1&limit=10",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"common",
+										"carrier"
+									],
+									"query": [
+										{
+											"key": "keyWord",
+											"value": "3805504027053612",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "blocked"
+										},
+										{
+											"key": "sortBy",
+											"value": "recent",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "all",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Details",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/admin/common/carrier/66bdaf0a08cf6fb24ca211b9",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"common",
+										"carrier",
+										"66bdaf0a08cf6fb24ca211b9"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"companyName\": \"example company\",\r\n    \"contactName\": \"john doe\",\r\n    \"contactNumber\": 1234567890,\r\n    \"email\": \"john.doe@example.com\",\r\n    \"companyFormation\": {\r\n        \"usa\": {\r\n            \"w9_Form\": \"http://example.com/w9_form.pdf\",\r\n            \"utility_Bill\": \"http://example.com/utility_bill.pdf\"\r\n        }\r\n    },\r\n    \"commercialReference\": [\r\n        {\r\n            \"companyName\": \"reference company 1\",\r\n            \"contactName\": \"reference contact 1\",\r\n            \"emailAddress\": \"reference1@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 9876543210,\r\n            \"_id\": \"66bdc9e047167638dd7edae5\"\r\n        },\r\n        {\r\n            \"companyName\": \"reference company 2\",\r\n            \"contactName\": \"reference contact 2\",\r\n            \"emailAddress\": \"reference2@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 1234567890,\r\n            \"_id\": \"66bdc9e047167638dd7edae6\"\r\n        }\r\n    ],\r\n    \"verifyByAdmin\": false,\r\n    \"isBlocked\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/admin/common/carrier/66bdaf0a08cf6fb24ca211b9",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"common",
+										"carrier",
+										"66bdaf0a08cf6fb24ca211b9"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/admin/common/carrier/66bdaf0a08cf6fb24ca211b9",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"common",
+										"carrier",
+										"66bdaf0a08cf6fb24ca211b9"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Service",
+					"item": [
+						{
+							"name": "Fetch Movement",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/admin/services/?page=1&limit=10",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"services",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "keyWord",
+											"value": "MYWYBVRRRV4328325499",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Details",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/admin/services/66c73035591cd0e5d7adb0e9",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"services",
+										"66c73035591cd0e5d7adb0e9"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Hendle Request",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{adminToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"carrierId\": \"66c5aa038c1687ae1adc0c22\",\r\n    \"operatorId\": \"66c49148789b754e236b13ac\",\r\n    \"vehicleId\": \"66c7187e839c733bfb28ace2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/admin/services/66c73038591cd0e5d7adb0f3",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"admin",
+										"services",
+										"66c73038591cd0e5d7adb0f3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Sign Up",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"profilePicture\":\"\",\r\n    \"companyName\": \"example company\",\r\n    \"contactName\": \"john doe\",\r\n    \"contactNumber\": 1234567890,\r\n    \"email\": \"john.doe@example.com\",\r\n    \"password\": \"P@ssw0rd123\",\r\n    \"companyFormation\": {\r\n        \"usa\": {\r\n            \"w9_Form\": \"http://example.com/w9_form.pdf\",\r\n            \"utility_Bill\": \"http://example.com/utility_bill.pdf\"\r\n        }\r\n        // \"mexico\": {\r\n        //     \"copia_Rfc_Form\": \"http://example.com/copia_rfc_form.pdf\",\r\n        //     \"constance_Of_Fiscal_Situation\": \"http://example.com/constance_of_fiscal_situation.pdf\",\r\n        //     \"proof_of_Favorable\": \"http://example.com/proof_of_favorable.pdf\",\r\n        //     \"proof_Of_Address\": \"http://example.com/proof_of_address.pdf\"\r\n        // }\r\n    },\r\n    \"commercialReference\": [\r\n        {\r\n            \"companyName\": \"reference company 1\",\r\n            \"contactName\": \"reference contact 1\",\r\n            \"emailAddress\": \"reference1@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 9876543210\r\n        },\r\n        {\r\n            \"companyName\": \"reference company 2\",\r\n            \"contactName\": \"reference contact 2\",\r\n            \"emailAddress\": \"reference2@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 1234567890\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/user/auth/signUp",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"auth",
+										"signUp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Log In",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var res = pm.response.json();\r",
+											"pm.environment.set('userToken', res.data.accessToken);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"john.doe@example.com\",\r\n    \"password\": \"P@ssw0rd123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/user/auth/logIn",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"auth",
+										"logIn"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Log Out",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5555/v1/user/auth/logOut",
+									"host": [
+										"localhost"
+									],
+									"port": "5555",
+									"path": [
+										"v1",
+										"user",
+										"auth",
+										"logOut"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "Profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/user/profile",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"companyName\": \"example company\",\r\n    \"contactName\": \"john doe\",\r\n    \"contactNumber\": 1234567890,\r\n    \"email\": \"john.doe@example.com\",\r\n    \"scac\": null,\r\n    \"insurancePolicycaat\": null,\r\n    \"oea\": null,\r\n    \"ctpat\": null,\r\n    \"companyFormation\": {\r\n        \"usa\": {\r\n            \"w9_Form\": \"http://example.com/w9_form.pdf\",\r\n            \"utility_Bill\": \"http://example.com/utility_bill.pdf\"\r\n        }\r\n    },\r\n    \"commercialReference\": [\r\n        {\r\n            \"companyName\": \"reference company 1\",\r\n            \"contactName\": \"reference contact 1\",\r\n            \"emailAddress\": \"reference1@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 9876543210,\r\n            \"_id\": \"66bf2f403cfdbfd964a1280b\"\r\n        },\r\n        {\r\n            \"companyName\": \"reference company 2\",\r\n            \"contactName\": \"reference contact 2\",\r\n            \"emailAddress\": \"reference2@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 1234567890,\r\n            \"_id\": \"66bf2f403cfdbfd964a1280c\"\r\n        }\r\n    ],\r\n    \"verifyByAdmin\": false,\r\n    \"isBlocked\": false,\r\n    \"lastLogin\": \"2024-08-16T10:52:01.469Z\",\r\n    \"createdAt\": \"2024-08-16T10:51:44.087Z\",\r\n    \"updatedAt\": \"2024-08-16T10:52:01.480Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/user/profile",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Service",
+					"item": [
+						{
+							"name": "Fetch Service From Admin",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"typeOfService\": [\r\n        {\r\n            \"title\": \"Northbound\",\r\n            \"description\": \"Lorem ipsum dolor sit amet Mauris risus turpis.\"\r\n        },\r\n        {\r\n            \"title\": \"Southbound\",\r\n            \"description\": \"Lorem ipsum dolor sit amet Mauris risus turpis.\"\r\n        },\r\n        {\r\n            \"title\": \"Local Drayage MX\",\r\n            \"description\": \"Lorem ipsum dolor sit amet Mauris risus turpis.\"\r\n        },\r\n        {\r\n            \"title\": \"Local Drayage US\",\r\n            \"description\": \"Lorem ipsum dolor sit amet Mauris risus turpis.\"\r\n        }\r\n    ],\r\n    \"typeOfTransportation\": [\r\n        {\r\n            \"title\": \"FTL\",\r\n            \"description\": \"Lorem ipsum dolor sit amet Mauris risus turpis.\"\r\n        },\r\n        {\r\n            \"title\": \"LTL\",\r\n            \"description\": \"Lorem ipsum dolor sit amet Mauris risus turpis.\"\r\n        }\r\n    ],\r\n    \"modeOfTransportation\": {\r\n        \"FTL\": [\r\n            {\r\n                \"title\": \"Dry Box\",\r\n                \"description\": \"Lorem ipsum dolor sit amet Mauris risus turpis.\"\r\n            },\r\n            {\r\n                \"title\": \"Reefer\",\r\n                \"description\": \"Lorem ipsum dolor sit amet Mauris risus turpis.\"\r\n            },\r\n            {\r\n                \"title\": \"Flatbed\",\r\n                \"description\": \"Lorem ipsum dolor sit amet Mauris risus turpis.\"\r\n            },\r\n            {\r\n                \"title\": \"Lowboy\",\r\n                \"description\": \"Lorem ipsum dolor sit amet Mauris risus turpis.\"\r\n            },\r\n            {\r\n                \"title\": \"Semi-Lowbo\",\r\n                \"description\": \"Lorem ipsum dolor sit amet Mauris risus turpis.\"\r\n            }\r\n        ]\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/user/service",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"service"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Order",
+					"item": [
+						{
+							"name": "Create Order",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"port_BridgeOfCrossing\": \"Port of Los Angeles 4564\",\r\n    \"userReference\": \"USR123456\",\r\n    \"specialRequirements\": [\r\n        \"Handle with care\",\r\n        \"Urgent\"\r\n    ],\r\n    \"quantityForChains\": \"10\",\r\n    \"quantityForStraps\": \"20\",\r\n    \"quantityForTarps\": \"5\",\r\n    \"restrictedTime\": \"2024-08-22T14:00:00Z\",\r\n    \"schedule\": {\r\n        \"date\": \"2024-08-22\",\r\n        \"time\": \"14:00\"\r\n    },\r\n    \"addressDetails\": {\r\n        \"buildinName\": \"Warehouse 12\",\r\n        \"postalCode\": 90001,\r\n        \"laneNumber\": 5,\r\n        \"additionalDetails\": \"Near the main gate\"\r\n    },\r\n    \"contactDetails\": {\r\n        \"contactName\": \"John Doe\",\r\n        \"contactEmail\": \"john.doe@example.com\",\r\n        \"contactNumber\": 1234567890\r\n    },\r\n    \"pickUpDetails\": [\r\n        {\r\n            \"addressDetails\": {\r\n                \"buildinName\": \"Warehouse 5\",\r\n                \"postalCode\": 90002,\r\n                \"laneNumber\": 3,\r\n                \"additionalDetails\": \"Back entrance\"\r\n            },\r\n            \"contactDetails\": {\r\n                \"contactName\": \"Jane Smith\",\r\n                \"contactEmail\": \"jane.smith@example.com\",\r\n                \"contactNumber\": 9876543210\r\n            }\r\n        }\r\n    ],\r\n    \"dropDetails\": [\r\n        {\r\n            \"addressDetails\": {\r\n                \"buildinName\": \"Office HQ\",\r\n                \"postalCode\": 90003,\r\n                \"laneNumber\": 7,\r\n                \"additionalDetails\": \"Front desk\"\r\n            },\r\n            \"contactDetails\": {\r\n                \"contactName\": \"Alice Johnson\",\r\n                \"contactEmail\": \"alice.johnson@example.com\",\r\n                \"contactNumber\": 1122334455\r\n            }\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/user/order",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"order"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fetch Order",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/user/order?page=1&limit=10&status=InProgress",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"order"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "status",
+											"value": "InProgress"
+										},
+										{
+											"key": "status",
+											"value": "Completed",
+											"disabled": true
+										},
+										{
+											"key": "status",
+											"value": "Approved",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Details",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/user/order/66c4672739d354b35f08bd18",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"user",
+										"order",
+										"66c4672739d354b35f08bd18"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Carrier",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Sign Up",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"companyName\": \"example company\",\r\n    \"contactName\": \"john doe\",\r\n    \"contactNumber\": 1234567890,\r\n    \"email\": \"john.doe@example.com\",\r\n    \"password\": \"P@ssw0rd123\",\r\n    \"companyFormation\": {\r\n        \"usa\": {\r\n            \"w9_Form\": \"http://example.com/w9_form.pdf\",\r\n            \"utility_Bill\": \"http://example.com/utility_bill.pdf\"\r\n        }\r\n        // \"mexico\": {\r\n        //     \"copia_Rfc_Form\": \"http://example.com/copia_rfc_form.pdf\",\r\n        //     \"constance_Of_Fiscal_Situation\": \"http://example.com/constance_of_fiscal_situation.pdf\",\r\n        //     \"proof_of_Favorable\": \"http://example.com/proof_of_favorable.pdf\",\r\n        //     \"proof_Of_Address\": \"http://example.com/proof_of_address.pdf\"\r\n        // }\r\n    },\r\n    \"commercialReference\": [\r\n        {\r\n            \"companyName\": \"reference company 1\",\r\n            \"contactName\": \"reference contact 1\",\r\n            \"emailAddress\": \"reference1@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 9876543210\r\n        },\r\n        {\r\n            \"companyName\": \"reference company 2\",\r\n            \"contactName\": \"reference contact 2\",\r\n            \"emailAddress\": \"reference2@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 1234567890\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/carrier/auth/signUp",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"auth",
+										"signUp"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Log In",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var res = pm.response.json();\r",
+											"pm.environment.set('carrierToken', res.data.accessToken);\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"john.doe@example.com\",\r\n    \"password\": \"P@ssw0rd123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/carrier/auth/logIn",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"auth",
+										"logIn"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Log Out",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{userToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/carrier/auth/logOut",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"auth",
+										"logOut"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "Profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{carrierToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/carrier/profile",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{carrierToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"companyName\": \"example company\",\r\n    \"contactName\": \"john doe\",\r\n    \"contactNumber\": 1234567890,\r\n    \"email\": \"john.doe@example.com\",\r\n    \"scac\": null,\r\n    \"insurancePolicycaat\": null,\r\n    \"oea\": null,\r\n    \"ctpat\": null,\r\n    \"companyFormation\": {\r\n        \"usa\": {\r\n            \"w9_Form\": \"http://example.com/w9_form.pdf\",\r\n            \"utility_Bill\": \"http://example.com/utility_bill.pdf\"\r\n        }\r\n    },\r\n    \"commercialReference\": [\r\n        {\r\n            \"companyName\": \"reference company 1\",\r\n            \"contactName\": \"reference contact 1\",\r\n            \"emailAddress\": \"reference1@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 9876543210,\r\n            \"_id\": \"66bf2f403cfdbfd964a1280b\"\r\n        },\r\n        {\r\n            \"companyName\": \"reference company 2\",\r\n            \"contactName\": \"reference contact 2\",\r\n            \"emailAddress\": \"reference2@example.com\",\r\n            \"countryCode\": 1,\r\n            \"contactNo\": 1234567890,\r\n            \"_id\": \"66bf2f403cfdbfd964a1280c\"\r\n        }\r\n    ],\r\n    \"verifyByAdmin\": false,\r\n    \"isBlocked\": false,\r\n    \"lastLogin\": \"2024-08-16T10:52:01.469Z\",\r\n    \"createdAt\": \"2024-08-16T10:51:44.087Z\",\r\n    \"updatedAt\": \"2024-08-16T10:52:01.480Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/carrier/profile",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Movement",
+					"item": [
+						{
+							"name": "Fetch Movement",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{carrierToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{Vercle}}/v1/carrier/movement?page=1&limit=10&sortBy=Completed",
+									"host": [
+										"{{Vercle}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"movement"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "sortBy",
+											"value": "Requests",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "InProgress",
+											"disabled": true
+										},
+										{
+											"key": "sortBy",
+											"value": "Completed"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Details",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{carrierToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/carrier/movement/66c4672739d354b35f08bd18",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"movement",
+										"66c4672739d354b35f08bd18"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Hendle Request",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{carrierToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"operatorId\":\"66c49148789b754e236b13ac\",\r\n    \"vehicleId\":\"66c7187e839c733bfb28ace2\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/carrier/movement/66c73038591cd0e5d7adb0f3",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"movement",
+										"66c73038591cd0e5d7adb0f3"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "{{carrierToken}}",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Operator",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{carrierToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"operatorName\": \"john doe\",\r\n    \"operatorNumber\": 9876543210,\r\n    \"mxIdBadge\": \"MX12345\",\r\n    \"mxIdBadgeExpirationDate\": \"2025-12-31\",\r\n    \"fastId\": \"FAST67890\",\r\n    \"fastIdExpirationDate\": \"2026-05-30\",\r\n    \"mxDriversLicense\": \"MXDL98765\",\r\n    \"mxDriversLicenseExpirationDate\": \"2027-10-15\",\r\n    \"usDriversLicense\": \"USDL54321\",\r\n    \"usDriversLicenseExpirationDate\": \"2028-03-22\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/carrier/operator/",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"operator",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fetch Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{carrierToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/carrier/operator?keyWord&page=1&limit=10&sortBy=recent",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"operator"
+									],
+									"query": [
+										{
+											"key": "keyWord",
+											"value": null
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "sortBy",
+											"value": "recent"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Details",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{carrierToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/carrier/operator/66c706c7d12bd827da1b27cc",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"operator",
+										"66c706c7d12bd827da1b27cc"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{carrierToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"operatorName\": \"john doe22\",\r\n    \"operatorNumber\": 9876543210,\r\n    \"mxIdBadge\": \"MX12345\",\r\n    \"mxIdBadgeExpirationDate\": \"2025-12-31\",\r\n    \"fastId\": \"FAST67890\",\r\n    \"fastIdExpirationDate\": \"2026-05-30\",\r\n    \"mxDriversLicense\": \"MXDL98765\",\r\n    \"mxDriversLicenseExpirationDate\": \"2027-10-15\",\r\n    \"usDriversLicense\": \"USDL54321\",\r\n    \"usDriversLicenseExpirationDate\": \"2028-03-22\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/carrier/operator/66c706c7d12bd827da1b27cc",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"operator",
+										"66c706c7d12bd827da1b27cc"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{carrierToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/carrier/operator/66c706c7d12bd827da1b27cc",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"operator",
+										"66c706c7d12bd827da1b27cc"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Vehicle",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{carrierToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"vehicleName\": \"truck123\",\r\n    \"mxPlates\": \"MX-ABC-1234\",\r\n    \"mxPlatesExpirationDate\": \"2025-01-01\",\r\n    \"usPlates\": \"US-DEF-5678\",\r\n    \"usPlatesExpirationDate\": \"2025-02-01\",\r\n    \"mxInsurancePlates\": \"MX-INS-9101\",\r\n    \"mxInsurancePlatesExpirationDate\": \"2025-03-01\",\r\n    \"usInsurancePlates\": \"US-INS-1121\",\r\n    \"usInsurancePlatesExpirationDate\": \"2025-04-01\",\r\n    \"typeOfService\": [\r\n        {\r\n            \"title\": \"Express Delivery\",\r\n            \"description\": \"Fast delivery service within 24 hours.\"\r\n        },\r\n        {\r\n            \"title\": \"Standard Delivery\",\r\n            \"description\": \"Regular delivery service within 3-5 business days.\"\r\n        }\r\n    ],\r\n    \"typeOfTransportation\": [\r\n        {\r\n            \"title\": \"Refrigerated\",\r\n            \"description\": \"Transport of perishable goods.\"\r\n        },\r\n        {\r\n            \"title\": \"Dry Goods\",\r\n            \"description\": \"Transport of non-perishable goods.\"\r\n        }\r\n    ],\r\n    \"modeOfTransportation\": {\r\n        \"FTL\": [\r\n            {\r\n                \"title\": \"Full Truckload\",\r\n                \"description\": \"Dedicated truck for one shipment.\"\r\n            }\r\n        ],\r\n        \"LTL\": [\r\n            {\r\n                \"title\": \"Less Than Truckload\",\r\n                \"description\": \"Shared truck for multiple shipments.\"\r\n            }\r\n        ]\r\n    },\r\n    \"status\": \"Active\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/carrier/vehicle/",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"vehicle",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fetch Data",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{carrierToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/carrier/vehicle?keyWord&page=1&limit=10&sortBy=recent",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"vehicle"
+									],
+									"query": [
+										{
+											"key": "keyWord",
+											"value": null
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "sortBy",
+											"value": "recent"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Details",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{carrierToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/carrier/vehicle/66c7113be3e858d37a89bdf5",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"vehicle",
+										"66c7113be3e858d37a89bdf5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{carrierToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"vehicleName\": \"truck123456789\",\r\n    \"mxPlates\": \"MX-ABC-1234\",\r\n    \"mxPlatesExpirationDate\": \"2025-01-01\",\r\n    \"usPlates\": \"US-DEF-5678\",\r\n    \"usPlatesExpirationDate\": \"2025-02-01\",\r\n    \"mxInsurancePlates\": \"MX-INS-9101\",\r\n    \"mxInsurancePlatesExpirationDate\": \"2025-03-01\",\r\n    \"usInsurancePlates\": \"US-INS-1121\",\r\n    \"usInsurancePlatesExpirationDate\": \"2025-04-01\",\r\n    \"typeOfService\": [\r\n        {\r\n            \"title\": \"Express Delivery\",\r\n            \"description\": \"Fast delivery service within 24 hours.\"\r\n        },\r\n        {\r\n            \"title\": \"Standard Delivery\",\r\n            \"description\": \"Regular delivery service within 3-5 business days.\"\r\n        }\r\n    ],\r\n    \"typeOfTransportation\": [\r\n        {\r\n            \"title\": \"Refrigerated\",\r\n            \"description\": \"Transport of perishable goods.\"\r\n        },\r\n        {\r\n            \"title\": \"Dry Goods\",\r\n            \"description\": \"Transport of non-perishable goods.\"\r\n        }\r\n    ],\r\n    \"modeOfTransportation\": {\r\n        \"FTL\": [\r\n            {\r\n                \"title\": \"Full Truckload\",\r\n                \"description\": \"Dedicated truck for one shipment.\"\r\n            }\r\n        ],\r\n        \"LTL\": [\r\n            {\r\n                \"title\": \"Less Than Truckload\",\r\n                \"description\": \"Shared truck for multiple shipments.\"\r\n            }\r\n        ]\r\n    },\r\n    \"status\": \"Active\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/carrier/vehicle/66c7113be3e858d37a89bdf5",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"vehicle",
+										"66c7113be3e858d37a89bdf5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{carrierToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{L}}/v1/carrier/vehicle/66c7113be3e858d37a89bdf5",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"carrier",
+										"vehicle",
+										"66c7113be3e858d37a89bdf5"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Common",
+			"item": [
+				{
+					"name": "Otp",
+					"item": [
+						{
+							"name": "Sent Otp",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"admin@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/common/otp/sent/admin",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"common",
+										"otp",
+										"sent",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify Otp",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"otp\":527617\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/common/otp/verify",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"common",
+										"otp",
+										"verify"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Forgot Password",
+					"item": [
+						{
+							"name": "Reset Password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"admin@gmail.com\",\n    \"password\": \"P@ssw0rd123\",\n    \"otpToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTcyMzc5NzU1MSwiZXhwIjoxNzIzNzk3ODUxfQ.k0lGZ5Z2iQeJBoog3FKVqT1SmwXTeh_3TMUtkA33Bpc\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{L}}/v1/common/resetPassword/admin",
+									"host": [
+										"{{L}}"
+									],
+									"path": [
+										"v1",
+										"common",
+										"resetPassword",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Image Upload",
+					"item": [
+						{
+							"name": "imageUpload",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/princ/OneDrive/Pictures/95894636_p4.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{Vercel}}/v1/common/imageUpload",
+									"host": [
+										"{{Vercel}}"
+									],
+									"path": [
+										"v1",
+										"common",
+										"imageUpload"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

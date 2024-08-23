@@ -24,7 +24,7 @@
   },
   "tags": [
     {
-      "name": "Carrier"
+      "name": "---- Carrier ----"
     },
     {
       "name": "Auth"
@@ -39,16 +39,19 @@
       "name": "Operator"
     },
     {
-      "name": "Common"
+      "name": "Vehicle"
     },
     {
-      "name": "Common > Otp"
+      "name": "---- Common ----"
     },
     {
-      "name": "Common > Forgot Password"
+      "name": "Otp"
     },
     {
-      "name": "Common > Image Upload"
+      "name": "Forgot Password"
+    },
+    {
+      "name": "Image Upload"
     }
   ],
   "paths": {
@@ -271,12 +274,12 @@
             "example": "10"
           },
           {
-            "name": "status",
+            "name": "sortBy",
             "in": "query",
             "schema": {
               "type": "string"
             },
-            "example": "InProgress"
+            "example": "Completed"
           }
         ],
         "responses": {
@@ -315,7 +318,10 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": ""
+                "example": {
+                  "operatorId": "66c49148789b754e236b13ac",
+                  "vehicleId": "66c7187e839c733bfb28ace2"
+                }
               }
             }
           }
@@ -375,9 +381,369 @@
         }
       }
     },
-    "/v1/common/otp/sent/carrier": {
+    "/v1/carrier/operator": {
+      "get": {
+        "tags": ["Operator"],
+        "summary": "Fetch Data",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "keyWord",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "10"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "recent"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/operator/{operatorId}": {
+      "get": {
+        "tags": ["Operator"],
+        "summary": "Get Details",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Operator"],
+        "summary": "Update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "operatorName": "john doe22",
+                  "operatorNumber": 9876543210,
+                  "mxIdBadge": "MX12345",
+                  "mxIdBadgeExpirationDate": "2025-12-31",
+                  "fastId": "FAST67890",
+                  "fastIdExpirationDate": "2026-05-30",
+                  "mxDriversLicense": "MXDL98765",
+                  "mxDriversLicenseExpirationDate": "2027-10-15",
+                  "usDriversLicense": "USDL54321",
+                  "usDriversLicenseExpirationDate": "2028-03-22"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Operator"],
+        "summary": "Delete",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/vehicle/": {
       "post": {
-        "tags": ["Common > Otp"],
+        "tags": ["Vehicle"],
+        "summary": "Create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "vehicleName": "truck123",
+                  "mxPlates": "MX-ABC-1234",
+                  "mxPlatesExpirationDate": "2025-01-01",
+                  "usPlates": "US-DEF-5678",
+                  "usPlatesExpirationDate": "2025-02-01",
+                  "mxInsurancePlates": "MX-INS-9101",
+                  "mxInsurancePlatesExpirationDate": "2025-03-01",
+                  "usInsurancePlates": "US-INS-1121",
+                  "usInsurancePlatesExpirationDate": "2025-04-01",
+                  "typeOfService": [
+                    {
+                      "title": "Express Delivery",
+                      "description": "Fast delivery service within 24 hours."
+                    },
+                    {
+                      "title": "Standard Delivery",
+                      "description": "Regular delivery service within 3-5 business days."
+                    }
+                  ],
+                  "typeOfTransportation": [
+                    {
+                      "title": "Refrigerated",
+                      "description": "Transport of perishable goods."
+                    },
+                    {
+                      "title": "Dry Goods",
+                      "description": "Transport of non-perishable goods."
+                    }
+                  ],
+                  "modeOfTransportation": {
+                    "FTL": [
+                      {
+                        "title": "Full Truckload",
+                        "description": "Dedicated truck for one shipment."
+                      }
+                    ],
+                    "LTL": [
+                      {
+                        "title": "Less Than Truckload",
+                        "description": "Shared truck for multiple shipments."
+                      }
+                    ]
+                  },
+                  "status": "Active"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/vehicle": {
+      "get": {
+        "tags": ["Vehicle"],
+        "summary": "Fetch Data",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "keyWord",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "10"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "recent"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/vehicle/{vehicleId}": {
+      "get": {
+        "tags": ["Vehicle"],
+        "summary": "Get Details",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Vehicle"],
+        "summary": "Update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "vehicleName": "truck123456789",
+                  "mxPlates": "MX-ABC-1234",
+                  "mxPlatesExpirationDate": "2025-01-01",
+                  "usPlates": "US-DEF-5678",
+                  "usPlatesExpirationDate": "2025-02-01",
+                  "mxInsurancePlates": "MX-INS-9101",
+                  "mxInsurancePlatesExpirationDate": "2025-03-01",
+                  "usInsurancePlates": "US-INS-1121",
+                  "usInsurancePlatesExpirationDate": "2025-04-01",
+                  "typeOfService": [
+                    {
+                      "title": "Express Delivery",
+                      "description": "Fast delivery service within 24 hours."
+                    },
+                    {
+                      "title": "Standard Delivery",
+                      "description": "Regular delivery service within 3-5 business days."
+                    }
+                  ],
+                  "typeOfTransportation": [
+                    {
+                      "title": "Refrigerated",
+                      "description": "Transport of perishable goods."
+                    },
+                    {
+                      "title": "Dry Goods",
+                      "description": "Transport of non-perishable goods."
+                    }
+                  ],
+                  "modeOfTransportation": {
+                    "FTL": [
+                      {
+                        "title": "Full Truckload",
+                        "description": "Dedicated truck for one shipment."
+                      }
+                    ],
+                    "LTL": [
+                      {
+                        "title": "Less Than Truckload",
+                        "description": "Shared truck for multiple shipments."
+                      }
+                    ]
+                  },
+                  "status": "Active"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Vehicle"],
+        "summary": "Delete",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/common/otp/sent/admin": {
+      "post": {
+        "tags": ["Otp"],
         "summary": "Sent Otp",
         "requestBody": {
           "content": {
@@ -385,7 +751,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "email": "carrier@gmail.com"
+                  "email": "admin@gmail.com"
                 }
               }
             }
@@ -403,7 +769,7 @@
     },
     "/v1/common/otp/verify": {
       "post": {
-        "tags": ["Common > Otp"],
+        "tags": ["Otp"],
         "summary": "Verify Otp",
         "requestBody": {
           "content": {
@@ -411,7 +777,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "email": "carrier@gmail.com",
+                  "email": "admin@gmail.com",
                   "otp": 527617
                 }
               }
@@ -428,9 +794,9 @@
         }
       }
     },
-    "/v1/common/resetPassword/carrier": {
+    "/v1/common/resetPassword/admin": {
       "post": {
-        "tags": ["Common > Forgot Password"],
+        "tags": ["Forgot Password"],
         "summary": "Reset Password",
         "requestBody": {
           "content": {
@@ -438,7 +804,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "email": "carrier@gmail.com",
+                  "email": "admin@gmail.com",
                   "password": "P@ssw0rd123",
                   "otpToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTcyMzc5NzU1MSwiZXhwIjoxNzIzNzk3ODUxfQ.k0lGZ5Z2iQeJBoog3FKVqT1SmwXTeh_3TMUtkA33Bpc"
                 }
@@ -468,7 +834,7 @@
     },
     "/v1/common/imageUpload": {
       "post": {
-        "tags": ["Common > Image Upload"],
+        "tags": ["Image Upload"],
         "summary": "imageUpload",
         "requestBody": {
           "content": {

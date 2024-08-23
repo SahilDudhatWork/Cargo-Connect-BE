@@ -24,7 +24,7 @@
   },
   "tags": [
     {
-      "name": "Admin"
+      "name": "---- Admin ----"
     },
     {
       "name": "Auth"
@@ -39,7 +39,10 @@
       "name": "Manage Carrier"
     },
     {
-      "name": "Common"
+      "name": "Service"
+    },
+    {
+      "name": "---- Common ----"
     },
     {
       "name": "Otp"
@@ -61,15 +64,9 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "user@example.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "password123"
-                  }
+                "example": {
+                  "email": "admin@gmail.com",
+                  "password": "P@ssw0rd123"
                 }
               }
             }
@@ -77,7 +74,7 @@
         },
         "responses": {
           "200": {
-            "description": "Login successful",
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }
@@ -99,14 +96,14 @@
             "name": "Content-Type",
             "in": "header",
             "schema": {
-              "type": "string",
-              "example": "application/json"
-            }
+              "type": "string"
+            },
+            "example": "application/json"
           }
         ],
         "responses": {
           "200": {
-            "description": "Profile data retrieved",
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }
@@ -117,79 +114,40 @@
     "/v1/admin/common/user": {
       "post": {
         "tags": ["Manage User"],
-        "summary": "Create User",
+        "summary": "Create",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "companyName": {
-                    "type": "string",
-                    "example": "Example Company"
-                  },
-                  "contactName": {
-                    "type": "string",
-                    "example": "John Doe"
-                  },
-                  "contactNumber": {
-                    "type": "integer",
-                    "example": 1234567890
-                  },
-                  "email": {
-                    "type": "string",
-                    "example": "john.doe@example.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "password123"
-                  },
+                "example": {
+                  "companyName": "example company 3",
+                  "contactName": "john doe",
+                  "contactNumber": 1234567890,
+                  "email": "john.doe3@example.com",
+                  "password": "P@ssw0rd123",
                   "companyFormation": {
-                    "type": "object",
-                    "properties": {
-                      "country": {
-                        "type": "object",
-                        "properties": {
-                          "w9_Form": {
-                            "type": "string",
-                            "example": "http://example.com/w9_form.pdf"
-                          },
-                          "utility_Bill": {
-                            "type": "string",
-                            "example": "http://example.com/utility_bill.pdf"
-                          }
-                        }
-                      }
+                    "usa": {
+                      "w9_Form": "http://example.com/w9_form.pdf",
+                      "utility_Bill": "http://example.com/utility_bill.pdf"
                     }
                   },
-                  "commercialReference": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "companyName": {
-                          "type": "string",
-                          "example": "Reference Company"
-                        },
-                        "contactName": {
-                          "type": "string",
-                          "example": "Reference Contact"
-                        },
-                        "emailAddress": {
-                          "type": "string",
-                          "example": "reference@example.com"
-                        },
-                        "countryCode": {
-                          "type": "integer",
-                          "example": 1
-                        },
-                        "contactNo": {
-                          "type": "integer",
-                          "example": 9876543210
-                        }
-                      }
+                  "commercialReference": [
+                    {
+                      "companyName": "reference company 1",
+                      "contactName": "reference contact 1",
+                      "emailAddress": "reference1@example.com",
+                      "countryCode": 1,
+                      "contactNo": 9876543210
+                    },
+                    {
+                      "companyName": "reference company 2",
+                      "contactName": "reference contact 2",
+                      "emailAddress": "reference2@example.com",
+                      "countryCode": 1,
+                      "contactNo": 1234567890
                     }
-                  }
+                  ]
                 }
               }
             }
@@ -202,7 +160,7 @@
         ],
         "responses": {
           "200": {
-            "description": "User created successfully",
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }
@@ -211,7 +169,7 @@
       },
       "get": {
         "tags": ["Manage User"],
-        "summary": "Get All Users",
+        "summary": "Get All",
         "security": [
           {
             "bearerAuth": []
@@ -222,38 +180,37 @@
             "name": "keyWord",
             "in": "query",
             "schema": {
-              "type": "string",
-              "example": "keyword"
+              "type": "string"
             }
           },
           {
             "name": "page",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "example": 1
-            }
+              "type": "integer"
+            },
+            "example": "1"
           },
           {
             "name": "limit",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "example": 10
-            }
+              "type": "integer"
+            },
+            "example": "10"
           },
           {
             "name": "sortBy",
             "in": "query",
             "schema": {
-              "type": "string",
-              "example": "recent"
-            }
+              "type": "string"
+            },
+            "example": "recent"
           }
         ],
         "responses": {
           "200": {
-            "description": "Users retrieved successfully",
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }
@@ -264,26 +221,15 @@
     "/v1/admin/common/user/{userId}": {
       "get": {
         "tags": ["Manage User"],
-        "summary": "Get User Details",
+        "summary": "Get Details",
         "security": [
           {
             "bearerAuth": []
           }
         ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "66bdc9e047167638dd7edae4"
-            }
-          }
-        ],
         "responses": {
           "200": {
-            "description": "User details retrieved successfully",
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }
@@ -292,29 +238,43 @@
       },
       "put": {
         "tags": ["Manage User"],
-        "summary": "Update User",
+        "summary": "Update",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "companyName": {
-                    "type": "string",
-                    "example": "Updated Company"
+                "example": {
+                  "companyName": "example company",
+                  "contactName": "john doe",
+                  "contactNumber": 1234567890,
+                  "email": "john.doe@example.com",
+                  "companyFormation": {
+                    "usa": {
+                      "w9_Form": "http://example.com/w9_form.pdf",
+                      "utility_Bill": "http://example.com/utility_bill.pdf"
+                    }
                   },
-                  "contactName": {
-                    "type": "string",
-                    "example": "Jane Doe"
-                  },
-                  "contactNumber": {
-                    "type": "integer",
-                    "example": 1234567890
-                  },
-                  "email": {
-                    "type": "string",
-                    "example": "jane.doe@example.com"
-                  }
+                  "commercialReference": [
+                    {
+                      "companyName": "reference company 1",
+                      "contactName": "reference contact 1",
+                      "emailAddress": "reference1@example.com",
+                      "countryCode": 1,
+                      "contactNo": 9876543210,
+                      "_id": "66bdc9e047167638dd7edae5"
+                    },
+                    {
+                      "companyName": "reference company 2",
+                      "contactName": "reference contact 2",
+                      "emailAddress": "reference2@example.com",
+                      "countryCode": 1,
+                      "contactNo": 1234567890,
+                      "_id": "66bdc9e047167638dd7edae6"
+                    }
+                  ],
+                  "verifyByAdmin": false,
+                  "isBlocked": false
                 }
               }
             }
@@ -327,7 +287,7 @@
         ],
         "responses": {
           "200": {
-            "description": "User updated successfully",
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }
@@ -336,26 +296,15 @@
       },
       "delete": {
         "tags": ["Manage User"],
-        "summary": "Delete User",
+        "summary": "Delete",
         "security": [
           {
             "bearerAuth": []
           }
         ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "66bdc9e047167638dd7edae4"
-            }
-          }
-        ],
         "responses": {
           "200": {
-            "description": "User deleted successfully",
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }
@@ -366,33 +315,40 @@
     "/v1/admin/common/carrier": {
       "post": {
         "tags": ["Manage Carrier"],
-        "summary": "Create Carrier",
+        "summary": "Create",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "companyName": {
-                    "type": "string",
-                    "example": "Carrier Company"
+                "example": {
+                  "companyName": "example company",
+                  "contactName": "john doe",
+                  "contactNumber": 1234567890,
+                  "email": "john.doea@example.com",
+                  "password": "P@ssw0rd123",
+                  "companyFormation": {
+                    "usa": {
+                      "w9_Form": "http://example.com/w9_form.pdf",
+                      "utility_Bill": "http://example.com/utility_bill.pdf"
+                    }
                   },
-                  "contactName": {
-                    "type": "string",
-                    "example": "Carrier Contact"
-                  },
-                  "contactNumber": {
-                    "type": "integer",
-                    "example": 9876543210
-                  },
-                  "email": {
-                    "type": "string",
-                    "example": "carrier@example.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "carrier123"
-                  }
+                  "commercialReference": [
+                    {
+                      "companyName": "reference company 1",
+                      "contactName": "reference contact 1",
+                      "emailAddress": "reference1@example.com",
+                      "countryCode": 1,
+                      "contactNo": 9876543210
+                    },
+                    {
+                      "companyName": "reference company 2",
+                      "contactName": "reference contact 2",
+                      "emailAddress": "reference2@example.com",
+                      "countryCode": 1,
+                      "contactNo": 1234567890
+                    }
+                  ]
                 }
               }
             }
@@ -405,7 +361,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Carrier created successfully",
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }
@@ -414,7 +370,7 @@
       },
       "get": {
         "tags": ["Manage Carrier"],
-        "summary": "Get All Carriers",
+        "summary": "Fetch Carrier",
         "security": [
           {
             "bearerAuth": []
@@ -422,41 +378,33 @@
         ],
         "parameters": [
           {
-            "name": "keyWord",
+            "name": "sortBy",
             "in": "query",
             "schema": {
-              "type": "string",
-              "example": "carrier"
-            }
+              "type": "string"
+            },
+            "example": "blocked"
           },
           {
             "name": "page",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "example": 1
-            }
+              "type": "integer"
+            },
+            "example": "1"
           },
           {
             "name": "limit",
             "in": "query",
             "schema": {
-              "type": "integer",
-              "example": 10
-            }
-          },
-          {
-            "name": "sortBy",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "example": "recent"
-            }
+              "type": "integer"
+            },
+            "example": "10"
           }
         ],
         "responses": {
           "200": {
-            "description": "Carriers retrieved successfully",
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }
@@ -467,26 +415,15 @@
     "/v1/admin/common/carrier/{carrierId}": {
       "get": {
         "tags": ["Manage Carrier"],
-        "summary": "Get Carrier Details",
+        "summary": "Get Details",
         "security": [
           {
             "bearerAuth": []
           }
         ],
-        "parameters": [
-          {
-            "name": "carrierId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "78fg56h789fgsd8gfh8d"
-            }
-          }
-        ],
         "responses": {
           "200": {
-            "description": "Carrier details retrieved successfully",
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }
@@ -495,29 +432,43 @@
       },
       "put": {
         "tags": ["Manage Carrier"],
-        "summary": "Update Carrier",
+        "summary": "Update",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "companyName": {
-                    "type": "string",
-                    "example": "Updated Carrier Company"
+                "example": {
+                  "companyName": "example company",
+                  "contactName": "john doe",
+                  "contactNumber": 1234567890,
+                  "email": "john.doe@example.com",
+                  "companyFormation": {
+                    "usa": {
+                      "w9_Form": "http://example.com/w9_form.pdf",
+                      "utility_Bill": "http://example.com/utility_bill.pdf"
+                    }
                   },
-                  "contactName": {
-                    "type": "string",
-                    "example": "Updated Carrier Contact"
-                  },
-                  "contactNumber": {
-                    "type": "integer",
-                    "example": 9876543210
-                  },
-                  "email": {
-                    "type": "string",
-                    "example": "updated@example.com"
-                  }
+                  "commercialReference": [
+                    {
+                      "companyName": "reference company 1",
+                      "contactName": "reference contact 1",
+                      "emailAddress": "reference1@example.com",
+                      "countryCode": 1,
+                      "contactNo": 9876543210,
+                      "_id": "66bdc9e047167638dd7edae5"
+                    },
+                    {
+                      "companyName": "reference company 2",
+                      "contactName": "reference contact 2",
+                      "emailAddress": "reference2@example.com",
+                      "countryCode": 1,
+                      "contactNo": 1234567890,
+                      "_id": "66bdc9e047167638dd7edae6"
+                    }
+                  ],
+                  "verifyByAdmin": false,
+                  "isBlocked": false
                 }
               }
             }
@@ -530,7 +481,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Carrier updated successfully",
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }
@@ -539,7 +490,26 @@
       },
       "delete": {
         "tags": ["Manage Carrier"],
-        "summary": "Delete Carrier",
+        "summary": "Delete",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/services/": {
+      "get": {
+        "tags": ["Service"],
+        "summary": "Fetch Movement",
         "security": [
           {
             "bearerAuth": []
@@ -547,18 +517,75 @@
         ],
         "parameters": [
           {
-            "name": "carrierId",
-            "in": "path",
-            "required": true,
+            "name": "page",
+            "in": "query",
             "schema": {
-              "type": "string",
-              "example": "78fg56h789fgsd8gfh8d"
-            }
+              "type": "integer"
+            },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "10"
           }
         ],
         "responses": {
           "200": {
-            "description": "Carrier deleted successfully",
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/services/{servicesId}": {
+      "get": {
+        "tags": ["Service"],
+        "summary": "Get Details",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Service"],
+        "summary": "Hendle Request",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "carrierId": "66c5aa038c1687ae1adc0c22",
+                  "operatorId": "66c49148789b754e236b13ac",
+                  "vehicleId": "66c7187e839c733bfb28ace2"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }

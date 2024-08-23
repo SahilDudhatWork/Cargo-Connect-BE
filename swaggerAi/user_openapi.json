@@ -24,7 +24,7 @@
   },
   "tags": [
     {
-      "name": "User"
+      "name": "---- User ----"
     },
     {
       "name": "Auth"
@@ -39,7 +39,7 @@
       "name": "Order"
     },
     {
-      "name": "Common"
+      "name": "---- Common ----"
     },
     {
       "name": "Otp"
