@@ -195,7 +195,7 @@
                   "contactNumber": 1234567890,
                   "email": "john.doe@example.com",
                   "scac": null,
-                  "insurancePolicycaat": null,
+                  "insurancePolicy": null,
                   "oea": null,
                   "ctpat": null,
                   "companyFormation": {

@@ -46,7 +46,7 @@ const collectionSchema = new Schema(
       type: String,
       default: null,
     },
-    insurancePolicycaat: {
+    insurancePolicy: {
       type: String,
       default: null,
     },
