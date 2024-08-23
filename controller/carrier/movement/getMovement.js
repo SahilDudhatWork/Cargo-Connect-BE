@@ -12,18 +12,35 @@ const {
 const fetchMovement = async (req, res) => {
   let { logger, carrierId } = req;
   try {
-    let { page, limit, status } = req.query;
+    let { page, limit, sortBy } = req.query;
+
+    let qry = {};
+
+    if (sortBy == "Requests") {
+      qry = {
+        isAssign: false,
+        status: "Pending",
+        carrierId: null,
+      };
+    } else if (sortBy == "InProgress") {
+      qry = {
+        isAssign: true,
+        status: "InProgress",
+        carrierId: new ObjectId(carrierId),
+      };
+    } else if (sortBy == "Completed") {
+      qry = {
+        isAssign: true,
+        status: "Completed",
+        carrierId: new ObjectId(carrierId),
+      };
+    }
 
     offset = page || 1;
     limit = limit || 10;
     const skip = limit * (offset - 1);
     const getData = await Movement.aggregate([
-      {
-        $match: {
-          isAssign: false,
-          status: status,
-        },
-      },
+      { $match: qry },
       {
         $facet: {
           paginatedResult: [
