@@ -15,8 +15,5 @@
       "src": "/swaggerAi/(.*)",
       "dest": "/swaggerAi/$1"
     }
-  ],
-  "static": {
-    "directory": "swaggerAi"
-  }
+  ]
 }
