@@ -322,31 +322,37 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "companyName": "example company",
-                  "contactName": "john doe",
+                  "profilePicture": "https://example.com/path/to/profile-picture.jpg",
+                  "companyName": "Example Logistics Inc.",
+                  "contactName": "John Doe",
                   "contactNumber": 1234567890,
-                  "email": "john.doea@example.com",
-                  "password": "P@ssw0rd123",
+                  "email": "johndoe@example.com",
+                  "password": "securePassword123",
+                  "scac": "SCAC1234",
+                  "caat": "CAAT5678",
+                  "insurancePolicy": "INS123456",
+                  "oea": "OEA987654",
+                  "ctpat": "CTPAT8765",
                   "companyFormation": {
                     "usa": {
-                      "w9_Form": "http://example.com/w9_form.pdf",
-                      "utility_Bill": "http://example.com/utility_bill.pdf"
+                      "w9_Form": "https://example.com/path/to/w9-form.pdf",
+                      "utility_Bill": "https://example.com/path/to/utility-bill.pdf"
                     }
                   },
                   "commercialReference": [
                     {
-                      "companyName": "reference company 1",
-                      "contactName": "reference contact 1",
-                      "emailAddress": "reference1@example.com",
+                      "companyName": "Commercial Partner 1",
+                      "contactName": "Jane Smith",
+                      "emailAddress": "jane.smith@partner1.com",
                       "countryCode": 1,
                       "contactNo": 9876543210
                     },
                     {
-                      "companyName": "reference company 2",
-                      "contactName": "reference contact 2",
-                      "emailAddress": "reference2@example.com",
-                      "countryCode": 1,
-                      "contactNo": 1234567890
+                      "companyName": "Commercial Partner 2",
+                      "contactName": "James Brown",
+                      "emailAddress": "james.brown@partner2.com",
+                      "countryCode": 44,
+                      "contactNo": 447123456789
                     }
                   ]
                 }
