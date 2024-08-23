@@ -22,6 +22,36 @@ const collectionSchema = new Schema(
     vehicleId: {
       type: ObjectId,
     },
+    typeOfService: {
+      title: {
+        type: String,
+        default: null,
+      },
+      description: {
+        type: String,
+        default: null,
+      },
+    },
+    typeOfTransportation: {
+      title: {
+        type: String,
+        default: null,
+      },
+      description: {
+        type: String,
+        default: null,
+      },
+    },
+    modeOfTransportation: {
+      title: {
+        type: String,
+        default: null,
+      },
+      description: {
+        type: String,
+        default: null,
+      },
+    },
     port_BridgeOfCrossing: {
       type: String,
       default: null,
@@ -64,110 +94,8 @@ const collectionSchema = new Schema(
         default: null,
       },
     },
-    addressDetails: {
-      buildinName: {
-        type: String,
-        default: null,
-      },
-      postalCode: {
-        type: Number,
-        default: null,
-      },
-      laneNumber: {
-        type: Number,
-        default: null,
-      },
-      additionalDetails: {
-        type: String,
-        default: null,
-      },
-    },
-    contactDetails: {
-      contactName: {
-        type: String,
-        default: null,
-      },
-      contactEmail: {
-        type: String,
-        default: null,
-      },
-      contactNumber: {
-        type: Number,
-        default: null,
-      },
-    },
-    pickUpDetails: [
-      {
-        addressDetails: {
-          buildinName: {
-            type: String,
-            default: null,
-          },
-          postalCode: {
-            type: Number,
-            default: null,
-          },
-          laneNumber: {
-            type: Number,
-            default: null,
-          },
-          additionalDetails: {
-            type: String,
-            default: null,
-          },
-        },
-        contactDetails: {
-          contactName: {
-            type: String,
-            default: null,
-          },
-          contactEmail: {
-            type: String,
-            default: null,
-          },
-          contactNumber: {
-            type: Number,
-            default: null,
-          },
-        },
-      },
-    ],
-    dropDetails: [
-      {
-        addressDetails: {
-          buildinName: {
-            type: String,
-            default: null,
-          },
-          postalCode: {
-            type: Number,
-            default: null,
-          },
-          laneNumber: {
-            type: Number,
-            default: null,
-          },
-          additionalDetails: {
-            type: String,
-            default: null,
-          },
-        },
-        contactDetails: {
-          contactName: {
-            type: String,
-            default: null,
-          },
-          contactEmail: {
-            type: String,
-            default: null,
-          },
-          contactNumber: {
-            type: Number,
-            default: null,
-          },
-        },
-      },
-    ],
+    pickUpAddressIds: [{ type: ObjectId }],
+    dropAddressIds: [{ type: ObjectId }],
     status: {
       type: String,
       default: "Pending",

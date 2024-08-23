@@ -71,11 +71,11 @@
                   "contactNumber": 1234567890,
                   "email": "johndoe@example.com",
                   "password": "securePassword123",
-                  "scac": "SCAC1234",
-                  "caat": "CAAT5678",
-                  "insurancePolicy": "INS123456",
-                  "oea": "OEA987654",
-                  "ctpat": "CTPAT8765",
+                  "scac": "https://example.com/path/to/profile-picture.jpg",
+                  "caat": "https://example.com/path/to/profile-picture.jpg",
+                  "insurancePolicy": "https://example.com/path/to/profile-picture.jpg",
+                  "oea": "https://example.com/path/to/profile-picture.jpg",
+                  "ctpat": "https://example.com/path/to/profile-picture.jpg",
                   "companyFormation": {
                     "usa": {
                       "w9_Form": "https://example.com/path/to/w9-form.pdf",

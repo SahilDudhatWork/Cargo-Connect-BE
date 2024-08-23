@@ -4,6 +4,7 @@ const authRoute = require("./auth");
 const profileRoute = require("./profile");
 const serviceRoute = require("./service");
 const orderRoute = require("./order");
+const addressRoute = require("./address");
 const { userAuth } = require("../../middleware/authToken/userAuth");
 const { userPermission } = require("../../middleware/permission/userPermission");
 
@@ -18,5 +19,6 @@ router.use("/profile", profileRoute);
 router.use(userPermission);
 router.use("/service", serviceRoute);
 router.use("/order", orderRoute);
+router.use("/address", addressRoute);
 
 module.exports = router;

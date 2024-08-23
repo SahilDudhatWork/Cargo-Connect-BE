@@ -274,6 +274,18 @@
               "schema": {
                 "type": "object",
                 "example": {
+                  "typeOfService": {
+                    "title": "String",
+                    "description": "String"
+                  },
+                  "typeOfTransportation": {
+                    "title": "String",
+                    "description": "String"
+                  },
+                  "modeOfTransportation": {
+                    "title": "String",
+                    "description": "String"
+                  },
                   "port_BridgeOfCrossing": "Port of Los Angeles",
                   "userReference": "USR123456",
                   "specialRequirements": ["Handle with care", "Urgent"],
@@ -285,47 +297,11 @@
                     "date": "2024-08-22",
                     "time": "14:00"
                   },
-                  "addressDetails": {
-                    "buildinName": "Warehouse 12",
-                    "postalCode": 90001,
-                    "laneNumber": 5,
-                    "additionalDetails": "Near the main gate"
-                  },
-                  "contactDetails": {
-                    "contactName": "John Doe",
-                    "contactEmail": "john.doe@example.com",
-                    "contactNumber": 1234567890
-                  },
-                  "pickUpDetails": [
-                    {
-                      "addressDetails": {
-                        "buildinName": "Warehouse 5",
-                        "postalCode": 90002,
-                        "laneNumber": 3,
-                        "additionalDetails": "Back entrance"
-                      },
-                      "contactDetails": {
-                        "contactName": "Jane Smith",
-                        "contactEmail": "jane.smith@example.com",
-                        "contactNumber": 9876543210
-                      }
-                    }
+                  "pickUpAddressIds": [
+                    "64e6b0f4b8c79d5e4e1e4a27",
+                    "64e6b0f4b8c79d5e4e1e4a28"
                   ],
-                  "dropDetails": [
-                    {
-                      "addressDetails": {
-                        "buildinName": "Office HQ",
-                        "postalCode": 90003,
-                        "laneNumber": 7,
-                        "additionalDetails": "Front desk"
-                      },
-                      "contactDetails": {
-                        "contactName": "Alice Johnson",
-                        "contactEmail": "alice.johnson@example.com",
-                        "contactNumber": 1122334455
-                      }
-                    }
-                  ]
+                  "dropAddressIds": ["64e6b0f4b8c79d5e4e1e4a29"]
                 }
               }
             }
