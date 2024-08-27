@@ -8,9 +8,6 @@ const {
 } = require("../../../helper/constant");
 const { encrypt, decrypt } = require("../../../helper/encrypt-decrypt");
 const { handleException } = require("../../../helper/exception");
-const {
-  emailAndPasswordVerification,
-} = require("../../../helper/joi-validation");
 require("dotenv").config();
 
 /**
@@ -39,31 +36,6 @@ const logIn = async (req, res) => {
   const { logger } = req;
   try {
     const { email, password } = req.body;
-
-    if (!email || !password) {
-      const message = !email
-        ? `Email ${ERROR_MSGS.KEY_REQUIRED}`
-        : `Password ${ERROR_MSGS.KEY_REQUIRED}`;
-      let obj = {
-        res,
-        status: STATUS_CODE.BAD_REQUEST,
-        msg: message,
-      };
-      return Response.error(obj);
-    }
-
-    const { error } = emailAndPasswordVerification({
-      email,
-      password,
-    });
-    if (error) {
-      const obj = {
-        res,
-        status: STATUS_CODE.BAD_REQUEST,
-        msg: error.details[0].message,
-      };
-      return Response.error(obj);
-    }
 
     let userInfo = await User.aggregate([{ $match: { email: email } }]);
     userInfo = userInfo[0];

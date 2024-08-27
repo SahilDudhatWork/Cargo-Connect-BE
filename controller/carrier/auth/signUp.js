@@ -75,35 +75,17 @@ const { handleException } = require("../../../helper/exception");
 const { encrypt } = require("../../../helper/encrypt-decrypt");
 const Response = require("../../../helper/response");
 const jwt = require("jsonwebtoken");
-const {
-  emailAndPasswordVerification,
-} = require("../../../helper/joi-validation");
+const { generateAccountId } = require("../../../utils/generateUniqueId");
+const upload = require("../../../middleware/multer");
 const {
   STATUS_CODE,
   ERROR_MSGS,
   INFO_MSGS,
 } = require("../../../helper/constant");
-const { generateAccountId } = require("../../../utils/generateUniqueId");
-const multer = require("multer");
-const path = require("path");
 
-// Configure Multer for file uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Save to 'uploads' folder
-  },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-
-const upload = multer({ storage: storage });
-
-// Combine the signUp logic with file handling
 const signUp = async (req, res) => {
   const { logger } = req;
   try {
-    // Extract JSON fields
     const {
       companyName,
       contactName,
@@ -113,17 +95,6 @@ const signUp = async (req, res) => {
       commercialReference,
     } = req.body;
 
-    // Validate email and password
-    const { error } = emailAndPasswordVerification({ email, password });
-    if (error) {
-      return Response.error({
-        res,
-        status: STATUS_CODE.BAD_REQUEST,
-        msg: error.details[0].message,
-      });
-    }
-
-    // Check if email already exists
     const carrierEmailExist = await Carrier.findOne({ email });
     if (carrierEmailExist) {
       return Response.error({
@@ -133,7 +104,6 @@ const signUp = async (req, res) => {
       });
     }
 
-    // Encrypt password
     const passwordHash = encrypt(password, process.env.PASSWORD_ENCRYPTION_KEY);
 
     // Store file paths in the body

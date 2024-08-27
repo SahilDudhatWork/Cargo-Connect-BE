@@ -6,9 +6,6 @@ const {
   ERROR_MSGS,
   INFO_MSGS,
 } = require("../../../../helper/constant");
-const {
-  emailAndPasswordVerification,
-} = require("../../../../helper/joi-validation");
 const { hendleModel } = require("../../../../utils/hendleModel");
 
 const create = async (req, res) => {
@@ -16,18 +13,6 @@ const create = async (req, res) => {
   try {
     const { email, password } = req.body;
     const { type } = req.params;
-    const { error } = emailAndPasswordVerification({
-      email,
-      password,
-    });
-    if (error) {
-      const obj = {
-        res,
-        status: STATUS_CODE.BAD_REQUEST,
-        msg: error.details[0].message,
-      };
-      return Response.error(obj);
-    }
 
     const Model = await hendleModel(res, type);
     const checkEmailExist = await Model.findOne({
