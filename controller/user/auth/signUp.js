@@ -179,7 +179,7 @@ const signUp = async (req, res) => {
     };
 
     // Create a new user
-    await User.create({
+    const saveData = await User.create({
       accountId: generateAccountId(),
       companyName: companyName || undefined,
       contactName: contactName || undefined,
@@ -191,15 +191,58 @@ const signUp = async (req, res) => {
       companyFormation: req.body.companyFormation,
     });
 
+    const encryptUser = encrypt(saveData._id, process.env.USER_ENCRYPTION_KEY);
+    const accessToken = await commonAuth(encryptUser);
+
     return Response.success({
       res,
       status: STATUS_CODE.CREATED,
       msg: INFO_MSGS.SUCCESSFUL_REGISTER,
+      data: { accessToken },
     });
   } catch (error) {
     console.log("error--->", error);
     return handleException(logger, res, error);
   }
+};
+
+/**
+ * Common Auth function for 2FA checking and JWT token generation
+ */
+const commonAuth = (encryptUser) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const payload = {
+        expiresIn: process.env.USER_ACCESS_TIME,
+        encryptUser,
+        type: "Access",
+        role: "User",
+      };
+      const accessToken = await generateJWTToken(payload);
+
+      resolve(accessToken);
+    } catch (error) {
+      console.log("common Auth Log :", error);
+      reject(error);
+    }
+  });
+/**
+ * Generate JWT Token
+ */
+const generateJWTToken = (payload) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const { encryptUser, expiresIn, type, role } = payload;
+      const token = jwt.sign(
+        { userId: encryptUser, type, role },
+        process.env.USER_ACCESS_TOKEN,
+        { expiresIn }
+      );
+      resolve(token);
+    } catch (error) {
+      reject(error.message);
+    }
+  });
 };
 
 // Export with Multer middleware for file handling
