@@ -8,7 +8,7 @@ const {
 } = require("../../middleware/validateEmailAndPass");
 const router = Router();
 
-router.post("/signUp", validateEmailAndPassword, signUp);
+router.post("/signUp", signUp);
 router.post("/logIn", validateEmailAndPassword, logIn);
 
 router.use(userAuth);
