@@ -78,6 +78,9 @@ const jwt = require("jsonwebtoken");
 const { generateAccountId } = require("../../../utils/generateUniqueId");
 const upload = require("../../../middleware/multer");
 const {
+  validateEmailAndPassword,
+} = require("../../../middleware/validateEmailAndPass");
+const {
   STATUS_CODE,
   ERROR_MSGS,
   INFO_MSGS,
@@ -250,6 +253,7 @@ module.exports = {
       { name: "companyFormation.maxico.proof_of_Favorable", maxCount: 1 },
       { name: "companyFormation.maxico.proof_Of_Address", maxCount: 1 },
     ]),
+    validateEmailAndPassword,
     signUp,
   ],
 };

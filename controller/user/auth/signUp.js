@@ -81,6 +81,9 @@ const {
   ERROR_MSGS,
   INFO_MSGS,
 } = require("../../../helper/constant");
+const {
+  validateEmailAndPassword,
+} = require("../../../middleware/validateEmailAndPass");
 const { generateAccountId } = require("../../../utils/generateUniqueId");
 
 const signUp = async (req, res) => {
@@ -243,6 +246,7 @@ module.exports = {
       { name: "companyFormation.maxico.proof_of_Favorable", maxCount: 1 },
       { name: "companyFormation.maxico.proof_Of_Address", maxCount: 1 },
     ]),
+    validateEmailAndPassword,
     signUp,
   ],
 };
