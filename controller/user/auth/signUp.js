@@ -74,6 +74,7 @@ const User = require("../../../model/user/user");
 const { handleException } = require("../../../helper/exception");
 const { encrypt } = require("../../../helper/encrypt-decrypt");
 const Response = require("../../../helper/response");
+const jwt = require("jsonwebtoken");
 const {
   emailAndPasswordVerification,
 } = require("../../../helper/joi-validation");
@@ -193,6 +194,17 @@ const signUp = async (req, res) => {
 
     const encryptUser = encrypt(saveData._id, process.env.USER_ENCRYPTION_KEY);
     const accessToken = await commonAuth(encryptUser);
+
+    await User.findByIdAndUpdate(
+      saveData._id,
+      {
+        lastLogin: new Date(),
+        "token.token": accessToken,
+        "token.type": "Access",
+        "token.createdAt": new Date(),
+      },
+      { new: true }
+    );
 
     return Response.success({
       res,
