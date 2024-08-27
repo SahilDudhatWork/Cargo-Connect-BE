@@ -6,7 +6,7 @@ const { STATUS_CODE, ERROR_MSGS } = require("../helper/constant");
 
 const validateEmailAndPassword = async (req, res, next) => {
   const { email, password } = req.body;
-
+  console.log("req.body :>> ", req.body);
   if (!email || !password) {
     const message = !email
       ? `Email ${ERROR_MSGS.KEY_REQUIRED}`
