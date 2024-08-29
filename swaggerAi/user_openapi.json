@@ -10,7 +10,7 @@
       "description": "Local server"
     },
     {
-      "url": "https://cargo-connect-be.vercel.app",
+      "url": "http://18.232.145.82:5555",
       "description": "Live server"
     }
   ],
