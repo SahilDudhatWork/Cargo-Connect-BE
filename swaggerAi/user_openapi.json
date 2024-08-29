@@ -39,6 +39,9 @@
       "name": "Order"
     },
     {
+      "name": "Address"
+    },
+    {
       "name": "---- Common ----"
     },
     {
@@ -58,38 +61,98 @@
         "summary": "Sign Up",
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "example": {
-                  "profilePicture": "",
-                  "companyName": "example company",
-                  "contactName": "john doe",
-                  "contactNumber": 1234567890,
-                  "email": "john.doe@example.com",
-                  "password": "P@ssw0rd123",
-                  "companyFormation": {
-                    "usa": {
-                      "w9_Form": "http://example.com/w9_form.pdf",
-                      "utility_Bill": "http://example.com/utility_bill.pdf"
-                    }
+                "properties": {
+                  "companyName": {
+                    "type": "string",
+                    "example": "Example Logistics Inc."
                   },
-                  "commercialReference": [
-                    {
-                      "companyName": "reference company 1",
-                      "contactName": "reference contact 1",
-                      "emailAddress": "reference1@example.com",
-                      "countryCode": 1,
-                      "contactNo": 9876543210
-                    },
-                    {
-                      "companyName": "reference company 2",
-                      "contactName": "reference contact 2",
-                      "emailAddress": "reference2@example.com",
-                      "countryCode": 1,
-                      "contactNo": 1234567890
-                    }
-                  ]
+                  "contactName": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "contactNumber": {
+                    "type": "integer",
+                    "example": "1234567890"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "pdpd1s2@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "Password123"
+                  },
+                  "commercialReference[0][companyName]": {
+                    "type": "string",
+                    "example": "Commercial Partner 1"
+                  },
+                  "commercialReference[0][contactName]": {
+                    "type": "string",
+                    "example": "Jane Smith"
+                  },
+                  "commercialReference[0][emailAddress]": {
+                    "type": "string",
+                    "example": "jane.smith@partner1.com"
+                  },
+                  "commercialReference[0][countryCode]": {
+                    "type": "integer",
+                    "example": "1"
+                  },
+                  "commercialReference[0][contactNo]": {
+                    "type": "integer",
+                    "example": "9876543210"
+                  },
+                  "commercialReference[1][companyName]": {
+                    "type": "string",
+                    "example": "Commercial Partner 2"
+                  },
+                  "commercialReference[1][contactName]": {
+                    "type": "string",
+                    "example": "James Brown"
+                  },
+                  "commercialReference[1][emailAddress]": {
+                    "type": "string",
+                    "example": "james.brown@partner2.com"
+                  },
+                  "commercialReference[1][countryCode]": {
+                    "type": "integer",
+                    "example": "44"
+                  },
+                  "commercialReference[1][contactNo]": {
+                    "type": "integer",
+                    "example": "447123456789"
+                  },
+                  "profilePicture": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "companyFormation_usa_w9_Form": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "companyFormation_usa_utility_Bill": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "companyFormation_maxico_copia_Rfc_Form": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "companyFormation_maxico_constance_Of_Fiscal_Situation": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "companyFormation_maxico_proof_of_Favorable": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "companyFormation_maxico_proof_Of_Address": {
+                    "type": "string",
+                    "format": "binary"
+                  }
                 }
               }
             }
@@ -115,8 +178,8 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "email": "john.doe@example.com",
-                  "password": "P@ssw0rd123"
+                  "email": "pdpd@example.com",
+                  "password": "Password123"
                 }
               }
             }
@@ -184,47 +247,94 @@
         "summary": "update",
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "example": {
-                  "companyName": "example company",
-                  "contactName": "john doe",
-                  "contactNumber": 1234567890,
-                  "email": "john.doe@example.com",
-                  "scac": null,
-                  "insurancePolicy": null,
-                  "oea": null,
-                  "ctpat": null,
-                  "companyFormation": {
-                    "usa": {
-                      "w9_Form": "http://example.com/w9_form.pdf",
-                      "utility_Bill": "http://example.com/utility_bill.pdf"
-                    }
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "pdpd@example.com"
                   },
-                  "commercialReference": [
-                    {
-                      "companyName": "reference company 1",
-                      "contactName": "reference contact 1",
-                      "emailAddress": "reference1@example.com",
-                      "countryCode": 1,
-                      "contactNo": 9876543210,
-                      "_id": "66bf2f403cfdbfd964a1280b"
-                    },
-                    {
-                      "companyName": "reference company 2",
-                      "contactName": "reference contact 2",
-                      "emailAddress": "reference2@example.com",
-                      "countryCode": 1,
-                      "contactNo": 1234567890,
-                      "_id": "66bf2f403cfdbfd964a1280c"
-                    }
-                  ],
-                  "verifyByAdmin": false,
-                  "isBlocked": false,
-                  "lastLogin": "2024-08-16T10:52:01.469Z",
-                  "createdAt": "2024-08-16T10:51:44.087Z",
-                  "updatedAt": "2024-08-16T10:52:01.480Z"
+                  "companyName": {
+                    "type": "string",
+                    "example": "example company"
+                  },
+                  "contactName": {
+                    "type": "string",
+                    "example": "john doe"
+                  },
+                  "contactNumber": {
+                    "type": "integer",
+                    "example": "1234567890"
+                  },
+                  "commercialReference[0][companyName]": {
+                    "type": "string",
+                    "example": "reference company 1"
+                  },
+                  "commercialReference[0][contactName]": {
+                    "type": "string",
+                    "example": "reference contact 1"
+                  },
+                  "commercialReference[0][emailAddress]": {
+                    "type": "string",
+                    "example": "reference1@example.com"
+                  },
+                  "commercialReference[0][countryCode]": {
+                    "type": "integer",
+                    "example": "1"
+                  },
+                  "commercialReference[0][contactNo]": {
+                    "type": "integer",
+                    "example": "9876543210"
+                  },
+                  "commercialReference[1][companyName]": {
+                    "type": "string",
+                    "example": "reference company 2"
+                  },
+                  "commercialReference[1][contactName]": {
+                    "type": "string",
+                    "example": "reference contact 2"
+                  },
+                  "commercialReference[1][emailAddress]": {
+                    "type": "string",
+                    "example": "reference2@example.com"
+                  },
+                  "commercialReference[1][countryCode]": {
+                    "type": "integer",
+                    "example": "1"
+                  },
+                  "commercialReference[1][contactNo]": {
+                    "type": "integer",
+                    "example": "1234567890"
+                  },
+                  "profilePicture": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "companyFormation_usa_w9_Form": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "companyFormation_usa_utility_Bill": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "companyFormation_maxico_copia_Rfc_Form": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "companyFormation_maxico_constance_Of_Fiscal_Situation": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "companyFormation_maxico_proof_of_Favorable": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "companyFormation_maxico_proof_Of_Address": {
+                    "type": "string",
+                    "format": "binary"
+                  }
                 }
               }
             }
@@ -286,7 +396,7 @@
                     "title": "String",
                     "description": "String"
                   },
-                  "port_BridgeOfCrossing": "Port of Los Angeles",
+                  "port_BridgeOfCrossing": "Port of Los Angeles 4564",
                   "userReference": "USR123456",
                   "specialRequirements": ["Handle with care", "Urgent"],
                   "quantityForChains": "10",
@@ -297,11 +407,8 @@
                     "date": "2024-08-22",
                     "time": "14:00"
                   },
-                  "pickUpAddressIds": [
-                    "64e6b0f4b8c79d5e4e1e4a27",
-                    "64e6b0f4b8c79d5e4e1e4a28"
-                  ],
-                  "dropAddressIds": ["64e6b0f4b8c79d5e4e1e4a29"]
+                  "pickUpAddressIds": ["66c873fd6adf34a5133ee001"],
+                  "dropAddressIds": ["66c876a665d2600619d2a2d4"]
                 }
               }
             }
@@ -352,7 +459,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "InProgress"
+            "example": "Pending"
           }
         ],
         "responses": {
@@ -384,6 +491,206 @@
         }
       }
     },
+    "/v1/user/address": {
+      "post": {
+        "tags": ["Address"],
+        "summary": "Create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "addressDetails": {
+                    "buildinName": "Sunrise Apartments",
+                    "postalCode": 123456,
+                    "laneNumber": 5,
+                    "additionalDetails": "Near Central Park"
+                  },
+                  "contactDetails": {
+                    "contactName": "John Doe",
+                    "contactEmail": "johndoe@example.com",
+                    "contactNumber": 9876543210
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Address"],
+        "summary": "Fetch Data",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "keyWord",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "10"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "recent"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/address/{addressId}": {
+      "get": {
+        "tags": ["Address"],
+        "summary": "Get Details",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Address"],
+        "summary": "Update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "vehicleName": "truck123456789",
+                  "mxPlates": "MX-ABC-1234",
+                  "mxPlatesExpirationDate": "2025-01-01",
+                  "usPlates": "US-DEF-5678",
+                  "usPlatesExpirationDate": "2025-02-01",
+                  "mxInsurancePlates": "MX-INS-9101",
+                  "mxInsurancePlatesExpirationDate": "2025-03-01",
+                  "usInsurancePlates": "US-INS-1121",
+                  "usInsurancePlatesExpirationDate": "2025-04-01",
+                  "typeOfService": [
+                    {
+                      "title": "Express Delivery",
+                      "description": "Fast delivery service within 24 hours."
+                    },
+                    {
+                      "title": "Standard Delivery",
+                      "description": "Regular delivery service within 3-5 business days."
+                    }
+                  ],
+                  "typeOfTransportation": [
+                    {
+                      "title": "Refrigerated",
+                      "description": "Transport of perishable goods."
+                    },
+                    {
+                      "title": "Dry Goods",
+                      "description": "Transport of non-perishable goods."
+                    }
+                  ],
+                  "modeOfTransportation": {
+                    "FTL": [
+                      {
+                        "title": "Full Truckload",
+                        "description": "Dedicated truck for one shipment."
+                      }
+                    ],
+                    "LTL": [
+                      {
+                        "title": "Less Than Truckload",
+                        "description": "Shared truck for multiple shipments."
+                      }
+                    ]
+                  },
+                  "status": "Active"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Address"],
+        "summary": "Delete",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+
     "/v1/common/otp/sent/user": {
       "post": {
         "tags": ["Otp"],

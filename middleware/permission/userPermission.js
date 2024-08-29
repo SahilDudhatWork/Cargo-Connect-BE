@@ -4,9 +4,9 @@ const { STATUS_CODE, ERROR_MSGS, INFO_MSGS } = require("../../helper/constant");
 const { handleException } = require("../../helper/exception");
 
 const userPermission = async (req, res, next) => {
-  const { logger } = req;
+  const { logger, userId } = req;
   try {
-    const getUser = await User.findById(req.userId);
+    const getUser = await User.findById(userId);
 
     let { verifyByAdmin, isBlocked } = getUser;
 

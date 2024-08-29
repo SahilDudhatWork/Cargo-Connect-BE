@@ -9,9 +9,8 @@ const {
 } = require("../../../helper/constant");
 
 const fetchProfile = async (req, res) => {
-  let { logger } = req;
+  let { logger, carrierId } = req;
   try {
-    const { carrierId } = req;
     let getData = await Carrier.aggregate([
       {
         $match: {
