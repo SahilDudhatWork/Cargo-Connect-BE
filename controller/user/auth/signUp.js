@@ -37,6 +37,14 @@ const signUp = async (req, res) => {
       commercialReference,
     } = req.body;
 
+    if (req.fileValidationError) {
+      return Response.error({
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: req.fileValidationError,
+      });
+    }
+
     // Check if the email already exists
     const userEmailExist = await User.findOne({ email });
     if (userEmailExist) {

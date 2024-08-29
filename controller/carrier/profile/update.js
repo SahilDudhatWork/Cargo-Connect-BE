@@ -33,6 +33,14 @@ const update = async (req, res) => {
   try {
     const { email, password, accountId } = req.body;
 
+    if (req.fileValidationError) {
+      return Response.error({
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: req.fileValidationError,
+      });
+    }
+
     if (accountId || password) {
       const errorMsg = accountId
         ? `AccountId ${ERROR_MSGS.NOT_EDITABLE}`
