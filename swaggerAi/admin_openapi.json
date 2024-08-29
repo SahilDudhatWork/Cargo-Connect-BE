@@ -52,6 +52,9 @@
     },
     {
       "name": "Image Upload"
+    },
+    {
+      "name": "Token Verification"
     }
   ],
   "paths": {
@@ -845,6 +848,25 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/common/tokenVerify/admin": {
+      "post": {
+        "tags": ["Token Verification"],
+        "summary": "Verify Token",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful response",

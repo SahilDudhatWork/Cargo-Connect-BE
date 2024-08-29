@@ -42,6 +42,14 @@ const signUp = async (req, res) => {
       commercialReference,
     } = req.body;
 
+    if (req.fileValidationError) {
+      return Response.error({
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: req.fileValidationError,
+      });
+    }
+
     // Check if the email already exists
     const carrierEmailExist = await Carrier.findOne({ email });
     if (carrierEmailExist) {
@@ -115,7 +123,10 @@ const signUp = async (req, res) => {
     });
 
     // Generate JWT Token
-    const encryptUser = encrypt(saveData._id, process.env.CARRIER_ENCRYPTION_KEY);
+    const encryptUser = encrypt(
+      saveData._id,
+      process.env.CARRIER_ENCRYPTION_KEY
+    );
     const accessToken = await commonAuth(encryptUser);
 
     // Update carrier with token details

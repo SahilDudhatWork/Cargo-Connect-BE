@@ -35,6 +35,14 @@ const create = async (req, res) => {
     const { email, password } = req.body;
     const { type } = req.params;
 
+    if (req.fileValidationError) {
+      return Response.error({
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: req.fileValidationError,
+      });
+    }
+
     const Model = await hendleModel(res, type);
     const checkEmailExist = await Model.findOne({
       email: email,
