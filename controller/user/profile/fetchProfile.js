@@ -9,9 +9,8 @@ const {
 } = require("../../../helper/constant");
 
 const fetchProfile = async (req, res) => {
-  let { logger } = req;
+  let { logger, userId } = req;
   try {
-    const { userId } = req;
     let getData = await User.aggregate([
       {
         $match: {

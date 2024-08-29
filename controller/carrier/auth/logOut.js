@@ -4,10 +4,8 @@ const Response = require("../../../helper/response");
 const { STATUS_CODE, INFO_MSGS } = require("../../../helper/constant");
 
 const logOut = async (req, res) => {
-  const { logger } = req;
+  const { logger, carrierId } = req;
   try {
-    let { carrierId } = req;
-
     await Carrier.findByIdAndUpdate(
       { _id: carrierId },
       {
