@@ -59,35 +59,37 @@ const signUp = async (req, res) => {
 
     // Store file paths in the body
     req.body.profilePicture = req.files["profilePicture"]
-      ? req.files["profilePicture"][0].filename
+      ? req.files["profilePicture"][0].presignedUrl
       : null;
     req.body.companyFormation = {
       usa: {
         w9_Form: req.files["companyFormation_usa_w9_Form"]
-          ? req.files["companyFormation_usa_w9_Form"][0].filename
+          ? req.files["companyFormation_usa_w9_Form"][0].presignedUrl
           : null,
         utility_Bill: req.files["companyFormation_usa_utility_Bill"]
-          ? req.files["companyFormation_usa_utility_Bill"][0].filename
+          ? req.files["companyFormation_usa_utility_Bill"][0].presignedUrl
           : null,
       },
       maxico: {
         copia_Rfc_Form: req.files["companyFormation_maxico_copia_Rfc_Form"]
-          ? req.files["companyFormation_maxico_copia_Rfc_Form"][0].filename
+          ? req.files["companyFormation_maxico_copia_Rfc_Form"][0].presignedUrl
           : null,
         constance_Of_Fiscal_Situation: req.files[
           "companyFormation_maxico_constance_Of_Fiscal_Situation"
         ]
           ? req.files[
               "companyFormation_maxico_constance_Of_Fiscal_Situation"
-            ][0].filename
+            ][0].presignedUrl
           : null,
         proof_of_Favorable: req.files[
           "companyFormation_maxico_proof_of_Favorable"
         ]
-          ? req.files["companyFormation_maxico_proof_of_Favorable"][0].filename
+          ? req.files["companyFormation_maxico_proof_of_Favorable"][0]
+              .presignedUrl
           : null,
         proof_Of_Address: req.files["companyFormation_maxico_proof_Of_Address"]
-          ? req.files["companyFormation_maxico_proof_Of_Address"][0].filename
+          ? req.files["companyFormation_maxico_proof_Of_Address"][0]
+              .presignedUrl
           : null,
       },
     };

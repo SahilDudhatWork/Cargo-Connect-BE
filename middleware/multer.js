@@ -1,15 +1,19 @@
+const { S3Client } = require("@aws-sdk/client-s3");
 const multer = require("multer");
+const multerS3 = require("multer-s3");
 const path = require("path");
+const { generatePresignedUrl } = require("../utils/generatePresignedUrl");
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(null, `${uniqueSuffix}-${file.originalname}`);
+// AWS S3 Configuration using AWS SDK v3
+const s3 = new S3Client({
+  region: process.env.AWS_S3_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
 });
+
+// File filter for validation
 const fileFilter = (req, file, cb) => {
   const allowedTypes = /pdf|doc|docx|jpg|jpeg|png/i;
 
@@ -27,10 +31,20 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+// Multer S3 Storage Configuration
 const upload = multer({
-  storage: storage,
+  storage: multerS3({
+    s3: s3,
+    bucket: process.env.AWS_S3_BUCKET,
+    key: (req, file, cb) => {
+      const filename = `${Date.now()}-${file.originalname}`;
+      const presignedUrl = generatePresignedUrl(filename);
+      file.presignedUrl = presignedUrl;
+      cb(null, filename);
+    },
+  }),
   fileFilter: fileFilter,
-  limits: { fileSize: 20 * 1024 * 1024 }, // Set a file size limit of 20MB
+  limits: { fileSize: 1024 * 1024 * 15 }, // Limit file size to 15MB
 });
 
 module.exports = upload;

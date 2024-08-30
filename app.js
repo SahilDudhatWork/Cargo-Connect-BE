@@ -15,12 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger("dev"));
 
-// For uploaded images acsses
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/swaggerAi", express.static(path.join(__dirname, "swaggerAi")));
-
-const imageUploadRouter = require("./routes/common/imageUpload");
-app.use("/upload", imageUploadRouter);
 
 // Routers
 app.use("/v1", routes);
