@@ -15,7 +15,7 @@ const {
 router.post("/:type/", uploadMiddleware, validateEmailAndPassword, create);
 router.get("/:type/", fetchData);
 router.get("/:type/:id", getDetails);
-router.put("/:type/:id", update);
+router.put("/:type/:id", uploadMiddleware, validateEmailAndPassword, update);
 router.delete("/:type/:id", remove);
 
 module.exports = router;

@@ -8,8 +8,6 @@ const handleFormData = (req, res, next) => {
       next(err);
       return;
     }
-    console.log("files :>> ", files);
-    console.log("fields :>> ", fields);
     req.files = files;
     req.data = fields;
     next();

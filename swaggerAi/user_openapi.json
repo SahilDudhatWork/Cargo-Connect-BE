@@ -10,7 +10,7 @@
       "description": "Local server"
     },
     {
-      "url": "http://18.232.145.82:5555",
+      "url": "https://api.mycargoconnects.com",
       "description": "Live server"
     }
   ],
@@ -49,9 +49,6 @@
     },
     {
       "name": "Forgot Password"
-    },
-    {
-      "name": "Image Upload"
     },
     {
       "name": "Token Verification"
@@ -775,35 +772,6 @@
             "example": "application/json"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/v1/common/imageUpload": {
-      "post": {
-        "tags": ["Image Upload"],
-        "summary": "imageUpload",
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Successful response",
