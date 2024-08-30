@@ -40,6 +40,7 @@ const signUp = async (req, res) => {
       email,
       password,
       commercialReference,
+      companyFormationType,
     } = req.body;
 
     if (req.fileValidationError) {
@@ -127,6 +128,7 @@ const signUp = async (req, res) => {
       insurancePolicy: req.body.insurancePolicy,
       oea: req.body.oea,
       ctpat: req.body.ctpat,
+      companyFormationType,
       companyFormation: req.body.companyFormation,
     });
 

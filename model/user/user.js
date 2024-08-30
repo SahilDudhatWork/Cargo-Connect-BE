@@ -38,6 +38,10 @@ const collectionSchema = new Schema(
       default: null,
       unique: true,
     },
+    companyFormationType: {
+      type: String,
+      default: null,
+    },
     companyFormation: {
       usa: {
         w9_Form: {

@@ -29,7 +29,6 @@ const getDetails = async (req, res) => {
                 $expr: { $eq: ["$_id", "$$operatorId"] },
               },
             },
-            // { $project: { _id: 1, operatorNumber: 1, operatorName: 1 } },
           ],
           as: "operatorsData",
         },
@@ -58,6 +57,56 @@ const getDetails = async (req, res) => {
         $unwind: {
           path: "$vehicleData",
           preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: "addresses",
+          let: { addressIds: "$pickUpAddressIds" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $in: [
+                    "$_id",
+                    {
+                      $map: {
+                        input: "$$addressIds",
+                        as: "id",
+                        in: { $toObjectId: "$$id" },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+          as: "pickUpAddressData",
+        },
+      },
+      {
+        $lookup: {
+          from: "addresses",
+          let: { addressIds: "$dropAddressIds" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $in: [
+                    "$_id",
+                    {
+                      $map: {
+                        input: "$$addressIds",
+                        as: "id",
+                        in: { $toObjectId: "$$id" },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+          as: "dropAddressData",
         },
       },
       {
