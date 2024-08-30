@@ -125,6 +125,10 @@
                     "type": "integer",
                     "example": "447123456789"
                   },
+                  "companyFormationType": {
+                    "type": "string",
+                    "example": "usa"
+                  },
                   "profilePicture": {
                     "type": "string",
                     "format": "binary"
@@ -306,6 +310,10 @@
                   "commercialReference[1][contactNo]": {
                     "type": "integer",
                     "example": "1234567890"
+                  },
+                  "companyFormationType": {
+                    "type": "string",
+                    "example": "usa"
                   },
                   "profilePicture": {
                     "type": "string",

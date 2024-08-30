@@ -20,6 +20,56 @@ const getDetails = async (req, res) => {
         },
       },
       {
+        $lookup: {
+          from: "addresses",
+          let: { addressIds: "$pickUpAddressIds" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $in: [
+                    "$_id",
+                    {
+                      $map: {
+                        input: "$$addressIds",
+                        as: "id",
+                        in: { $toObjectId: "$$id" },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+          as: "pickUpAddressData",
+        },
+      },
+      {
+        $lookup: {
+          from: "addresses",
+          let: { addressIds: "$dropAddressIds" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $in: [
+                    "$_id",
+                    {
+                      $map: {
+                        input: "$$addressIds",
+                        as: "id",
+                        in: { $toObjectId: "$$id" },
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+          as: "dropAddressData",
+        },
+      },
+      {
         $project: {
           __v: 0,
         },
