@@ -75,6 +75,8 @@ module.exports = {
     ADDED_SUCCESSFULLY: "Data added successfully.",
     UPDATED_SUCCESSFULLY: "Data updated successfully.",
     DELETED_SUCCESSFULLY: "Data deleted successfully.",
+    VERIFY_SUCCESSFULLY: "verified successful.",
+    UNVERIFY_SUCCESSFULLY: "unverified successful.",
     LOGOUT_SUCCESSFULLY: "Logout successfully.",
     SUCCESSFUL_LOGIN: "Successfully logged in.",
     SUCCESS: "Request successful.",

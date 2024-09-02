@@ -17,6 +17,12 @@ const {
   remove,
 } = require("../../controller/admin/common/userAndCarrier/delete");
 const {
+  verify,
+} = require("../../controller/admin/common/userAndCarrier/verify");
+const {
+  unverify,
+} = require("../../controller/admin/common/userAndCarrier/unverify");
+const {
   validateEmailAndPassword,
 } = require("../../middleware/validateEmailAndPass");
 
@@ -25,5 +31,7 @@ router.get("/:type/", fetchData);
 router.get("/:type/:id", getDetails);
 router.put("/:type/:id", uploadMiddleware, validateEmailAndPassword, update);
 router.delete("/:type/:id", remove);
+router.post("/verify/:type/:id", verify);
+router.delete("/unverify/:type/:id", unverify);
 
 module.exports = router;

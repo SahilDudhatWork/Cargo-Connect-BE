@@ -453,6 +453,44 @@
         }
       }
     },
+    "/v1/admin/module/verify/user/{userId}": {
+      "post": {
+        "tags": ["Manage User"],
+        "summary": "Verify User",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User verified successful.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/module/unverify/user/{userId}": {
+      "delete": {
+        "tags": ["Manage User"],
+        "summary": "Unverify User",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User unverified successful.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
     "/v1/admin/module/carrier": {
       "post": {
         "tags": ["Manage Carrier"],
@@ -817,6 +855,44 @@
         "responses": {
           "200": {
             "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/module/verify/carrier/{carrierId}": {
+      "post": {
+        "tags": ["Manage Carrier"],
+        "summary": "Verify Carrier",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Carrier verified successful.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/module/unverify/carrier/{carrierId}": {
+      "delete": {
+        "tags": ["Manage Carrier"],
+        "summary": "Unverify Carrier",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Carrier unverified successful.",
             "content": {
               "application/json": {}
             }
