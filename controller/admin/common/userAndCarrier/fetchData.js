@@ -38,7 +38,7 @@ const fetchData = async (req, res) => {
     if (sortBy === "recent") {
       sortCriteria = { createdAt: -1 };
     } else if (sortBy === "blocked") {
-      qry.verifyByAdmin = true;
+      qry.verifyByAdmin = false;
       sortCriteria = { createdAt: -1 };
     } else if (sortBy === "all") {
       sortCriteria = { createdAt: 1 };
