@@ -1,7 +1,9 @@
 const { Router } = require("express");
 const router = Router();
 const authRoute = require("./auth");
-const commonCrudRoute = require("./commonCrud");
+const userAndCarrierRoute = require("./userAndCarrier");
+const operatorRoute = require("./operator");
+const vehicleRoute = require("./vehicle");
 const profileRoute = require("./profile");
 const servicesRoute = require("./services");
 const { adminAuth } = require("../../middleware/authToken/adminAuth");
@@ -12,8 +14,10 @@ router.get("/", (req, res) => {
 
 router.use("/auth", authRoute);
 router.use(adminAuth);
-router.use("/common", commonCrudRoute);
 router.use("/profile", profileRoute);
+router.use("/module", userAndCarrierRoute);
+router.use("/operator", operatorRoute);
+router.use("/vehicle", vehicleRoute);
 router.use("/services", servicesRoute);
 
 module.exports = router;

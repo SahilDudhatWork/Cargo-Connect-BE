@@ -1,8 +1,12 @@
 const { Schema, model, Types } = require("mongoose");
-const { ObjectPlates } = Types;
+const { ObjectId } = Types;
 
 const collectionSchema = new Schema(
   {
+    carrierId: {
+      type: ObjectId,
+      required: true,
+    },
     vehicleName: {
       type: String,
       lowercase: true,

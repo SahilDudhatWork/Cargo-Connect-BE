@@ -3,11 +3,19 @@ const router = Router();
 const {
   uploadMiddleware,
   create,
-} = require("../../controller/admin/common/crud/create");
-const { fetchData } = require("../../controller/admin/common/crud/fetchData");
-const { getDetails } = require("../../controller/admin/common/crud/getDetails");
-const { update } = require("../../controller/admin/common/crud/update");
-const { remove } = require("../../controller/admin/common/crud/delete");
+} = require("../../controller/admin/common/userAndCarrier/create");
+const {
+  fetchData,
+} = require("../../controller/admin/common/userAndCarrier/fetchData");
+const {
+  getDetails,
+} = require("../../controller/admin/common/userAndCarrier/getDetails");
+const {
+  update,
+} = require("../../controller/admin/common/userAndCarrier/update");
+const {
+  remove,
+} = require("../../controller/admin/common/userAndCarrier/delete");
 const {
   validateEmailAndPassword,
 } = require("../../middleware/validateEmailAndPass");

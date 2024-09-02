@@ -1,27 +1,38 @@
-const Vehicle = require("../../../model/vehicle/vehicle");
+const Movement = require("../../../model/user/movement");
 const { handleException } = require("../../../helper/exception");
-const Response = require("../../../helper/response");
-const { ObjectId } = require("mongoose").Types;
 const { paginationResponse } = require("../../../utils/paginationFormate");
+const { ObjectId } = require("mongoose").Types;
+const Response = require("../../../helper/response");
 const {
   STATUS_CODE,
   ERROR_MSGS,
   INFO_MSGS,
 } = require("../../../helper/constant");
 
-const fetchData = async (req, res) => {
-  let { logger, carrierId } = req;
+const fetchMovement = async (req, res) => {
+  let { logger, operatorId } = req;
   try {
     let { page, limit, sortBy } = req.query;
+    let qry = {};
 
-    sortBy = sortBy === "recent" ? { createdAt: -1 } : { createdAt: 1 };
+    if (sortBy == "InProgress") {
+      qry = {
+        isAssign: true,
+        status: "InProgress",
+      };
+    } else if (sortBy == "Completed") {
+      qry = {
+        isAssign: true,
+        status: "Completed",
+      };
+    }
 
     offset = page || 1;
     limit = limit || 10;
     const skip = limit * (offset - 1);
-    const getData = await Vehicle.aggregate([
-      { $match: { carrierId: new ObjectId(carrierId) } },
-      { $sort: sortBy },
+    const getData = await Movement.aggregate([
+      { $match: { operatorId: new ObjectId(operatorId) } },
+      { $match: qry },
       {
         $facet: {
           paginatedResult: [
@@ -30,9 +41,6 @@ const fetchData = async (req, res) => {
             {
               $project: {
                 __v: 0,
-                password: 0,
-                forgotPassword: 0,
-                token: 0,
               },
             },
           ],
@@ -68,5 +76,5 @@ const fetchData = async (req, res) => {
 };
 
 module.exports = {
-  fetchData,
+  fetchMovement,
 };

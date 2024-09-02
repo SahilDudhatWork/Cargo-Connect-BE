@@ -1,8 +1,8 @@
-const Vehicle = require("../../../model/vehicle/vehicle");
+const Operator = require("../../../model/operator/operator");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
-const { ObjectId } = require("mongoose").Types;
 const { paginationResponse } = require("../../../utils/paginationFormate");
+const { ObjectId } = require("mongoose").Types;
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -10,8 +10,9 @@ const {
 } = require("../../../helper/constant");
 
 const fetchData = async (req, res) => {
-  let { logger, carrierId } = req;
+  let { logger } = req;
   try {
+    const { carrierId } = req.params;
     let { page, limit, sortBy } = req.query;
 
     sortBy = sortBy === "recent" ? { createdAt: -1 } : { createdAt: 1 };
@@ -19,7 +20,7 @@ const fetchData = async (req, res) => {
     offset = page || 1;
     limit = limit || 10;
     const skip = limit * (offset - 1);
-    const getData = await Vehicle.aggregate([
+    const getData = await Operator.aggregate([
       { $match: { carrierId: new ObjectId(carrierId) } },
       { $sort: sortBy },
       {
