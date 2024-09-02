@@ -37,9 +37,9 @@ const fetchData = async (req, res) => {
     let sortCriteria = {};
     if (sortBy === "recent") {
       sortCriteria = { createdAt: -1 };
-    } else if (sortBy === "blocked") {      
+    } else if (sortBy === "blocked") {
       qry.verifyByAdmin = true;
-      sortCriteria = { createdAt: -1 }; 
+      sortCriteria = { createdAt: -1 };
     } else if (sortBy === "all") {
       sortCriteria = { createdAt: 1 };
     } else {
@@ -50,9 +50,23 @@ const fetchData = async (req, res) => {
     limit = parseInt(limit) || 10;
     const skip = limit * (offset - 1);
 
+    const now = new Date();
+    const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
     const getData = await Model.aggregate([
       { $match: qry },
       { $sort: sortCriteria },
+      {
+        $addFields: {
+          newRequest: {
+            $cond: {
+              if: { $gte: ["$createdAt", twentyFourHoursAgo] },
+              then: true,
+              else: false,
+            },
+          },
+        },
+      },
       {
         $facet: {
           paginatedResult: [
