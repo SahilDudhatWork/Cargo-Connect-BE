@@ -8,10 +8,18 @@ const {
 } = require("../../../helper/constant");
 
 const create = async (req, res) => {
-  const { logger, carrierId } = req;
+  const { logger } = req;
   try {
-    req.body.carrierId = carrierId;
     let saveData = await Vehicle.create(req.body);
+
+    if (!req.body.carrierId) {
+      const obj = {
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: `carrierId ${ERROR_MSGS.KEY_REQUIRED}`,
+      };
+      return Response.error(obj);
+    }
 
     const statusCode = saveData ? STATUS_CODE.CREATED : STATUS_CODE.BAD_REQUEST;
     const message = saveData

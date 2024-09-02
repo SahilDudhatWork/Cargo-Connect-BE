@@ -45,7 +45,7 @@ module.exports = {
     FAVORITE_ALREADY_EXISTS: "This item is already marked as a favorite.",
     DATA_EXISTS: "already exists.",
     KEY_REQUIRED: "is required.",
-    INVALID_CODE: "Invalid Code",
+    INVALID_OTP: "Invalid Otp",
     NOT_FOUND: "is not found",
     NOT_EDITABLE: "cannot be edited.",
     BAD_REQUEST: "Bad request.",
@@ -80,9 +80,12 @@ module.exports = {
     SUCCESS: "Request successful.",
     OTP_VERIFIED: "Otp verified successfully.",
     PASSWORD_CHANGED: "Your password has been changed successfully.",
-    SEND_USER_TO_CARRIER_REQUEST: "Your request is successfully send to carrier, wait for carrier to approve your request.",
+    SEND_USER_TO_CARRIER_REQUEST:
+      "Your request is successfully send to carrier, wait for carrier to approve your request.",
     SUCCESSFUL_REGISTER: "Your registration with Cargo Connect is successful.",
     OTP_SENT_SUCC:
       "An OTP has been sent to your email address. Please check your inbox and use the OTP to proceed.",
+    OTP_SENT_IN_MOBILE_SUCC:
+      "An OTP has been sent to your mobile number. Please check your messages and use the OTP to proceed.",
   },
 };

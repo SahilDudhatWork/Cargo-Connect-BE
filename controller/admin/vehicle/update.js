@@ -1,4 +1,4 @@
-const Operator = require("../../../model/operator/operator");
+const Vehicle = require("../../../model/vehicle/vehicle");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const {
@@ -12,16 +12,9 @@ const update = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const mobileInUse = await Operator.findById(id);
-    if (mobileInUse && !mobileInUse._id.equals(id)) {
-      return Response.error({
-        res,
-        status: STATUS_CODE.BAD_REQUEST,
-        msg: `Operator Number is ${ERROR_MSGS.DATA_EXISTS}`,
-      });
-    }
-    const updatedData = await Operator.findByIdAndUpdate(id, req.body, {
+    const updatedData = await Vehicle.findByIdAndUpdate(id, req.body, {
       new: true,
+      runValidators: true,
     });
 
     const result = updatedData.toObject();

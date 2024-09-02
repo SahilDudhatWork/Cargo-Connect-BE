@@ -202,8 +202,8 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "email": "john.doe@example.com",
-                  "password": "P@ssw0rd123"
+                  "email": "johndoe111@example.com",
+                  "password": "Password123"
                 }
               }
             }
@@ -428,14 +428,6 @@
               "type": "integer"
             },
             "example": "10"
-          },
-          {
-            "name": "sortBy",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "Completed"
           }
         ],
         "responses": {
@@ -475,8 +467,8 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "operatorId": "66c49148789b754e236b13ac",
-                  "vehicleId": "66c7187e839c733bfb28ace2"
+                  "operatorId": "66d2e675344c90be4b855e0d",
+                  "vehicleId": "66d2e3c6c720906eb43460e8"
                 }
               }
             }
@@ -508,7 +500,7 @@
                 "type": "object",
                 "example": {
                   "operatorName": "john doe",
-                  "operatorNumber": 9876543210,
+                  "operatorNumber": 9876543211,
                   "mxIdBadge": "MX12345",
                   "mxIdBadgeExpirationDate": "2025-12-31",
                   "fastId": "FAST67890",
@@ -617,7 +609,7 @@
                 "type": "object",
                 "example": {
                   "operatorName": "john doe22",
-                  "operatorNumber": 9876543210,
+                  "operatorNumber": 9876543211,
                   "mxIdBadge": "MX12345",
                   "mxIdBadgeExpirationDate": "2025-12-31",
                   "fastId": "FAST67890",

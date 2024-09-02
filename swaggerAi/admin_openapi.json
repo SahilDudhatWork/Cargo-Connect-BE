@@ -42,6 +42,12 @@
       "name": "Service"
     },
     {
+      "name": "Operator"
+    },
+    {
+      "name": "Vehicle"
+    },
+    {
       "name": "---- Common ----"
     },
     {
@@ -111,7 +117,7 @@
         }
       }
     },
-    "/v1/admin/common/user": {
+    "/v1/admin/module/user": {
       "post": {
         "tags": ["Manage User"],
         "summary": "Create",
@@ -177,13 +183,13 @@
                     "type": "integer",
                     "example": "44"
                   },
-                  "commercialReference[1][contactNo]": {
-                    "type": "integer",
-                    "example": "447123456789"
-                  },
                   "companyFormationType": {
                     "type": "string",
                     "example": "usa"
+                  },
+                  "commercialReference[1][contactNo]": {
+                    "type": "integer",
+                    "example": "447123456789"
                   },
                   "profilePicture": {
                     "type": "string",
@@ -283,7 +289,7 @@
         }
       }
     },
-    "/v1/admin/common/user/{userId}": {
+    "/v1/admin/module/user/{userId}": {
       "get": {
         "tags": ["Manage User"],
         "summary": "Get Details",
@@ -324,7 +330,11 @@
                   },
                   "email": {
                     "type": "string",
-                    "example": "johndoe@example.com"
+                    "example": "johndoe112@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "Password123"
                   },
                   "commercialReference[0][companyName]": {
                     "type": "string",
@@ -366,10 +376,6 @@
                     "type": "integer",
                     "example": "447123456789"
                   },
-                  "companyFormationType": {
-                    "type": "string",
-                    "example": "usa"
-                  },
                   "profilePicture": {
                     "type": "string",
                     "format": "binary"
@@ -405,6 +411,10 @@
                   "verifyByAdmin": {
                     "type": "boolean",
                     "example": "true"
+                  },
+                  "companyFormationType": {
+                    "type": "string",
+                    "example": "usa"
                   }
                 }
               }
@@ -443,7 +453,7 @@
         }
       }
     },
-    "/v1/admin/common/carrier": {
+    "/v1/admin/module/carrier": {
       "post": {
         "tags": ["Manage Carrier"],
         "summary": "Create",
@@ -599,7 +609,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "blocked"
+            "example": "recent"
           },
           {
             "name": "page",
@@ -628,7 +638,7 @@
         }
       }
     },
-    "/v1/admin/common/carrier/{carrierId}": {
+    "/v1/admin/module/carrier/{carrierId}": {
       "get": {
         "tags": ["Manage Carrier"],
         "summary": "Get Details",
@@ -669,7 +679,11 @@
                   },
                   "email": {
                     "type": "string",
-                    "example": "johndoe@example.com"
+                    "example": "johndoe112@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "Password123"
                   },
                   "commercialReference[0][companyName]": {
                     "type": "string",
@@ -762,14 +776,6 @@
                   "companyFormation_maxico_proof_Of_Address": {
                     "type": "string",
                     "format": "binary"
-                  },
-                  "isBlocked": {
-                    "type": "boolean",
-                    "example": "false"
-                  },
-                  "verifyByAdmin": {
-                    "type": "boolean",
-                    "example": "true"
                   }
                 }
               }
@@ -779,6 +785,16 @@
         "security": [
           {
             "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiVTJGc2RHVmtYMTgrWHQxL05iUDRoVGprWlFiVVlsOHBvM2Z6U1BjajV4N09HdzFkQUdHZXlJRVZUTXdLMGNYeSIsInR5cGUiOiJBY2Nlc3MiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MjQ5MzU0MTQsImV4cCI6MTcyNTAyMTgxNH0.BpphBKiGwrY-_f4rmi-r31B-axEDpK-78DB9j9sagg4"
           }
         ],
         "responses": {
@@ -895,6 +911,409 @@
         }
       }
     },
+    "/v1/admin/operator/": {
+      "post": {
+        "tags": ["Operator"],
+        "summary": "Create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "carrierId": "66d2b34eb9990c69071dc827",
+                  "operatorName": "john doe",
+                  "operatorNumber": 9876543212,
+                  "mxIdBadge": "MX12345",
+                  "mxIdBadgeExpirationDate": "2025-12-31",
+                  "fastId": "FAST67890",
+                  "fastIdExpirationDate": "2026-05-30",
+                  "mxDriversLicense": "MXDL98765",
+                  "mxDriversLicenseExpirationDate": "2027-10-15",
+                  "usDriversLicense": "USDL54321",
+                  "usDriversLicenseExpirationDate": "2028-03-22"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/operator/fetch/{carrierId}": {
+      "get": {
+        "tags": ["Operator"],
+        "summary": "Fetch Data",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "keyWord",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "10"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "recent"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/operator/{operatorId}": {
+      "get": {
+        "tags": ["Operator"],
+        "summary": "Get Details",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Operator"],
+        "summary": "Update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "operatorName": "john doe22",
+                  "operatorNumber": 9876543210,
+                  "mxIdBadge": "MX12345",
+                  "mxIdBadgeExpirationDate": "2025-12-31",
+                  "fastId": "FAST67890",
+                  "fastIdExpirationDate": "2026-05-30",
+                  "mxDriversLicense": "MXDL98765",
+                  "mxDriversLicenseExpirationDate": "2027-10-15",
+                  "usDriversLicense": "USDL54321",
+                  "usDriversLicenseExpirationDate": "2028-03-22"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Operator"],
+        "summary": "Delete",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/vehicle/": {
+      "post": {
+        "tags": ["Vehicle"],
+        "summary": "Create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "carrierId": "66d2b34eb9990c69071dc827",
+                  "vehicleName": "truck123",
+                  "mxPlates": "MX-ABC-1234",
+                  "mxPlatesExpirationDate": "2025-01-01",
+                  "usPlates": "US-DEF-5678",
+                  "usPlatesExpirationDate": "2025-02-01",
+                  "mxInsurancePlates": "MX-INS-9101",
+                  "mxInsurancePlatesExpirationDate": "2025-03-01",
+                  "usInsurancePlates": "US-INS-1121",
+                  "usInsurancePlatesExpirationDate": "2025-04-01",
+                  "typeOfService": [
+                    {
+                      "title": "Express Delivery",
+                      "description": "Fast delivery service within 24 hours."
+                    },
+                    {
+                      "title": "Standard Delivery",
+                      "description": "Regular delivery service within 3-5 business days."
+                    }
+                  ],
+                  "typeOfTransportation": [
+                    {
+                      "title": "Refrigerated",
+                      "description": "Transport of perishable goods."
+                    },
+                    {
+                      "title": "Dry Goods",
+                      "description": "Transport of non-perishable goods."
+                    }
+                  ],
+                  "modeOfTransportation": {
+                    "FTL": [
+                      {
+                        "title": "Full Truckload",
+                        "description": "Dedicated truck for one shipment."
+                      }
+                    ],
+                    "LTL": [
+                      {
+                        "title": "Less Than Truckload",
+                        "description": "Shared truck for multiple shipments."
+                      }
+                    ]
+                  },
+                  "status": "Active"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/vehicle/fetch/{carrierId}": {
+      "get": {
+        "tags": ["Vehicle"],
+        "summary": "Fetch Data",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "keyWord",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "10"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "recent"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/vehicle/{vehicleId}": {
+      "get": {
+        "tags": ["Vehicle"],
+        "summary": "Get Details",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Vehicle"],
+        "summary": "Update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "vehicleName": "truck123456789",
+                  "mxPlates": "MX-ABC-1234",
+                  "mxPlatesExpirationDate": "2025-01-01",
+                  "usPlates": "US-DEF-5678",
+                  "usPlatesExpirationDate": "2025-02-01",
+                  "mxInsurancePlates": "MX-INS-9101",
+                  "mxInsurancePlatesExpirationDate": "2025-03-01",
+                  "usInsurancePlates": "US-INS-1121",
+                  "usInsurancePlatesExpirationDate": "2025-04-01",
+                  "typeOfService": [
+                    {
+                      "title": "Express Delivery",
+                      "description": "Fast delivery service within 24 hours."
+                    },
+                    {
+                      "title": "Standard Delivery",
+                      "description": "Regular delivery service within 3-5 business days."
+                    }
+                  ],
+                  "typeOfTransportation": [
+                    {
+                      "title": "Refrigerated",
+                      "description": "Transport of perishable goods."
+                    },
+                    {
+                      "title": "Dry Goods",
+                      "description": "Transport of non-perishable goods."
+                    }
+                  ],
+                  "modeOfTransportation": {
+                    "FTL": [
+                      {
+                        "title": "Full Truckload",
+                        "description": "Dedicated truck for one shipment."
+                      }
+                    ],
+                    "LTL": [
+                      {
+                        "title": "Less Than Truckload",
+                        "description": "Shared truck for multiple shipments."
+                      }
+                    ]
+                  },
+                  "status": "Active"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Vehicle"],
+        "summary": "Delete",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+
     "/v1/common/otp/sent/admin": {
       "post": {
         "tags": ["Otp"],

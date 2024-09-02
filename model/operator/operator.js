@@ -3,6 +3,10 @@ const { ObjectId } = Types;
 
 const collectionSchema = new Schema(
   {
+    carrierId: {
+      type: ObjectId,
+      required: true,
+    },
     accountId: {
       type: Number,
       lowercase: true,

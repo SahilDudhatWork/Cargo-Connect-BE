@@ -10,11 +10,10 @@ const { mobileVerification } = require("../../../helper/joi-validation");
 const { generateAccountId } = require("../../../utils/generateUniqueId");
 
 const create = async (req, res) => {
-  const { logger, carrierId } = req;
+  const { logger } = req;
   try {
-    const { operatorNumber } = req.body;
+    const { operatorNumber, carrierId } = req.body;
     req.body.accountId = generateAccountId();
-    req.body.carrierId = carrierId;
 
     const { error } = mobileVerification({
       mobile: operatorNumber,
@@ -24,6 +23,14 @@ const create = async (req, res) => {
         res,
         status: STATUS_CODE.BAD_REQUEST,
         msg: error.details[0].message,
+      };
+      return Response.error(obj);
+    }
+    if (!carrierId) {
+      const obj = {
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: `carrierId ${ERROR_MSGS.KEY_REQUIRED}`,
       };
       return Response.error(obj);
     }

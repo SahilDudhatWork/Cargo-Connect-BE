@@ -28,7 +28,7 @@ const verifyOtp = async (req, res) => {
       const obj = {
         res,
         status: STATUS_CODE.BAD_REQUEST,
-        msg: ERROR_MSGS.INVALID_CODE,
+        msg: ERROR_MSGS.INVALID_OTP,
       };
       return Response.error(obj);
     }

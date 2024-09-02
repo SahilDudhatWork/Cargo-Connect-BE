@@ -2,6 +2,7 @@ const Operator = require("../../../model/operator/operator");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { paginationResponse } = require("../../../utils/paginationFormate");
+const { ObjectId } = require("mongoose").Types;
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -9,7 +10,7 @@ const {
 } = require("../../../helper/constant");
 
 const fetchData = async (req, res) => {
-  let { logger } = req;
+  let { logger, carrierId } = req;
   try {
     let { page, limit, sortBy } = req.query;
 
@@ -19,6 +20,7 @@ const fetchData = async (req, res) => {
     limit = limit || 10;
     const skip = limit * (offset - 1);
     const getData = await Operator.aggregate([
+      { $match: { carrierId: new ObjectId(carrierId) } },
       { $sort: sortBy },
       {
         $facet: {
