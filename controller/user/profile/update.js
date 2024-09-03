@@ -5,7 +5,6 @@ const {
   INFO_MSGS,
 } = require("../../../helper/constant");
 const { handleException } = require("../../../helper/exception");
-const { removeEmptyKeys } = require("../../../utils/removeEmptyKeys");
 const Response = require("../../../helper/response");
 const { ObjectId } = require("mongoose").Types;
 const upload = require("../../../middleware/multer");
@@ -48,8 +47,8 @@ const update = async (req, res) => {
       });
     }
 
-    const emailInUse = await User.findOne({ email });
-    if (emailInUse && !emailInUse._id.equals(userId)) {
+    const fetchUser = await User.findOne({ email });
+    if (fetchUser && !fetchUser._id.equals(userId)) {
       return Response.error({
         res,
         status: STATUS_CODE.BAD_REQUEST,
@@ -59,39 +58,38 @@ const update = async (req, res) => {
 
     req.body.profilePicture = req.files?.profilePicture
       ? req.files["profilePicture"][0].presignedUrl
-      : null;
+      : fetchUser.profilePicture;
 
     req.body.companyFormation = {
       usa: {
         w9_Form: req.files?.companyFormation_usa_w9_Form
           ? req.files["companyFormation_usa_w9_Form"][0].presignedUrl
-          : null,
+          : fetchUser.companyFormation.usa.w9_Form,
         utility_Bill: req.files?.companyFormation_usa_utility_Bill
           ? req.files["companyFormation_usa_utility_Bill"][0].presignedUrl
-          : null,
+          : fetchUser.companyFormation.usa.utility_Bill,
       },
       maxico: {
         copia_Rfc_Form: req.files?.companyFormation_maxico_copia_Rfc_Form
           ? req.files["companyFormation_maxico_copia_Rfc_Form"][0].presignedUrl
-          : null,
+          : fetchUser.companyFormation.maxico.copia_Rfc_Form,
         constance_Of_Fiscal_Situation: req.files
           ?.companyFormation_maxico_constance_Of_Fiscal_Situation
           ? req.files[
               "companyFormation_maxico_constance_Of_Fiscal_Situation"
             ][0].presignedUrl
-          : null,
+          : fetchUser.companyFormation.maxico.constance_Of_Fiscal_Situation,
         proof_of_Favorable: req.files
           ?.companyFormation_maxico_proof_of_Favorable
           ? req.files["companyFormation_maxico_proof_of_Favorable"][0]
               .presignedUrl
-          : null,
+          : fetchUser.companyFormation.maxico.proof_of_Favorable,
         proof_Of_Address: req.files?.companyFormation_maxico_proof_Of_Address
           ? req.files["companyFormation_maxico_proof_Of_Address"][0]
               .presignedUrl
-          : null,
+          : fetchUser.companyFormation.maxico.proof_Of_Address,
       },
     };
-    await removeEmptyKeys(req.body);
 
     const updateData = await User.findByIdAndUpdate(
       { _id: new ObjectId(userId) },

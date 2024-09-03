@@ -2,7 +2,6 @@ const { handleException } = require("../../../../helper/exception");
 const Response = require("../../../../helper/response");
 const { hendleModel } = require("../../../../utils/hendleModel");
 const { encrypt } = require("../../../../helper/encrypt-decrypt");
-const { removeEmptyKeys } = require("../../../../utils/removeEmptyKeys");
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -60,49 +59,51 @@ const update = async (req, res) => {
 
     req.body.profilePicture = req.files?.profilePicture
       ? req.files["profilePicture"][0].presignedUrl
-      : null;
-    req.body.scac = req.files?.scac ? req.files["scac"][0].presignedUrl : null;
-    req.body.caat = req.files?.caat ? req.files["caat"][0].presignedUrl : null;
+      : existingData.profilePicture;
+    req.body.scac = req.files?.scac
+      ? req.files["scac"][0].presignedUrl
+      : existingData.scac;
+    req.body.caat = req.files?.caat
+      ? req.files["caat"][0].presignedUrl
+      : existingData.caat;
     req.body.insurancePolicy = req.files?.insurancePolicy
       ? req.files["insurancePolicy"][0].presignedUrl
-      : null;
+      : existingData.insurancePolicy;
     req.body.oea = req.files?.oea ? req.files["oea"][0].presignedUrl : null;
     req.body.ctpat = req.files?.ctpat
       ? req.files["ctpat"][0].presignedUrl
-      : null;
+      : existingData.oea;
 
     req.body.companyFormation = {
       usa: {
         w9_Form: req.files?.companyFormation_usa_w9_Form
           ? req.files["companyFormation_usa_w9_Form"][0].presignedUrl
-          : null,
+          : existingData.companyFormation.usa.w9_Form,
         utility_Bill: req.files?.companyFormation_usa_utility_Bill
           ? req.files["companyFormation_usa_utility_Bill"][0].presignedUrl
-          : null,
+          : existingData.companyFormation.usa.utility_Bill,
       },
       maxico: {
         copia_Rfc_Form: req.files?.companyFormation_maxico_copia_Rfc_Form
           ? req.files["companyFormation_maxico_copia_Rfc_Form"][0].presignedUrl
-          : null,
+          : existingData.companyFormation.maxico.copia_Rfc_Form,
         constance_Of_Fiscal_Situation: req.files
           ?.companyFormation_maxico_constance_Of_Fiscal_Situation
           ? req.files[
               "companyFormation_maxico_constance_Of_Fiscal_Situation"
             ][0].presignedUrl
-          : null,
+          : existingData.companyFormation.maxico.constance_Of_Fiscal_Situation,
         proof_of_Favorable: req.files
           ?.companyFormation_maxico_proof_of_Favorable
           ? req.files["companyFormation_maxico_proof_of_Favorable"][0]
               .presignedUrl
-          : null,
+          : existingData.companyFormation.maxico.proof_of_Favorable,
         proof_Of_Address: req.files?.companyFormation_maxico_proof_Of_Address
           ? req.files["companyFormation_maxico_proof_Of_Address"][0]
               .presignedUrl
-          : null,
+          : existingData.companyFormation.maxico.proof_Of_Address,
       },
     };
-
-    await removeEmptyKeys(req.body);
 
     const updatedData = await Model.findByIdAndUpdate(id, req.body, {
       new: true,
