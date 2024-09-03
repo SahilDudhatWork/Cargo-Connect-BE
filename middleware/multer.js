@@ -23,13 +23,13 @@ const fileFilter = (req, file, cb) => {
   const mimetype = allowedTypes.test(file.mimetype);
   console.log("mimetype", mimetype, "extname", extname);
 
-  if (mimetype && extname) {
-    cb(null, true);
-  } else {
-    req.fileValidationError =
-      "Only PDF, DOC, DOCX, JPG, JPEG, and PNG files are allowed";
-    cb(null, false);
-  }
+  // if (mimetype && extname) {
+  cb(null, true);
+  // } else {
+  //   req.fileValidationError =
+  //     "Only PDF, DOC, DOCX, JPG, JPEG, and PNG files are allowed";
+  //   cb(null, false);
+  // }
 };
 
 // Multer S3 Storage Configuration
