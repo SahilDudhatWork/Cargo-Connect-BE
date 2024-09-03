@@ -2,6 +2,7 @@ const { handleException } = require("../../../../helper/exception");
 const Response = require("../../../../helper/response");
 const { hendleModel } = require("../../../../utils/hendleModel");
 const { encrypt } = require("../../../../helper/encrypt-decrypt");
+const { removeEmptyKeys } = require("../../../../utils/removeEmptyKeys");
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -100,6 +101,8 @@ const update = async (req, res) => {
           : null,
       },
     };
+
+    await removeEmptyKeys(req.body);
 
     const updatedData = await Model.findByIdAndUpdate(id, req.body, {
       new: true,
