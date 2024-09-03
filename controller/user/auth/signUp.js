@@ -59,6 +59,7 @@ const signUp = async (req, res) => {
     const passwordHash = encrypt(password, process.env.PASSWORD_ENCRYPTION_KEY);
 
     // Store file paths in the body
+    console.log("user-files", req.files);
     req.body.profilePicture = req.files["profilePicture"]
       ? req.files["profilePicture"][0].presignedUrl
       : null;
