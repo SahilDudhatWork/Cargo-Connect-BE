@@ -5,6 +5,7 @@ const {
   INFO_MSGS,
 } = require("../../../helper/constant");
 const { handleException } = require("../../../helper/exception");
+const { removeEmptyKeys } = require("../../../utils/removeEmptyKeys");
 const Response = require("../../../helper/response");
 const { ObjectId } = require("mongoose").Types;
 const upload = require("../../../middleware/multer");
@@ -105,6 +106,7 @@ const update = async (req, res) => {
       },
     };
 
+    await removeEmptyKeys(req.body);
     const updateData = await Carrier.findByIdAndUpdate(
       { _id: new ObjectId(carrierId) },
       req.body,

@@ -5,6 +5,7 @@ const {
   INFO_MSGS,
 } = require("../../../helper/constant");
 const { handleException } = require("../../../helper/exception");
+const { removeEmptyKeys } = require("../../../utils/removeEmptyKeys");
 const Response = require("../../../helper/response");
 const { ObjectId } = require("mongoose").Types;
 const upload = require("../../../middleware/multer");
@@ -81,13 +82,16 @@ const update = async (req, res) => {
           : null,
         proof_of_Favorable: req.files
           ?.companyFormation_maxico_proof_of_Favorable
-          ? req.files["companyFormation_maxico_proof_of_Favorable"][0].presignedUrl
+          ? req.files["companyFormation_maxico_proof_of_Favorable"][0]
+              .presignedUrl
           : null,
         proof_Of_Address: req.files?.companyFormation_maxico_proof_Of_Address
-          ? req.files["companyFormation_maxico_proof_Of_Address"][0].presignedUrl
+          ? req.files["companyFormation_maxico_proof_Of_Address"][0]
+              .presignedUrl
           : null,
       },
     };
+    await removeEmptyKeys(req.body);
 
     const updateData = await User.findByIdAndUpdate(
       { _id: new ObjectId(userId) },
