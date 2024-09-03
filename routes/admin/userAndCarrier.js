@@ -29,7 +29,7 @@ const {
 router.post("/:type/", uploadMiddleware, validateEmailAndPassword, create);
 router.get("/:type/", fetchData);
 router.get("/:type/:id", getDetails);
-router.put("/:type/:id", uploadMiddleware, validateEmailAndPassword, update);
+router.put("/:type/:id", uploadMiddleware, update);
 router.delete("/:type/:id", remove);
 router.post("/verify/:type/:id", verify);
 router.delete("/unverify/:type/:id", unverify);
