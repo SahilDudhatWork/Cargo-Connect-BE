@@ -8,9 +8,9 @@ const {
 } = require("../../../helper/constant");
 
 const update = async (req, res) => {
-  const { logger } = req;
+  const { logger, params, body } = req;
   try {
-    const { id } = req.params;
+    const { id } = params;
 
     const mobileInUse = await Operator.findById(id);
     if (mobileInUse && !mobileInUse._id.equals(id)) {
@@ -20,7 +20,7 @@ const update = async (req, res) => {
         msg: `Operator Number is ${ERROR_MSGS.DATA_EXISTS}`,
       });
     }
-    const updatedData = await Operator.findByIdAndUpdate(id, req.body, {
+    const updatedData = await Operator.findByIdAndUpdate(id, body, {
       new: true,
     });
 

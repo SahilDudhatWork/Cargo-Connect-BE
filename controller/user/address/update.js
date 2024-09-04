@@ -8,11 +8,11 @@ const {
 } = require("../../../helper/constant");
 
 const update = async (req, res) => {
-  const { logger } = req;
+  const { logger, params, body } = req;
   try {
-    const { id } = req.params;
+    const { id } = params;
 
-    const updatedData = await Address.findByIdAndUpdate(id, req.body, {
+    const updatedData = await Address.findByIdAndUpdate(id, body, {
       new: true,
       runValidators: true,
     });

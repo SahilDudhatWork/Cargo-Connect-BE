@@ -1,4 +1,4 @@
-const Movement = require("../../../model/user/movement");
+const Movement = require("../../../model/movement/movement");
 const { handleException } = require("../../../helper/exception");
 const { paginationResponse } = require("../../../utils/paginationFormate");
 const { ObjectId } = require("mongoose").Types;
@@ -10,9 +10,9 @@ const {
 } = require("../../../helper/constant");
 
 const fetchOrder = async (req, res) => {
-  let { logger, userId } = req;
+  let { logger, userId, query } = req;
   try {
-    let { page, limit, status } = req.query;
+    let { page, limit, status } = query;
 
     offset = page || 1;
     limit = limit || 10;

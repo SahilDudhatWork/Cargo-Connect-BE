@@ -1,4 +1,4 @@
-const Movement = require("../../../model/user/movement");
+const Movement = require("../../../model/movement/movement");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { ObjectId } = require("mongoose").Types;
@@ -9,9 +9,9 @@ const {
 } = require("../../../helper/constant");
 
 const getDetails = async (req, res) => {
-  const { logger } = req;
+  const { logger, params } = req;
   try {
-    const { id } = req.params;
+    const { id } = params;
 
     let getData = await Movement.aggregate([
       {

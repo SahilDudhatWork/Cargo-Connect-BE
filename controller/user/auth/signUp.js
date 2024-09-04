@@ -26,7 +26,7 @@ const uploadMiddleware = upload.fields([
 ]);
 
 const signUp = async (req, res) => {
-  const { logger } = req;
+  const { logger, body, files, fileValidationError } = req;
   try {
     const {
       companyName,
@@ -36,13 +36,13 @@ const signUp = async (req, res) => {
       password,
       commercialReference,
       companyFormationType,
-    } = req.body;
+    } = body;
 
-    if (req.fileValidationError) {
+    if (fileValidationError) {
       return Response.error({
         res,
         status: STATUS_CODE.BAD_REQUEST,
-        msg: req.fileValidationError,
+        msg: fileValidationError,
       });
     }
 
@@ -59,38 +59,33 @@ const signUp = async (req, res) => {
     const passwordHash = encrypt(password, process.env.PASSWORD_ENCRYPTION_KEY);
 
     // Store file paths in the body
-    req.body.profilePicture = req.files["profilePicture"]
-      ? req.files["profilePicture"][0].presignedUrl
+    body.profilePicture = files["profilePicture"]
+      ? files["profilePicture"][0].presignedUrl
       : null;
-    req.body.companyFormation = {
+    body.companyFormation = {
       usa: {
-        w9_Form: req.files["companyFormation_usa_w9_Form"]
-          ? req.files["companyFormation_usa_w9_Form"][0].presignedUrl
+        w9_Form: files["companyFormation_usa_w9_Form"]
+          ? files["companyFormation_usa_w9_Form"][0].presignedUrl
           : null,
-        utility_Bill: req.files["companyFormation_usa_utility_Bill"]
-          ? req.files["companyFormation_usa_utility_Bill"][0].presignedUrl
+        utility_Bill: files["companyFormation_usa_utility_Bill"]
+          ? files["companyFormation_usa_utility_Bill"][0].presignedUrl
           : null,
       },
       maxico: {
-        copia_Rfc_Form: req.files["companyFormation_maxico_copia_Rfc_Form"]
-          ? req.files["companyFormation_maxico_copia_Rfc_Form"][0].presignedUrl
+        copia_Rfc_Form: files["companyFormation_maxico_copia_Rfc_Form"]
+          ? files["companyFormation_maxico_copia_Rfc_Form"][0].presignedUrl
           : null,
-        constance_Of_Fiscal_Situation: req.files[
+        constance_Of_Fiscal_Situation: files[
           "companyFormation_maxico_constance_Of_Fiscal_Situation"
         ]
-          ? req.files[
-              "companyFormation_maxico_constance_Of_Fiscal_Situation"
-            ][0].presignedUrl
-          : null,
-        proof_of_Favorable: req.files[
-          "companyFormation_maxico_proof_of_Favorable"
-        ]
-          ? req.files["companyFormation_maxico_proof_of_Favorable"][0]
+          ? files["companyFormation_maxico_constance_Of_Fiscal_Situation"][0]
               .presignedUrl
           : null,
-        proof_Of_Address: req.files["companyFormation_maxico_proof_Of_Address"]
-          ? req.files["companyFormation_maxico_proof_Of_Address"][0]
-              .presignedUrl
+        proof_of_Favorable: files["companyFormation_maxico_proof_of_Favorable"]
+          ? files["companyFormation_maxico_proof_of_Favorable"][0].presignedUrl
+          : null,
+        proof_Of_Address: files["companyFormation_maxico_proof_Of_Address"]
+          ? files["companyFormation_maxico_proof_Of_Address"][0].presignedUrl
           : null,
       },
     };
@@ -104,14 +99,14 @@ const signUp = async (req, res) => {
       email,
       password: passwordHash,
       commercialReference,
-      profilePicture: req.body.profilePicture,
-      scac: req.body.scac,
-      caat: req.body.caat,
-      insurancePolicy: req.body.insurancePolicy,
-      oea: req.body.oea,
-      ctpat: req.body.ctpat,
+      profilePicture: body.profilePicture,
+      scac: body.scac,
+      caat: body.caat,
+      insurancePolicy: body.insurancePolicy,
+      oea: body.oea,
+      ctpat: body.ctpat,
       companyFormationType,
-      companyFormation: req.body.companyFormation,
+      companyFormation: body.companyFormation,
     });
 
     // Generate JWT Token

@@ -8,9 +8,9 @@ const { handleException } = require("../../../../helper/exception");
 const { hendleModel } = require("../../../../utils/hendleModel");
 
 const verify = async (req, res) => {
-  const { logger } = req;
+  const { logger, params } = req;
   try {
-    const { type, id } = req.params;
+    const { type, id } = params;
 
     const Model = await hendleModel(res, type);
 
@@ -24,7 +24,7 @@ const verify = async (req, res) => {
         msg: ERROR_MSGS.DATA_NOT_AVAILABLE,
       });
     }
-    
+
     fetchData.verifyByAdmin = true;
     fetchData.save();
 

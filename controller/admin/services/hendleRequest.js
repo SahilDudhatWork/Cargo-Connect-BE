@@ -1,4 +1,4 @@
-const Movement = require("../../../model/user/movement");
+const Movement = require("../../../model/movement/movement");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { ObjectId } = require("mongoose").Types;
@@ -9,23 +9,22 @@ const {
 } = require("../../../helper/constant");
 
 const hendleRequest = async (req, res) => {
+  const { logger, params, body } = req;
   try {
-    const { id } = req.params;
-    const { carrierId, operatorId, vehicleId } = req.body;
+    const { id } = params;
+    const { carrierId, operatorId, vehicleId } = body;
 
     // Convert IDs to ObjectId
-    req.body.carrierId = new ObjectId(carrierId);
-    req.body.operatorId = new ObjectId(operatorId);
-    req.body.vehicleId = new ObjectId(vehicleId);
-    req.body.status = "InProgress";
-    req.body.isAssign = true;
+    body.carrierId = new ObjectId(carrierId);
+    body.operatorId = new ObjectId(operatorId);
+    body.vehicleId = new ObjectId(vehicleId);
+    body.status = "InProgress";
+    body.isAssign = true;
 
     // Update the Movement document
-    let updateData = await Movement.findByIdAndUpdate(
-      new ObjectId(id),
-      req.body,
-      { new: true }
-    );
+    let updateData = await Movement.findByIdAndUpdate(new ObjectId(id), body, {
+      new: true,
+    });
 
     const statusCode = updateData ? STATUS_CODE.OK : STATUS_CODE.INTERNAL_ERROR;
     const message = updateData

@@ -10,10 +10,10 @@ const {
 } = require("../../../helper/constant");
 
 const fetchData = async (req, res) => {
-  let { logger } = req;
+  let { logger, params, query } = req;
   try {
-    const { carrierId } = req.params;
-    let { page, limit, sortBy } = req.query;
+    const { carrierId } = params;
+    let { page, limit, sortBy } = query;
 
     sortBy = sortBy === "recent" ? { createdAt: -1 } : { createdAt: 1 };
 

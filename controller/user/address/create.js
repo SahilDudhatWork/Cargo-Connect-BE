@@ -8,10 +8,10 @@ const {
 } = require("../../../helper/constant");
 
 const create = async (req, res) => {
-  const { logger, userId } = req;
+  const { logger, userId, body } = req;
   try {
-    req.body.userId = userId;
-    let saveData = await Address.create(req.body);
+    body.userId = userId;
+    let saveData = await Address.create(body);
 
     const statusCode = saveData ? STATUS_CODE.CREATED : STATUS_CODE.BAD_REQUEST;
     const message = saveData

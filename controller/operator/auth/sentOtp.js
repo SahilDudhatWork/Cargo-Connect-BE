@@ -9,9 +9,9 @@ const Otp = require("../../../model/common/otp");
 const Operator = require("../../../model/operator/operator");
 
 const sentOtp = async (req, res) => {
-  const { logger } = req;
+  const { logger, body } = req;
   try {
-    const { mobile } = req.body;
+    const { mobile } = body;
 
     const checkMobileExist = await Operator.findOne({ operatorNumber: mobile });
 

@@ -1,7 +1,6 @@
-const Movement = require("../../../model/user/movement");
+const Movement = require("../../../model/movement/movement");
 const { handleException } = require("../../../helper/exception");
 const { paginationResponse } = require("../../../utils/paginationFormate");
-const { ObjectId } = require("mongoose").Types;
 const Response = require("../../../helper/response");
 const {
   STATUS_CODE,
@@ -10,9 +9,9 @@ const {
 } = require("../../../helper/constant");
 
 const fetchMovement = async (req, res) => {
-  let { logger } = req;
+  let { logger, query } = req;
   try {
-    let { page, limit, keyWord } = req.query;
+    let { page, limit, keyWord } = query;
 
     let qry = {};
 
@@ -37,7 +36,6 @@ const fetchMovement = async (req, res) => {
                 $expr: { $eq: ["$_id", "$$operatorId"] },
               },
             },
-            // { $project: { _id: 1, operatorNumber: 1, operatorName: 1 } },
           ],
           as: "operatorsData",
         },

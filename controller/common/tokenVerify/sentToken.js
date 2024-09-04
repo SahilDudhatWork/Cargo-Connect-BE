@@ -10,10 +10,10 @@ const { adminAuth } = require("../../../middleware/authToken/adminAuth");
 const { carrierAuth } = require("../../../middleware/authToken/carrierAuth");
 const { userAuth } = require("../../../middleware/authToken/userAuth");
 
-const sentToken = async (req, res, next) => {
-  const { logger } = req;
+const sentToken = async (req, res) => {
+  const { logger, userId, carrierId, adminId, params } = req;
   try {
-    const { type } = req.params;
+    const { type } = params;
     const Model = await hendleModel(res, type);
     let id;
 
@@ -23,17 +23,17 @@ const sentToken = async (req, res, next) => {
       await userAuth(req, res, () => {
         if (res.headersSent) authError = true;
       });
-      id = req.userId;
+      id = userId;
     } else if (type === "carrier") {
       await carrierAuth(req, res, () => {
         if (res.headersSent) authError = true;
       });
-      id = req.carrierId;
+      id = carrierId;
     } else if (type === "admin") {
       await adminAuth(req, res, () => {
         if (res.headersSent) authError = true;
       });
-      id = req.adminId;
+      id = adminId;
     }
 
     // If authentication failed and response was sent, exit early

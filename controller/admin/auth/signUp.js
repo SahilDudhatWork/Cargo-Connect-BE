@@ -13,9 +13,9 @@ const { generateAccountId } = require("../../../utils/generateUniqueId");
  * Register a new admin with email and password
  */
 const signUp = async (req, res) => {
-  const { logger } = req;
+  const { logger, body } = req;
   try {
-    const { email, password } = req.body;
+    const { email, password } = body;
     const adminEmailExist = await Admin.findOne({
       email: email,
     });
@@ -30,9 +30,9 @@ const signUp = async (req, res) => {
 
     const passwordHash = encrypt(password, process.env.PASSWORD_ENCRYPTION_KEY);
 
-    req.body.accountId = generateAccountId();
-    req.body.password = passwordHash;
-    await Admin.create(req.body);
+    body.accountId = generateAccountId();
+    body.password = passwordHash;
+    await Admin.create(body);
 
     const obj = {
       res,

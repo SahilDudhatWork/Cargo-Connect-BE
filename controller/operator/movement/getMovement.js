@@ -1,4 +1,4 @@
-const Movement = require("../../../model/user/movement");
+const Movement = require("../../../model/movement/movement");
 const { handleException } = require("../../../helper/exception");
 const { paginationResponse } = require("../../../utils/paginationFormate");
 const { ObjectId } = require("mongoose").Types;
@@ -10,9 +10,9 @@ const {
 } = require("../../../helper/constant");
 
 const fetchMovement = async (req, res) => {
-  let { logger, operatorId } = req;
+  let { logger, operatorId, query } = req;
   try {
-    let { page, limit, sortBy } = req.query;
+    let { page, limit, sortBy } = query;
     let qry = {};
 
     if (sortBy == "InProgress") {
