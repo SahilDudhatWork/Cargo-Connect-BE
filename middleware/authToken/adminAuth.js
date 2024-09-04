@@ -7,13 +7,13 @@ const { decrypt } = require("../../helper/encrypt-decrypt");
 
 //- For Admin Token Decode
 const adminAuth = async (req, res, next) => {
-  const { logger } = req;
+  const { logger, body, query, headers } = req;
   try {
     let token =
-      req.body.token ||
-      req.query.token ||
-      req.headers["x-auth-token"] ||
-      req.headers["authorization"];
+      body.token ||
+      query.token ||
+      headers["x-auth-token"] ||
+      headers["authorization"];
     if (!token || token.length == 0 || token.toString() === "null") {
       const obj = {
         res,

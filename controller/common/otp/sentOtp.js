@@ -10,10 +10,10 @@ const { VerificationEmail } = require("../../../utils/emailVerification");
 const { hendleModel } = require("../../../utils/hendleModel");
 
 const sentOtp = async (req, res) => {
-  const { logger } = req;
+  const { logger, params, body } = req;
   try {
-    const { email } = req.body;
-    const { type } = req.params;
+    const { email } = body;
+    const { type } = params;
 
     const Model = await hendleModel(res, type);
 

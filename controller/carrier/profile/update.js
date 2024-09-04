@@ -29,15 +29,15 @@ const uploadMiddleware = upload.fields([
 ]);
 
 const update = async (req, res) => {
-  const { logger, carrierId } = req;
+  const { logger, carrierId, body, files, fileValidationError } = req;
   try {
-    const { email, password, accountId } = req.body;
+    const { email, password, accountId } = body;
 
-    if (req.fileValidationError) {
+    if (fileValidationError) {
       return Response.error({
         res,
         status: STATUS_CODE.BAD_REQUEST,
-        msg: req.fileValidationError,
+        msg: fileValidationError,
       });
     }
 
@@ -61,59 +61,50 @@ const update = async (req, res) => {
       });
     }
 
-    req.body.profilePicture = req.files?.profilePicture
-      ? req.files["profilePicture"][0].presignedUrl
+    body.profilePicture = files?.profilePicture
+      ? files["profilePicture"][0].presignedUrl
       : fetchCarrier.profilePicture;
-    req.body.scac = req.files?.scac
-      ? req.files["scac"][0].presignedUrl
-      : fetchCarrier.scac;
-    req.body.caat = req.files?.caat
-      ? req.files["caat"][0].presignedUrl
-      : fetchCarrier.caat;
-    req.body.insurancePolicy = req.files?.insurancePolicy
-      ? req.files["insurancePolicy"][0].presignedUrl
+    body.scac = files?.scac ? files["scac"][0].presignedUrl : fetchCarrier.scac;
+    body.caat = files?.caat ? files["caat"][0].presignedUrl : fetchCarrier.caat;
+    body.insurancePolicy = files?.insurancePolicy
+      ? files["insurancePolicy"][0].presignedUrl
       : fetchCarrier.insurancePolicy;
-    req.body.oea = req.files?.oea
-      ? req.files["oea"][0].presignedUrl
-      : fetchCarrier.oea;
-    req.body.ctpat = req.files?.ctpat
-      ? req.files["ctpat"][0].presignedUrl
+    body.oea = files?.oea ? files["oea"][0].presignedUrl : fetchCarrier.oea;
+    body.ctpat = files?.ctpat
+      ? files["ctpat"][0].presignedUrl
       : fetchCarrier.ctpat;
 
-    req.body.companyFormation = {
+    body.companyFormation = {
       usa: {
-        w9_Form: req.files?.companyFormation_usa_w9_Form
-          ? req.files["companyFormation_usa_w9_Form"][0].presignedUrl
+        w9_Form: files?.companyFormation_usa_w9_Form
+          ? files["companyFormation_usa_w9_Form"][0].presignedUrl
           : fetchCarrier.companyFormation.usa.w9_Form,
-        utility_Bill: req.files?.companyFormation_usa_utility_Bill
-          ? req.files["companyFormation_usa_utility_Bill"][0].presignedUrl
+        utility_Bill: files?.companyFormation_usa_utility_Bill
+          ? files["companyFormation_usa_utility_Bill"][0].presignedUrl
           : fetchCarrier.companyFormation.usa.utility_Bill,
       },
       maxico: {
-        copia_Rfc_Form: req.files?.companyFormation_maxico_copia_Rfc_Form
-          ? req.files["companyFormation_maxico_copia_Rfc_Form"][0].presignedUrl
+        copia_Rfc_Form: files?.companyFormation_maxico_copia_Rfc_Form
+          ? files["companyFormation_maxico_copia_Rfc_Form"][0].presignedUrl
           : fetchCarrier.companyFormation.maxico.copia_Rfc_Form,
-        constance_Of_Fiscal_Situation: req.files
-          ?.companyFormation_maxico_constance_Of_Fiscal_Situation
-          ? req.files[
-              "companyFormation_maxico_constance_Of_Fiscal_Situation"
-            ][0].presignedUrl
-          : fetchCarrier.companyFormation.maxico.constance_Of_Fiscal_Situation,
-        proof_of_Favorable: req.files
-          ?.companyFormation_maxico_proof_of_Favorable
-          ? req.files["companyFormation_maxico_proof_of_Favorable"][0]
-              .presignedUrl
+        constance_Of_Fiscal_Situation:
+          files?.companyFormation_maxico_constance_Of_Fiscal_Situation
+            ? files["companyFormation_maxico_constance_Of_Fiscal_Situation"][0]
+                .presignedUrl
+            : fetchCarrier.companyFormation.maxico
+                .constance_Of_Fiscal_Situation,
+        proof_of_Favorable: files?.companyFormation_maxico_proof_of_Favorable
+          ? files["companyFormation_maxico_proof_of_Favorable"][0].presignedUrl
           : fetchCarrier.companyFormation.maxico.proof_of_Favorable,
-        proof_Of_Address: req.files?.companyFormation_maxico_proof_Of_Address
-          ? req.files["companyFormation_maxico_proof_Of_Address"][0]
-              .presignedUrl
+        proof_Of_Address: files?.companyFormation_maxico_proof_Of_Address
+          ? files["companyFormation_maxico_proof_Of_Address"][0].presignedUrl
           : fetchCarrier.companyFormation.maxico.proof_Of_Address,
       },
     };
 
     const updateData = await Carrier.findByIdAndUpdate(
       { _id: new ObjectId(carrierId) },
-      req.body,
+      body,
       { new: true }
     );
 

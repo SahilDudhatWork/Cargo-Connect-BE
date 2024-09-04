@@ -33,9 +33,9 @@ const generateJWTToken = (payload) => {
  * Login
  */
 const logIn = async (req, res) => {
-  const { logger } = req;
+  const { logger, body } = req;
   try {
-    const { email, password } = req.body;
+    const { email, password } = body;
 
     let carrierInfo = await Carrier.aggregate([{ $match: { email: email } }]);
     carrierInfo = carrierInfo[0];

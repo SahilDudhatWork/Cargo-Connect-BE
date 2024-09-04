@@ -8,9 +8,9 @@ const {
 const { handleException } = require("../../../helper/exception");
 
 const remove = async (req, res) => {
-  const { logger } = req;
+  const { logger, params } = req;
   try {
-    const { id } = req.params;
+    const { id } = params;
 
     const deleteData = await Vehicle.findByIdAndDelete(id);
 

@@ -4,9 +4,9 @@ const { STATUS_CODE, ERROR_MSGS, INFO_MSGS } = require("../../helper/constant");
 const { handleException } = require("../../helper/exception");
 
 const carrierPermission = async (req, res, next) => {
-  const { logger } = req;
+  const { logger, carrierId } = req;
   try {
-    const getCarrier = await Carrier.findById(req.carrierId);
+    const getCarrier = await Carrier.findById(carrierId);
 
     let { verifyByAdmin, isBlocked } = getCarrier;
 

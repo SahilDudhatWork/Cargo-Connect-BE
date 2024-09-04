@@ -3,7 +3,6 @@ const Admin = require("../model/admin/admin");
 const Carrier = require("../model/carrier/carrier");
 const Operator = require("../model/operator/operator");
 const Vehicle = require("../model/vehicle/vehicle");
-const { handleException } = require("../helper/exception");
 
 const hendleModel = async (res, type) => {
   try {
@@ -22,7 +21,6 @@ const hendleModel = async (res, type) => {
     return Model;
   } catch (error) {
     console.error("Error:", error);
-    return handleException(logger, res, error);
   }
 };
 

@@ -9,9 +9,9 @@ const jwt = require("jsonwebtoken");
 const { handleException } = require("../../../helper/exception");
 
 const verifyOtp = async (req, res) => {
-  const { logger } = req;
+  const { logger, body } = req;
   try {
-    const { email, otp } = req.body;
+    const { email, otp } = body;
 
     const otpData = await Otp.findOne({ email });
 

@@ -9,10 +9,10 @@ const {
 } = require("../../../../helper/constant");
 
 const fetchData = async (req, res) => {
-  let { logger } = req;
+  let { logger, params, query } = req;
   try {
-    let { keyWord, page, limit, sortBy } = req.query;
-    const { type } = req.params;
+    let { keyWord, page, limit, sortBy } = query;
+    const { type } = params;
 
     const Model = await hendleModel(res, type);
 

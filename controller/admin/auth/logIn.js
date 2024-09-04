@@ -34,10 +34,11 @@ const generateJWTToken = (payload) => {
  * Login
  */
 const logIn = async (req, res) => {
+  const { logger, body, headers, connection } = req;
   try {
-    const { email, password } = req.body;
+    const { email, password } = body;
 
-    const { error } = LoginValidation.adminLogin(req.body);
+    const { error } = LoginValidation.adminLogin(body);
     if (error) {
       const obj = {
         res,
@@ -73,8 +74,7 @@ const logIn = async (req, res) => {
     }
     let key1 = process.env.ADMIN_ENCRYPTION_KEY;
     const encryptAdmin = encrypt(adminInfo._id, key1);
-    const clientIp =
-      req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+    const clientIp = headers["x-forwarded-for"] || connection.remoteAddress;
     const data = await commonAuth(encryptAdmin, clientIp);
 
     await Admin.findByIdAndUpdate(

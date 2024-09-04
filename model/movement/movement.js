@@ -94,6 +94,14 @@ const collectionSchema = new Schema(
         default: null,
       },
     },
+    qrCode: {
+      type: String,
+      default: null,
+    },
+    proofOfPhotography: {
+      type: Array,
+      default: null,
+    },
     pickUpAddressIds: [{ type: ObjectId }],
     dropAddressIds: [{ type: ObjectId }],
     status: {

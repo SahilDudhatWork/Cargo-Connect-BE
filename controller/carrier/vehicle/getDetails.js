@@ -9,9 +9,9 @@ const {
 } = require("../../../helper/constant");
 
 const getDetails = async (req, res) => {
-  const { logger } = req;
+  const { logger, params } = req;
   try {
-    const { id } = req.params;
+    const { id } = params;
 
     let getData = await Vehicle.aggregate([
       {

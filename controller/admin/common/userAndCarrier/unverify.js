@@ -8,9 +8,9 @@ const { handleException } = require("../../../../helper/exception");
 const { hendleModel } = require("../../../../utils/hendleModel");
 
 const unverify = async (req, res) => {
-  const { logger } = req;
+  const { logger, params } = req;
   try {
-    const { type, id } = req.params;
+    const { type, id } = params;
 
     const Model = await hendleModel(res, type);
 

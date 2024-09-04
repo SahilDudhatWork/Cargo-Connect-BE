@@ -12,9 +12,9 @@ const {
 const { handleException } = require("../../../helper/exception");
 
 const verifyAndLogin = async (req, res) => {
-  const { logger } = req;
+  const { logger, body } = req;
   try {
-    const { mobile, otp } = req.body;
+    const { mobile, otp } = body;
 
     const otpData = await Otp.findOne({ mobile });
 

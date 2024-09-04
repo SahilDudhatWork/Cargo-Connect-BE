@@ -1,4 +1,4 @@
-const Operator = require("../../../model/operator/operator");
+const Rating = require("../../../model/movement/rating");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { ObjectId } = require("mongoose").Types;
@@ -8,32 +8,15 @@ const {
   INFO_MSGS,
 } = require("../../../helper/constant");
 
-const getDetails = async (req, res) => {
+const getRating = async (req, res) => {
   const { logger, params } = req;
   try {
-    const { id } = params;
+    const getData = await Rating.findOne({
+      movementId: new ObjectId(params.movementId),
+    });
 
-    let getData = await Operator.aggregate([
-      {
-        $match: {
-          _id: new ObjectId(id),
-        },
-      },
-      {
-        $project: {
-          __v: 0,
-          password: 0,
-          forgotPassword: 0,
-          token: 0,
-        },
-      },
-    ]);
-
-    getData = getData[0];
-
-    const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.OK;
-    const message = getData ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;
-
+    const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.BAD_REQUEST;
+    const message = getData ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_AVAILABLE;
     return Response[statusCode === STATUS_CODE.OK ? "success" : "error"]({
       req,
       res,
@@ -48,5 +31,5 @@ const getDetails = async (req, res) => {
 };
 
 module.exports = {
-  getDetails,
+  getRating,
 };

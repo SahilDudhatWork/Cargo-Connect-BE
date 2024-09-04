@@ -1,4 +1,4 @@
-const Movement = require("../../../model/user/movement");
+const Movement = require("../../../model/movement/movement");
 const { handleException } = require("../../../helper/exception");
 const { paginationResponse } = require("../../../utils/paginationFormate");
 const { ObjectId } = require("mongoose").Types;
@@ -10,9 +10,9 @@ const {
 } = require("../../../helper/constant");
 
 const fetchMovement = async (req, res) => {
-  let { logger, carrierId } = req;
+  let { logger, carrierId, query } = req;
   try {
-    let { page, limit, sortBy } = req.query;
+    let { page, limit, sortBy, keyWord } = query;
 
     let qry = {};
 
@@ -34,6 +34,11 @@ const fetchMovement = async (req, res) => {
         status: "Completed",
         carrierId: new ObjectId(carrierId),
       };
+    }
+
+    if (keyWord) {
+      qry.$or = qry.$or || [];
+      qry.$or.push({ movementId: { $regex: keyWord, $options: "i" } });
     }
 
     offset = page || 1;

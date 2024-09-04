@@ -10,11 +10,11 @@ const {
 } = require("../../../helper/constant");
 
 const resetPassword = async (req, res) => {
-  const { logger } = req;
+  const { logger, params, body } = req;
   try {
-    const { password } = req.body;
+    const { password } = body;
     const { email } = req;
-    const { type } = req.params;
+    const { type } = params;
 
     const { error } = validateResetPassword({ password });
     if (error) {

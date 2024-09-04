@@ -9,10 +9,10 @@ const {
 } = require("../../../../helper/constant");
 
 const getDetails = async (req, res) => {
-  const { logger } = req;
+  const { logger, params } = req;
   try {
-    const { type,id } = req.params;
-    
+    const { type, id } = params;
+
     const Model = await hendleModel(res, type);
 
     let getData = await Model.aggregate([
