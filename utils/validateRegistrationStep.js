@@ -26,7 +26,6 @@ const validateUserData = (data) => {
         "companyName",
         "contactName",
         "emailAddress",
-        "countryCode",
         "contactNo",
       ];
       for (const refField of referenceFields) {
@@ -100,7 +99,6 @@ const validateCarrierData = (data) => {
         "companyName",
         "contactName",
         "emailAddress",
-        "countryCode",
         "contactNo",
       ];
       for (const refField of referenceFields) {
