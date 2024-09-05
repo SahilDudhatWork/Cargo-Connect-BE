@@ -5,6 +5,10 @@ const upload = require("../../../../middleware/multer");
 const { hendleModel } = require("../../../../utils/hendleModel");
 const { generateAccountId } = require("../../../../utils/generateUniqueId");
 const {
+  validateCarrierData,
+  validateUserData,
+} = require("../../../../utils/validateRegistrationStep");
+const {
   STATUS_CODE,
   ERROR_MSGS,
   INFO_MSGS,
@@ -97,6 +101,11 @@ const create = async (req, res) => {
           : null,
       },
     };
+    if (type === "user") {
+      body.stepCompleted = validateUserData(body);
+    } else if (type === "carrier") {
+      body.stepCompleted = validateCarrierData(body);
+    }
 
     let saveData = await Model.create(body);
 

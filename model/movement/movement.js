@@ -60,10 +60,6 @@ const collectionSchema = new Schema(
       type: String,
       default: null,
     },
-    userReference: {
-      type: String,
-      default: null,
-    },
     specialRequirements: {
       type: Array,
       default: null,
@@ -81,6 +77,10 @@ const collectionSchema = new Schema(
       default: null,
     },
     restrictedTime: {
+      type: String,
+      default: null,
+    },
+    programming: {
       type: String,
       default: null,
     },
@@ -107,7 +107,7 @@ const collectionSchema = new Schema(
     status: {
       type: String,
       default: "Pending",
-      enum: ["Approved", "Completed", "InProgress", "Pending"],
+      enum: ["Approved", "Completed", "InProgress", "Pending", "Cancelled"],
     },
     isAssign: {
       type: Boolean,

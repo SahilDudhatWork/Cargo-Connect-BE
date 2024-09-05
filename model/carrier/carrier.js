@@ -113,6 +113,10 @@ const collectionSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    stepCompleted: {
+      type: Boolean,
+      default: false,
+    },
     token: {
       type: {
         type: String,

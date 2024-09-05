@@ -3,6 +3,10 @@ const Response = require("../../../../helper/response");
 const { hendleModel } = require("../../../../utils/hendleModel");
 const { encrypt } = require("../../../../helper/encrypt-decrypt");
 const {
+  validateCarrierData,
+  validateUserData,
+} = require("../../../../utils/validateRegistrationStep");
+const {
   STATUS_CODE,
   ERROR_MSGS,
   INFO_MSGS,
@@ -101,6 +105,14 @@ const update = async (req, res) => {
     const updatedData = await Model.findByIdAndUpdate(id, body, {
       new: true,
     });
+
+    if (type === "user") {
+      updatedData.stepCompleted = validateUserData(updatedData);
+      updatedData.save();
+    } else if (type === "carrier") {
+      updatedData.stepCompleted = validateCarrierData(updatedData);
+      updatedData.save();
+    }
 
     if (!updatedData) {
       return Response.error({

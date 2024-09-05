@@ -68,6 +68,11 @@ const collectionSchema = new Schema(
     },
     commercialReference: [
       {
+        accountId: {
+          type: String ,
+          default: null,
+          unique: true,
+        },
         companyName: {
           type: String,
         },
@@ -90,6 +95,10 @@ const collectionSchema = new Schema(
       default: false,
     },
     isBlocked: {
+      type: Boolean,
+      default: false,
+    },
+    stepCompleted: {
       type: Boolean,
       default: false,
     },

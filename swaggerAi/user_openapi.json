@@ -36,10 +36,13 @@
       "name": "Service"
     },
     {
-      "name": "Order"
+      "name": "Movement"
     },
     {
       "name": "Address"
+    },
+    {
+      "name": "Banners"
     },
     {
       "name": "---- Common ----"
@@ -79,7 +82,7 @@
                   },
                   "email": {
                     "type": "string",
-                    "example": "pdpd1s2@example.com"
+                    "example": "johndoe@example.com"
                   },
                   "password": {
                     "type": "string",
@@ -127,7 +130,7 @@
                   },
                   "companyFormationType": {
                     "type": "string",
-                    "example": "usa"
+                    "example": "maxico"
                   },
                   "profilePicture": {
                     "type": "string",
@@ -257,7 +260,7 @@
                 "properties": {
                   "email": {
                     "type": "string",
-                    "example": "pdpd@example.com"
+                    "example": "johndoe@example.com"
                   },
                   "companyName": {
                     "type": "string",
@@ -382,9 +385,28 @@
         }
       }
     },
+    "/v1/user/banners": {
+      "get": {
+        "tags": ["Banners"],
+        "summary": "Fetch Banners",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
     "/v1/user/order": {
       "post": {
-        "tags": ["Order"],
+        "tags": ["Movement"],
         "summary": "Create Order",
         "requestBody": {
           "content": {
@@ -405,7 +427,7 @@
                     "description": "String"
                   },
                   "port_BridgeOfCrossing": "Port of Los Angeles 4564",
-                  "userReference": "USR123456",
+                  "userReference": "MSUPUBHRQF5527977606",
                   "specialRequirements": ["Handle with care", "Urgent"],
                   "quantityForChains": "10",
                   "quantityForStraps": "20",
@@ -437,7 +459,7 @@
         }
       },
       "get": {
-        "tags": ["Order"],
+        "tags": ["Movement"],
         "summary": "Fetch Order",
         "security": [
           {
@@ -467,7 +489,7 @@
             "schema": {
               "type": "string"
             },
-            "example": "Pending"
+            "example": "Approved"
           }
         ],
         "responses": {
@@ -482,8 +504,27 @@
     },
     "/v1/user/order/{orderId}": {
       "get": {
-        "tags": ["Order"],
+        "tags": ["Movement"],
         "summary": "Get Details",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/order/reference": {
+      "get": {
+        "tags": ["Movement"],
+        "summary": "Fetch Reference",
         "security": [
           {
             "bearerAuth": []
@@ -548,13 +589,6 @@
           }
         ],
         "parameters": [
-          {
-            "name": "keyWord",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "page",
             "in": "query",

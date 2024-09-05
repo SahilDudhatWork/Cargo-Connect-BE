@@ -5,6 +5,7 @@ const {
   INFO_MSGS,
 } = require("../../../helper/constant");
 const { handleException } = require("../../../helper/exception");
+const { validateUserData } = require("../../../utils/validateRegistrationStep");
 const Response = require("../../../helper/response");
 const { ObjectId } = require("mongoose").Types;
 const upload = require("../../../middleware/multer");
@@ -92,6 +93,9 @@ const update = async (req, res) => {
       body,
       { new: true }
     );
+
+    updateData.stepCompleted = validateUserData(updateData);
+    updateData.save();
 
     const result = updateData.toObject();
     delete result.password;

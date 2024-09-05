@@ -4,6 +4,8 @@ const { encrypt } = require("../../../helper/encrypt-decrypt");
 const Response = require("../../../helper/response");
 const jwt = require("jsonwebtoken");
 const { generateAccountId } = require("../../../utils/generateUniqueId");
+const { validateUserData } = require("../../../utils/validateRegistrationStep");
+const { generateNumOrCharId } = require("../../../utils/generateUniqueId");
 const upload = require("../../../middleware/multer");
 const {
   STATUS_CODE,
@@ -37,6 +39,14 @@ const signUp = async (req, res) => {
       commercialReference,
       companyFormationType,
     } = body;
+    let newCommercialReference;
+
+    if (commercialReference.length > 0) {
+      newCommercialReference = commercialReference.map((i) => ({
+        ...i,
+        accountId: generateNumOrCharId(),
+      }));
+    }
 
     if (fileValidationError) {
       return Response.error({
@@ -90,6 +100,13 @@ const signUp = async (req, res) => {
       },
     };
 
+    delete body.companyFormation_usa_w9_Form;
+    delete body.companyFormation_usa_utility_Bill;
+    delete body.companyFormation_maxico_copia_Rfc_Form;
+    delete body.companyFormation_maxico_constance_Of_Fiscal_Situation;
+    delete body.companyFormation_maxico_proof_of_Favorable;
+    delete body.companyFormation_maxico_proof_Of_Address;
+
     // Create a new user
     const saveData = await User.create({
       accountId: generateAccountId(),
@@ -98,7 +115,7 @@ const signUp = async (req, res) => {
       contactNumber,
       email,
       password: passwordHash,
-      commercialReference,
+      commercialReference: newCommercialReference,
       profilePicture: body.profilePicture,
       scac: body.scac,
       caat: body.caat,
@@ -107,6 +124,7 @@ const signUp = async (req, res) => {
       ctpat: body.ctpat,
       companyFormationType,
       companyFormation: body.companyFormation,
+      stepCompleted: validateUserData(body),
     });
 
     // Generate JWT Token
@@ -137,9 +155,7 @@ const signUp = async (req, res) => {
   }
 };
 
-/**
- * Common Auth function for 2FA checking and JWT token generation
- */
+// Common Auth function for 2FA checking and JWT token generation
 const commonAuth = async (encryptUser) => {
   try {
     const payload = {
@@ -156,9 +172,7 @@ const commonAuth = async (encryptUser) => {
   }
 };
 
-/**
- * Generate JWT Token
- */
+// Generate JWT Token
 const generateJWTToken = async (payload) => {
   try {
     const { encryptUser, expiresIn, type, role } = payload;
