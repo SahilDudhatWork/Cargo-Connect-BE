@@ -46,19 +46,19 @@ const userAuth = async (req, res, next) => {
       req.userId = decrypt(decoded.userId, process.env.USER_ENCRYPTION_KEY);
       req.type = decoded.type;
       let checkUser = await User.findById({ _id: req.userId });
-      if (checkUser && decoded.type !== checkUser.token.type) {
-        const obj = {
-          res,
-          status: STATUS_CODE.UN_AUTHORIZED,
-          msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
-        };
-        return Response.error(obj);
-      }
       if (!checkUser) {
         const obj = {
           res,
           status: STATUS_CODE.UN_AUTHORIZED,
           msg: ERROR_MSGS.UN_AUTHORIZED,
+        };
+        return Response.error(obj);
+      }
+      if (checkUser && decoded.type !== checkUser.token.type) {
+        const obj = {
+          res,
+          status: STATUS_CODE.UN_AUTHORIZED,
+          msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
         };
         return Response.error(obj);
       }
