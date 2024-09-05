@@ -1,6 +1,7 @@
 const Movement = require("../../../model/movement/movement");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
+const { generateNumOrCharId } = require("../../../utils/generateUniqueId");
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -10,7 +11,7 @@ const {
 const createOrder = async (req, res) => {
   let { logger, userId, body } = req;
   try {
-    const movementId = await generateMovementId();
+    const movementId = await generateNumOrCharId();
 
     body.userId = userId;
     body.movementId = movementId;
@@ -32,22 +33,6 @@ const createOrder = async (req, res) => {
     console.error("error-->", error);
     return handleException(logger, res, error);
   }
-};
-
-const generateMovementId = () => {
-  const prefixLength = 10;
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  let dynamicPrefix = "";
-
-  for (let i = 0; i < prefixLength; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    dynamicPrefix += characters[randomIndex];
-  }
-
-  const uniqueNumber = Date.now().toString().slice(-10);
-
-  const uniqueId = `${dynamicPrefix}${uniqueNumber}`;
-  return uniqueId;
 };
 
 module.exports = {

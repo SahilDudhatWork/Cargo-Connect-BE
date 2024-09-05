@@ -48,6 +48,12 @@
       "name": "Vehicle"
     },
     {
+      "name": "Activity"
+    },
+    {
+      "name": "Banners"
+    },
+    {
       "name": "---- Common ----"
     },
     {
@@ -55,9 +61,6 @@
     },
     {
       "name": "Forgot Password"
-    },
-    {
-      "name": "Token Verification"
     }
   ],
   "paths": {
@@ -141,7 +144,7 @@
                   },
                   "email": {
                     "type": "string",
-                    "example": "johndoe111@example.com"
+                    "example": "johndoe@example.com"
                   },
                   "password": {
                     "type": "string",
@@ -177,7 +180,7 @@
                   },
                   "commercialReference[1][emailAddress]": {
                     "type": "string",
-                    "example": "james.brown@partner2.com"
+                    "example": "james.brow0n@partner2.com"
                   },
                   "commercialReference[1][countryCode]": {
                     "type": "integer",
@@ -252,7 +255,16 @@
             "in": "query",
             "schema": {
               "type": "string"
-            }
+            },
+            "example": "unity"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "blocked , recent , all"
           },
           {
             "name": "page",
@@ -269,14 +281,6 @@
               "type": "integer"
             },
             "example": "10"
-          },
-          {
-            "name": "sortBy",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "recent"
           }
         ],
         "responses": {
@@ -330,7 +334,7 @@
                   },
                   "email": {
                     "type": "string",
-                    "example": "johndoe112@example.com"
+                    "example": "johndoe@example.com"
                   },
                   "password": {
                     "type": "string",
@@ -372,6 +376,10 @@
                     "type": "integer",
                     "example": "44"
                   },
+                  "companyFormationType": {
+                    "type": "string",
+                    "example": "usa"
+                  },
                   "commercialReference[1][contactNo]": {
                     "type": "integer",
                     "example": "447123456789"
@@ -411,10 +419,6 @@
                   "verifyByAdmin": {
                     "type": "boolean",
                     "example": "true"
-                  },
-                  "companyFormationType": {
-                    "type": "string",
-                    "example": "usa"
                   }
                 }
               }
@@ -456,7 +460,17 @@
     "/v1/admin/module/verify/user/{userId}": {
       "post": {
         "tags": ["Manage User"],
-        "summary": "Verify User",
+        "summary": "Verify",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": ""
+              }
+            }
+          }
+        },
         "security": [
           {
             "bearerAuth": []
@@ -464,7 +478,7 @@
         ],
         "responses": {
           "200": {
-            "description": "User verified successful.",
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }
@@ -475,7 +489,7 @@
     "/v1/admin/module/unverify/user/{userId}": {
       "delete": {
         "tags": ["Manage User"],
-        "summary": "Unverify User",
+        "summary": "Unverify",
         "security": [
           {
             "bearerAuth": []
@@ -483,7 +497,7 @@
         ],
         "responses": {
           "200": {
-            "description": "User unverified successful.",
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }
@@ -515,7 +529,7 @@
                   },
                   "email": {
                     "type": "string",
-                    "example": "johndoe112@example.com"
+                    "example": "johndoe@example.com"
                   },
                   "password": {
                     "type": "string",
@@ -634,7 +648,7 @@
       },
       "get": {
         "tags": ["Manage Carrier"],
-        "summary": "Fetch Carrier",
+        "summary": "Get All",
         "security": [
           {
             "bearerAuth": []
@@ -642,12 +656,20 @@
         ],
         "parameters": [
           {
+            "name": "keyWord",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Test"
+          },
+          {
             "name": "sortBy",
             "in": "query",
             "schema": {
               "type": "string"
             },
-            "example": "recent"
+            "example": "blocked , recent , all"
           },
           {
             "name": "page",
@@ -717,7 +739,7 @@
                   },
                   "email": {
                     "type": "string",
-                    "example": "johndoe112@example.com"
+                    "example": "johndoe@example.com"
                   },
                   "password": {
                     "type": "string",
@@ -865,7 +887,17 @@
     "/v1/admin/module/verify/carrier/{carrierId}": {
       "post": {
         "tags": ["Manage Carrier"],
-        "summary": "Verify Carrier",
+        "summary": "Verify",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": ""
+              }
+            }
+          }
+        },
         "security": [
           {
             "bearerAuth": []
@@ -873,7 +905,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Carrier verified successful.",
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }
@@ -884,7 +916,7 @@
     "/v1/admin/module/unverify/carrier/{carrierId}": {
       "delete": {
         "tags": ["Manage Carrier"],
-        "summary": "Unverify Carrier",
+        "summary": "Unverify",
         "security": [
           {
             "bearerAuth": []
@@ -892,7 +924,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Carrier unverified successful.",
+            "description": "Successful response",
             "content": {
               "application/json": {}
             }
@@ -925,6 +957,14 @@
               "type": "integer"
             },
             "example": "10"
+          },
+          {
+            "name": "keyWord",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "MYWYBVRRRV4328325499"
           }
         ],
         "responses": {
@@ -997,7 +1037,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "carrierId": "66d2b34eb9990c69071dc827",
+                  "carrierId": "66d1ab55fd174dd1db7c9737",
                   "operatorName": "john doe",
                   "operatorNumber": 9876543212,
                   "mxIdBadge": "MX12345",
@@ -1164,7 +1204,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "carrierId": "66d2b34eb9990c69071dc827",
+                  "carrierId": "{carrierId}",
                   "vehicleName": "truck123",
                   "mxPlates": "MX-ABC-1234",
                   "mxPlatesExpirationDate": "2025-01-01",
@@ -1389,6 +1429,176 @@
         }
       }
     },
+    "/v1/admin/activity/user": {
+      "get": {
+        "tags": ["Activity"],
+        "summary": "User Activity",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2024-09-01"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2024-09-03"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/activity/carrier": {
+      "get": {
+        "tags": ["Activity"],
+        "summary": "Carrier Activity",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2024-09-01"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2024-09-03"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/activity/service": {
+      "get": {
+        "tags": ["Activity"],
+        "summary": "Service Activity",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2024-09-01"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2024-09-03"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/banners": {
+      "post": {
+        "tags": ["Banners"],
+        "summary": "Upload Banners",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_mainBanner": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "user_serviceBanner": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "user_operationsBanner": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Banners"],
+        "summary": "Fetch Banners",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
 
     "/v1/common/otp/sent/admin": {
       "post": {
@@ -1469,25 +1679,6 @@
               "type": "string"
             },
             "example": "application/json"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/v1/common/tokenVerify/admin": {
-      "post": {
-        "tags": ["Token Verification"],
-        "summary": "Verify Token",
-        "security": [
-          {
-            "bearerAuth": []
           }
         ],
         "responses": {

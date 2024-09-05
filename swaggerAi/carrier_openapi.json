@@ -42,6 +42,9 @@
       "name": "Vehicle"
     },
     {
+      "name": "Rating"
+    },
+    {
       "name": "---- Common ----"
     },
     {
@@ -79,7 +82,7 @@
                   },
                   "email": {
                     "type": "string",
-                    "example": "johndoe111@example.com"
+                    "example": "johndoe@example.com"
                   },
                   "password": {
                     "type": "string",
@@ -202,7 +205,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "email": "johndoe111@example.com",
+                  "email": "johndoe@example.com",
                   "password": "Password123"
                 }
               }
@@ -428,6 +431,22 @@
               "type": "integer"
             },
             "example": "10"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "Requests"
+          },
+          {
+            "name": "keyWord",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "SXTEUHJCQW5361089335"
           }
         ],
         "responses": {
@@ -467,8 +486,8 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "operatorId": "66d2e675344c90be4b855e0d",
-                  "vehicleId": "66d2e3c6c720906eb43460e8"
+                  "operatorId": "66d2e8d1c52af4bbc6be59esa",
+                  "vehicleId": "66d2e8d1c52af4bbc6be59ef"
                 }
               }
             }
@@ -489,7 +508,7 @@
         }
       }
     },
-    "/v1/carrier/operator/": {
+    "/v1/carrier/operator": {
       "post": {
         "tags": ["Operator"],
         "summary": "Create",
@@ -527,9 +546,7 @@
             }
           }
         }
-      }
-    },
-    "/v1/carrier/operator": {
+      },
       "get": {
         "tags": ["Operator"],
         "summary": "Fetch Data",
@@ -874,6 +891,55 @@
       "delete": {
         "tags": ["Vehicle"],
         "summary": "Delete",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/rating/{movementId}": {
+      "post": {
+        "tags": ["Rating"],
+        "summary": "Add Ratting",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "rating": 5,
+                  "experience": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Rating"],
+        "summary": "Get Ratting",
         "security": [
           {
             "bearerAuth": []

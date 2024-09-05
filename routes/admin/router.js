@@ -6,6 +6,8 @@ const operatorRoute = require("./operator");
 const vehicleRoute = require("./vehicle");
 const profileRoute = require("./profile");
 const servicesRoute = require("./services");
+const activityRoute = require("./activity");
+const bannersRoute = require("./banners");
 const { adminAuth } = require("../../middleware/authToken/adminAuth");
 
 router.get("/", (req, res) => {
@@ -19,5 +21,7 @@ router.use("/module", userAndCarrierRoute);
 router.use("/operator", operatorRoute);
 router.use("/vehicle", vehicleRoute);
 router.use("/services", servicesRoute);
+router.use("/activity", activityRoute);
+router.use("/banners", bannersRoute);
 
 module.exports = router;

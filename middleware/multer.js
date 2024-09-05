@@ -16,12 +16,10 @@ const s3 = new S3Client({
 // File filter for validation
 const fileFilter = (req, file, cb) => {
   const allowedTypes = /pdf|doc|docx|jpg|jpeg|png/i;
-  console.log("multer", file);
   const extname = allowedTypes.test(
     path.extname(file.originalname).toLowerCase()
   );
   const mimetype = allowedTypes.test(file.mimetype);
-  console.log("mimetype", mimetype, "extname", extname);
 
   // if (mimetype && extname) {
   cb(null, true);

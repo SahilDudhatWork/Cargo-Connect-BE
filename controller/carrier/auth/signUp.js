@@ -4,6 +4,9 @@ const { encrypt } = require("../../../helper/encrypt-decrypt");
 const Response = require("../../../helper/response");
 const jwt = require("jsonwebtoken");
 const { generateAccountId } = require("../../../utils/generateUniqueId");
+const {
+  validateCarrierData,
+} = require("../../../utils/validateRegistrationStep");
 const upload = require("../../../middleware/multer");
 const {
   STATUS_CODE,
@@ -119,6 +122,7 @@ const signUp = async (req, res) => {
       ctpat: body.ctpat,
       companyFormationType,
       companyFormation: body.companyFormation,
+      stepCompleted: validateCarrierData(body),
     });
 
     // Generate JWT Token
@@ -152,9 +156,7 @@ const signUp = async (req, res) => {
   }
 };
 
-/**
- * Common Auth function for 2FA checking and JWT token generation
- */
+// Common Auth function for 2FA checking and JWT token generation
 const commonAuth = async (encryptUser) => {
   try {
     const payload = {
@@ -171,9 +173,7 @@ const commonAuth = async (encryptUser) => {
   }
 };
 
-/**
- * Generate JWT Token
- */
+// Generate JWT Token
 const generateJWTToken = async (payload) => {
   try {
     const { encryptUser, expiresIn, type, role } = payload;
