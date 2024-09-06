@@ -46,51 +46,23 @@ const collectionSchema = new Schema(
     },
     typeOfService: [
       {
-        title: {
-          type: String,
-          default: null,
-        },
-        description: {
-          type: String,
-          default: null,
-        },
+        type: ObjectId,
       },
     ],
     typeOfTransportation: [
       {
-        title: {
-          type: String,
-          default: null,
-        },
-        description: {
-          type: String,
-          default: null,
-        },
+        type: ObjectId,
       },
     ],
     modeOfTransportation: {
       FTL: [
         {
-          title: {
-            type: String,
-            default: null,
-          },
-          description: {
-            type: String,
-            default: null,
-          },
+          type: ObjectId,
         },
       ],
       LTL: [
         {
-          title: {
-            type: String,
-            default: null,
-          },
-          description: {
-            type: String,
-            default: null,
-          },
+          type: ObjectId,
         },
       ],
     },

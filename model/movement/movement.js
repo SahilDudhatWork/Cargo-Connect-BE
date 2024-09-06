@@ -23,32 +23,20 @@ const collectionSchema = new Schema(
       type: ObjectId,
     },
     typeOfService: {
-      title: {
-        type: String,
-        default: null,
-      },
-      description: {
-        type: String,
-        default: null,
-      },
+      type: ObjectId,
+      default: null,
     },
     typeOfTransportation: {
-      title: {
-        type: String,
-        default: null,
-      },
-      description: {
-        type: String,
-        default: null,
-      },
+      type: ObjectId,
+      default: null,
     },
     modeOfTransportation: {
-      title: {
-        type: String,
+      FTL: {
+        type: ObjectId,
         default: null,
       },
-      description: {
-        type: String,
+      LTL: {
+        type: ObjectId,
         default: null,
       },
     },

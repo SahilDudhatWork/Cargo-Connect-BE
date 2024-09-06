@@ -33,7 +33,7 @@
       "name": "Profile"
     },
     {
-      "name": "Service"
+      "name": "TransitInfo"
     },
     {
       "name": "Movement"
@@ -366,15 +366,10 @@
         }
       }
     },
-    "/v1/user/service/typeOfService": {
+    "/v1/user/transitInfo/typeOfService": {
       "get": {
-        "tags": ["Service"],
-        "summary": "Fetch Type Of Service",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "tags": ["TransitInfo"],
+        "summary": "Fetch Type Of TransitInfo",
         "responses": {
           "200": {
             "description": "Successful response",
@@ -385,10 +380,10 @@
         }
       }
     },
-    "/v1/user/service": {
+    "/v1/user/transitInfo": {
       "get": {
-        "tags": ["Service"],
-        "summary": "Fetch Service From Admin",
+        "tags": ["TransitInfo"],
+        "summary": "Fetch TransitInfo From Admin",
         "security": [
           {
             "bearerAuth": []

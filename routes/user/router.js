@@ -2,7 +2,7 @@ const { Router } = require("express");
 const router = Router();
 const authRoute = require("./auth");
 const profileRoute = require("./profile");
-const serviceRoute = require("./service");
+const transitInfoRoute = require("./transitInfo");
 const orderRoute = require("./movement");
 const addressRoute = require("./address");
 const bannersRoute = require("./banners");
@@ -17,9 +17,9 @@ router.get("/", (req, res) => {
 
 router.use("/auth", authRoute);
 router.use("/banners", bannersRoute);
+router.use("/transitInfo", transitInfoRoute);
 router.use(userAuth);
 router.use("/profile", profileRoute);
-router.use("/service", serviceRoute);
 router.use(userPermission);
 router.use("/order", orderRoute);
 router.use("/address", addressRoute);
