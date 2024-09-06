@@ -19,8 +19,8 @@ router.use("/auth", authRoute);
 router.use("/banners", bannersRoute);
 router.use(userAuth);
 router.use("/profile", profileRoute);
-router.use(userPermission);
 router.use("/service", serviceRoute);
+router.use(userPermission);
 router.use("/order", orderRoute);
 router.use("/address", addressRoute);
 
