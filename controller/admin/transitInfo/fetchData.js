@@ -1,4 +1,4 @@
-const Service = require("../../../model/admin/service");
+const TransitInfo = require("../../../model/admin/transitInfo");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const {
@@ -7,10 +7,10 @@ const {
   INFO_MSGS,
 } = require("../../../helper/constant");
 
-const fetchService = async (req, res) => {
+const fetchTransitInfo = async (req, res) => {
   let { logger } = req;
   try {
-    let getData = await Service.findOne();
+    let getData = await TransitInfo.findOne();
 
     const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.OK;
     const message = getData ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;
@@ -29,5 +29,5 @@ const fetchService = async (req, res) => {
 };
 
 module.exports = {
-  fetchService,
+  fetchTransitInfo,
 };

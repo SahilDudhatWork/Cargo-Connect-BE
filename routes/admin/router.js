@@ -8,6 +8,7 @@ const profileRoute = require("./profile");
 const servicesRoute = require("./services");
 const activityRoute = require("./activity");
 const bannersRoute = require("./banners");
+const transitInfoRoute = require("./transitInfo");
 const { adminAuth } = require("../../middleware/authToken/adminAuth");
 
 router.get("/", (req, res) => {
@@ -23,5 +24,6 @@ router.use("/vehicle", vehicleRoute);
 router.use("/services", servicesRoute);
 router.use("/activity", activityRoute);
 router.use("/banners", bannersRoute);
+router.use("/transitInfo", transitInfoRoute);
 
 module.exports = router;

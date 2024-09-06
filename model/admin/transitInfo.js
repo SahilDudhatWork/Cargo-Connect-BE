@@ -59,4 +59,4 @@ const collectionSchema = new Schema(
   }
 );
 
-module.exports = model("service", collectionSchema);
+module.exports = model("transitInfo", collectionSchema);
