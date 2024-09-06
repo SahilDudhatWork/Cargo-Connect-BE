@@ -692,37 +692,22 @@
                   "usInsurancePlates": "US-INS-1121",
                   "usInsurancePlatesExpirationDate": "2025-04-01",
                   "typeOfService": [
-                    {
-                      "title": "Express Delivery",
-                      "description": "Fast delivery service within 24 hours."
-                    },
-                    {
-                      "title": "Standard Delivery",
-                      "description": "Regular delivery service within 3-5 business days."
-                    }
+                    "66da9f1bf2cc8577ceb921a4",
+                    "66da9f1bf2cc8577ceb921a5"
                   ],
                   "typeOfTransportation": [
-                    {
-                      "title": "Refrigerated",
-                      "description": "Transport of perishable goods."
-                    },
-                    {
-                      "title": "Dry Goods",
-                      "description": "Transport of non-perishable goods."
-                    }
+                    "66da9f1bf2cc8577ceb921a8",
+                    "66da9f1bf2cc8577ceb921a9"
                   ],
                   "modeOfTransportation": {
                     "FTL": [
-                      {
-                        "title": "Full Truckload",
-                        "description": "Dedicated truck for one shipment."
-                      }
+                      "66da9f1bf2cc8577ceb921aa",
+                      "66da9f1bf2cc8577ceb921ab"
                     ],
                     "LTL": [
-                      {
-                        "title": "Less Than Truckload",
-                        "description": "Shared truck for multiple shipments."
-                      }
+                      "66da9f1bf2cc8577ceb921af",
+                      "66da9f1bf2cc8577ceb921b0",
+                      "66da9f1bf2cc8577ceb921b1"
                     ]
                   },
                   "status": "Active"
@@ -835,37 +820,22 @@
                   "usInsurancePlates": "US-INS-1121",
                   "usInsurancePlatesExpirationDate": "2025-04-01",
                   "typeOfService": [
-                    {
-                      "title": "Express Delivery",
-                      "description": "Fast delivery service within 24 hours."
-                    },
-                    {
-                      "title": "Standard Delivery",
-                      "description": "Regular delivery service within 3-5 business days."
-                    }
+                    "66da9f1bf2cc8577ceb921a4",
+                    "66da9f1bf2cc8577ceb921a5"
                   ],
                   "typeOfTransportation": [
-                    {
-                      "title": "Refrigerated",
-                      "description": "Transport of perishable goods."
-                    },
-                    {
-                      "title": "Dry Goods",
-                      "description": "Transport of non-perishable goods."
-                    }
+                    "66da9f1bf2cc8577ceb921a8",
+                    "66da9f1bf2cc8577ceb921a9"
                   ],
                   "modeOfTransportation": {
                     "FTL": [
-                      {
-                        "title": "Full Truckload",
-                        "description": "Dedicated truck for one shipment."
-                      }
+                      "66da9f1bf2cc8577ceb921aa",
+                      "66da9f1bf2cc8577ceb921ab"
                     ],
                     "LTL": [
-                      {
-                        "title": "Less Than Truckload",
-                        "description": "Shared truck for multiple shipments."
-                      }
+                      "66da9f1bf2cc8577ceb921af",
+                      "66da9f1bf2cc8577ceb921b0",
+                      "66da9f1bf2cc8577ceb921b1"
                     ]
                   },
                   "status": "Active"

@@ -428,17 +428,11 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "typeOfService": {
-                    "title": "String",
-                    "description": "String"
-                  },
-                  "typeOfTransportation": {
-                    "title": "String",
-                    "description": "String"
-                  },
+                  "typeOfService": "66da9f1bf2cc8577ceb921a7",
+                  "typeOfTransportation": "66da9f1bf2cc8577ceb921a8",
                   "modeOfTransportation": {
-                    "title": "String",
-                    "description": "String"
+                    "FTL": "66da9f1bf2cc8577ceb921aa",
+                    "LTL": "null"
                   },
                   "port_BridgeOfCrossing": "Port of Los Angeles 4564",
                   "userReference": "MSUPUBHRQF5527977606",
