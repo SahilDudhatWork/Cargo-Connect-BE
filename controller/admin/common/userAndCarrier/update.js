@@ -2,6 +2,7 @@ const { handleException } = require("../../../../helper/exception");
 const Response = require("../../../../helper/response");
 const { hendleModel } = require("../../../../utils/hendleModel");
 const { encrypt } = require("../../../../helper/encrypt-decrypt");
+const { findOne } = require("../../../../utils/helper");
 const {
   validateCarrierData,
   validateUserData,
@@ -17,6 +18,7 @@ const update = async (req, res) => {
   try {
     const { type, id } = params;
     const { email, accountId, password } = body;
+    const actId = parseInt(id);
 
     if (fileValidationError) {
       return Response.error({
@@ -34,8 +36,8 @@ const update = async (req, res) => {
       });
     }
     const Model = await hendleModel(res, type);
+    const existingData = await findOne(actId, Model);
 
-    const existingData = await Model.findById(id);
     if (!existingData) {
       return Response.error({
         res,
@@ -45,7 +47,8 @@ const update = async (req, res) => {
     }
 
     const emailInUse = await Model.findOne({ email });
-    if (emailInUse && !emailInUse._id.equals(id)) {
+
+    if (emailInUse && emailInUse.accountId !== actId) {
       return Response.error({
         res,
         status: STATUS_CODE.BAD_REQUEST,
@@ -102,9 +105,13 @@ const update = async (req, res) => {
       },
     };
 
-    const updatedData = await Model.findByIdAndUpdate(id, body, {
-      new: true,
-    });
+    const updatedData = await Model.findOneAndUpdate(
+      { accountId: actId },
+      body,
+      {
+        new: true,
+      }
+    );
 
     if (type === "user") {
       updatedData.stepCompleted = validateUserData(updatedData);

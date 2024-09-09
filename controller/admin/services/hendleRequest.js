@@ -22,7 +22,7 @@ const hendleRequest = async (req, res) => {
     body.isAssign = true;
 
     // Update the Movement document
-    let updateData = await Movement.findByIdAndUpdate(new ObjectId(id), body, {
+    let updateData = await Movement.findOneAndUpdate({ movementId: id }, body, {
       new: true,
     });
 

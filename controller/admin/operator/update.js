@@ -1,6 +1,7 @@
 const Operator = require("../../../model/operator/operator");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
+const { findOne } = require("../../../utils/helper");
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -11,18 +12,20 @@ const update = async (req, res) => {
   const { logger, params, body } = req;
   try {
     const { id } = params;
-
-    const mobileInUse = await Operator.findById(id);
-    if (mobileInUse && !mobileInUse._id.equals(id)) {
+    const actId = parseInt(id);
+    let mobileInUse = await findOne(actId, Operator);
+    if (mobileInUse && mobileInUse.accountId !== actId) {
       return Response.error({
         res,
         status: STATUS_CODE.BAD_REQUEST,
         msg: `Operator Number is ${ERROR_MSGS.DATA_EXISTS}`,
       });
     }
-    const updatedData = await Operator.findByIdAndUpdate(id, body, {
-      new: true,
-    });
+    const updatedData = await Operator.findOneAndUpdate(
+      { accountId: actId },
+      body,
+      { new: true }
+    );
 
     const result = updatedData.toObject();
     delete result.password;

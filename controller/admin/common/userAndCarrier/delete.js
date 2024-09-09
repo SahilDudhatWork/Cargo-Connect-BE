@@ -11,10 +11,11 @@ const remove = async (req, res) => {
   const { logger, params } = req;
   try {
     const { type, id } = params;
+    const actId = parseInt(id);
 
     const Model = await hendleModel(res, type);
 
-    const deleteData = await Model.findByIdAndDelete(id);
+    const deleteData = await Model.findOneAndDelete({ accountId: actId });
 
     const statusCode = deleteData ? STATUS_CODE.OK : STATUS_CODE.BAD_REQUEST;
     const message = deleteData

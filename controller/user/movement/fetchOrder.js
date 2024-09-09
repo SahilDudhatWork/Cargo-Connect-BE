@@ -494,10 +494,7 @@ const fetchOrder = async (req, res) => {
       res,
       status: statusCode,
       msg: message,
-      data:
-        response.response.length > 0
-          ? { Response: response }
-          : { Response: [] },
+      data: response,
     });
   } catch (error) {
     console.error("error-->", error);

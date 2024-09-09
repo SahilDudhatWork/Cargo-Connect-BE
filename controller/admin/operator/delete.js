@@ -11,8 +11,8 @@ const remove = async (req, res) => {
   const { logger, params } = req;
   try {
     const { id } = params;
-
-    const deleteData = await Operator.findByIdAndDelete(id);
+    const actId = parseInt(id);
+    const deleteData = await Operator.findOneAndDelete({ accountId: actId });
 
     const statusCode = deleteData ? STATUS_CODE.OK : STATUS_CODE.BAD_REQUEST;
     const message = deleteData

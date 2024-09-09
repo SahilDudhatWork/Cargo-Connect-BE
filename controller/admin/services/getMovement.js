@@ -246,6 +246,9 @@ const fetchMovement = async (req, res) => {
                 $expr: { $eq: ["$_id", "$$operatorId"] },
               },
             },
+            {
+              $project: { token: 0 },
+            },
           ],
           as: "operatorData",
         },
@@ -496,10 +499,7 @@ const fetchMovement = async (req, res) => {
       res,
       status: statusCode,
       msg: message,
-      data:
-        response.response.length > 0
-          ? { Response: response }
-          : { Response: [] },
+      data: response,
     });
   } catch (error) {
     console.error("error-->", error);
