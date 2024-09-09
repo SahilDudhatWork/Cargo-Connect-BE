@@ -1,8 +1,9 @@
 const Vehicle = require("../../../model/vehicle/vehicle");
+const Carrier = require("../../../model/carrier/carrier");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
-const { ObjectId } = require("mongoose").Types;
 const { paginationResponse } = require("../../../utils/paginationFormate");
+const { findOne } = require("../../../utils/helper");
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -14,14 +15,16 @@ const fetchData = async (req, res) => {
   try {
     const { carrierId } = params;
     let { page, limit, sortBy } = query;
+    const actId = parseInt(carrierId);
 
+    const fetchCarrier = await findOne(actId, Carrier);
     sortBy = sortBy === "recent" ? { createdAt: -1 } : { createdAt: 1 };
 
     offset = page || 1;
     limit = limit || 10;
     const skip = limit * (offset - 1);
     const getData = await Vehicle.aggregate([
-      { $match: { carrierId: new ObjectId(carrierId) } },
+      { $match: { carrierId: fetchCarrier._id } },
       { $sort: sortBy },
       {
         $facet: {
@@ -57,10 +60,7 @@ const fetchData = async (req, res) => {
       res,
       status: statusCode,
       msg: message,
-      data:
-        response.response.length > 0
-          ? { Response: response }
-          : { Response: [] },
+      data: response,
     });
   } catch (error) {
     console.error("error-->", error);

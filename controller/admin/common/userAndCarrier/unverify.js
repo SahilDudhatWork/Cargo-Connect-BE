@@ -11,23 +11,14 @@ const unverify = async (req, res) => {
   const { logger, params } = req;
   try {
     const { type, id } = params;
-
+    const actId = parseInt(id);
     const Model = await hendleModel(res, type);
 
-    const fetchData = await Model.findById(id);
-
-    if (!fetchData) {
-      return Response.error({
-        req,
-        res,
-        status: STATUS_CODE.BAD_REQUEST,
-        msg: ERROR_MSGS.DATA_NOT_AVAILABLE,
-      });
-    }
-
-    fetchData.verifyByAdmin = false;
-    fetchData.save();
-
+    await Model.findOneAndUpdate(
+      { accountId: actId },
+      { $set: { verifyByAdmin: false } },
+      { new: true }
+    );
     const typeUpperCase = type.replace(/\b\w/g, (char) => char.toUpperCase());
 
     return Response.success({

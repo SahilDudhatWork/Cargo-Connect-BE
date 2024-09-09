@@ -1,7 +1,6 @@
 const Movement = require("../../../model/movement/movement");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
-const { ObjectId } = require("mongoose").Types;
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -16,7 +15,7 @@ const getDetails = async (req, res) => {
     let getData = await Movement.aggregate([
       {
         $match: {
-          _id: new ObjectId(id),
+          movementId: id,
         },
       },
       // Fetch Addresses

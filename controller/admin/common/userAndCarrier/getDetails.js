@@ -1,7 +1,7 @@
 const { handleException } = require("../../../../helper/exception");
 const Response = require("../../../../helper/response");
-const { ObjectId } = require("mongoose").Types;
 const { hendleModel } = require("../../../../utils/hendleModel");
+const { findOne } = require("../../../../utils/helper");
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -12,26 +12,9 @@ const getDetails = async (req, res) => {
   const { logger, params } = req;
   try {
     const { type, id } = params;
-
+    const actId = parseInt(id);
     const Model = await hendleModel(res, type);
-
-    let getData = await Model.aggregate([
-      {
-        $match: {
-          _id: new ObjectId(id),
-        },
-      },
-      {
-        $project: {
-          __v: 0,
-          password: 0,
-          forgotPassword: 0,
-          token: 0,
-        },
-      },
-    ]);
-
-    getData = getData[0];
+    const getData = await findOne(actId, Model);
 
     const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.OK;
     const message = getData ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;

@@ -1,7 +1,7 @@
 const Rating = require("../../../model/movement/rating");
+const Movement = require("../../../model/movement/movement");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
-const { ObjectId } = require("mongoose").Types;
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -11,8 +11,10 @@ const {
 const getRating = async (req, res) => {
   const { logger, params } = req;
   try {
+    const { movementId } = params;
+    const movementData = await Movement.findOne({ movementId: movementId });
     const getData = await Rating.findOne({
-      movementId: new ObjectId(params.movementId),
+      movementId: movementData._id,
     });
 
     const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.BAD_REQUEST;

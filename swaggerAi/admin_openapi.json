@@ -296,7 +296,7 @@
         }
       }
     },
-    "/v1/admin/module/user/{userId}": {
+    "/v1/admin/module/user/{userAccountId}": {
       "get": {
         "tags": ["Manage User"],
         "summary": "Get Details",
@@ -460,7 +460,7 @@
         }
       }
     },
-    "/v1/admin/module/verify/user/{userId}": {
+    "/v1/admin/module/verify/user/{userAccountId}": {
       "post": {
         "tags": ["Manage User"],
         "summary": "Verify",
@@ -489,7 +489,7 @@
         }
       }
     },
-    "/v1/admin/module/unverify/user/{userId}": {
+    "/v1/admin/module/unverify/user/{userAccountId}": {
       "delete": {
         "tags": ["Manage User"],
         "summary": "Unverify",
@@ -701,7 +701,7 @@
         }
       }
     },
-    "/v1/admin/module/carrier/{carrierId}": {
+    "/v1/admin/module/carrier/{carrierAccountId}": {
       "get": {
         "tags": ["Manage Carrier"],
         "summary": "Get Details",
@@ -887,7 +887,7 @@
         }
       }
     },
-    "/v1/admin/module/verify/carrier/{carrierId}": {
+    "/v1/admin/module/verify/carrier/{carrierAccountId}": {
       "post": {
         "tags": ["Manage Carrier"],
         "summary": "Verify",
@@ -916,7 +916,7 @@
         }
       }
     },
-    "/v1/admin/module/unverify/carrier/{carrierId}": {
+    "/v1/admin/module/unverify/carrier/{carrierAccountId}": {
       "delete": {
         "tags": ["Manage Carrier"],
         "summary": "Unverify",
@@ -980,7 +980,7 @@
         }
       }
     },
-    "/v1/admin/services/{servicesId}": {
+    "/v1/admin/services/{movementId}": {
       "get": {
         "tags": ["Service"],
         "summary": "Get Details",
@@ -1071,7 +1071,7 @@
         }
       }
     },
-    "/v1/admin/operator/fetch/{carrierId}": {
+    "/v1/admin/operator/fetch/{carrierAccountId}": {
       "get": {
         "tags": ["Operator"],
         "summary": "Fetch Data",
@@ -1123,7 +1123,7 @@
         }
       }
     },
-    "/v1/admin/operator/{operatorId}": {
+    "/v1/admin/operator/{operatorAccountId}": {
       "get": {
         "tags": ["Operator"],
         "summary": "Get Details",
@@ -1207,7 +1207,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "carrierId": "{carrierId}",
+                  "carrierId": "{carrierAccountId}",
                   "vehicleName": "truck123",
                   "mxPlates": "MX-ABC-1234",
                   "mxPlatesExpirationDate": "2025-01-01",
@@ -1272,7 +1272,7 @@
         }
       }
     },
-    "/v1/admin/vehicle/fetch/{carrierId}": {
+    "/v1/admin/vehicle/fetch/{carrierAccountId}": {
       "get": {
         "tags": ["Vehicle"],
         "summary": "Fetch Data",
