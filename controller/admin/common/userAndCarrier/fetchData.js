@@ -24,14 +24,7 @@ const fetchData = async (req, res) => {
           { companyName: { $regex: keyWord, $options: "i" } },
           { contactName: { $regex: keyWord, $options: "i" } },
           { email: { $regex: keyWord, $options: "i" } },
-          {
-            $expr: {
-              $regexMatch: {
-                input: { $toString: { $toLong: "$contactNumber" } },
-                regex: keyWord,
-              },
-            },
-          },
+          { contactNumber: { $regex: keyWord, $options: "i" } },
           {
             $expr: {
               $regexMatch: {
