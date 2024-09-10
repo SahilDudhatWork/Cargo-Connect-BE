@@ -36,7 +36,7 @@ const uploadMiddleware = upload.fields([
 const create = async (req, res) => {
   const { logger, body, params, files, fileValidationError } = req;
   try {
-    const { email, password } = body;
+    const { email, password, companyFormationType } = body;
     const { type } = params;
 
     if (fileValidationError) {
@@ -45,6 +45,43 @@ const create = async (req, res) => {
         status: STATUS_CODE.BAD_REQUEST,
         msg: fileValidationError,
       });
+    }
+
+    // Validate company formation fields based on the type
+    const usaFields = [
+      files["companyFormation_usa_w9_Form"],
+      files["companyFormation_usa_utility_Bill"],
+    ];
+
+    const maxicoFields = [
+      files["companyFormation_maxico_copia_Rfc_Form"],
+      files["companyFormation_maxico_constance_Of_Fiscal_Situation"],
+      files["companyFormation_maxico_proof_of_Favorable"],
+      files["companyFormation_maxico_proof_Of_Address"],
+    ];
+
+    // If companyFormationType is "usa", ensure no Maxico fields are provided
+    if (companyFormationType === "usa") {
+      const hasMaxicoFields = maxicoFields.some((field) => field !== undefined);
+      if (hasMaxicoFields) {
+        return Response.error({
+          res,
+          status: STATUS_CODE.BAD_REQUEST,
+          msg: "USA company formation selected, but Maxico fields are provided.",
+        });
+      }
+    }
+
+    // If companyFormationType is "maxico", ensure no USA fields are provided
+    if (companyFormationType === "maxico") {
+      const hasUsaFields = usaFields.some((field) => field !== undefined);
+      if (hasUsaFields) {
+        return Response.error({
+          res,
+          status: STATUS_CODE.BAD_REQUEST,
+          msg: "Maxico company formation selected, but USA fields are provided.",
+        });
+      }
     }
 
     const Model = await hendleModel(res, type);
@@ -74,33 +111,43 @@ const create = async (req, res) => {
       : null;
     body.oea = files["oea"] ? files["oea"][0].presignedUrl : null;
     body.ctpat = files["ctpat"] ? files["ctpat"][0].presignedUrl : null;
-    body.companyFormation = {
-      usa: {
-        w9_Form: files["companyFormation_usa_w9_Form"]
-          ? files["companyFormation_usa_w9_Form"][0].presignedUrl
-          : null,
-        utility_Bill: files["companyFormation_usa_utility_Bill"]
-          ? files["companyFormation_usa_utility_Bill"][0].presignedUrl
-          : null,
-      },
-      maxico: {
-        copia_Rfc_Form: files["companyFormation_maxico_copia_Rfc_Form"]
-          ? files["companyFormation_maxico_copia_Rfc_Form"][0].presignedUrl
-          : null,
-        constance_Of_Fiscal_Situation: files[
-          "companyFormation_maxico_constance_Of_Fiscal_Situation"
-        ]
-          ? files["companyFormation_maxico_constance_Of_Fiscal_Situation"][0]
-              .presignedUrl
-          : null,
-        proof_of_Favorable: files["companyFormation_maxico_proof_of_Favorable"]
-          ? files["companyFormation_maxico_proof_of_Favorable"][0].presignedUrl
-          : null,
-        proof_Of_Address: files["companyFormation_maxico_proof_Of_Address"]
-          ? files["companyFormation_maxico_proof_Of_Address"][0].presignedUrl
-          : null,
-      },
-    };
+
+    if (companyFormationType === "maxico") {
+      body.companyFormation = {
+        maxico: {
+          copia_Rfc_Form: files["companyFormation_maxico_copia_Rfc_Form"]
+            ? files["companyFormation_maxico_copia_Rfc_Form"][0].presignedUrl
+            : null,
+          constance_Of_Fiscal_Situation: files[
+            "companyFormation_maxico_constance_Of_Fiscal_Situation"
+          ]
+            ? files["companyFormation_maxico_constance_Of_Fiscal_Situation"][0]
+                .presignedUrl
+            : null,
+          proof_of_Favorable: files[
+            "companyFormation_maxico_proof_of_Favorable"
+          ]
+            ? files["companyFormation_maxico_proof_of_Favorable"][0]
+                .presignedUrl
+            : null,
+          proof_Of_Address: files["companyFormation_maxico_proof_Of_Address"]
+            ? files["companyFormation_maxico_proof_Of_Address"][0].presignedUrl
+            : null,
+        },
+      };
+    } else if (companyFormationType === "usa") {
+      body.companyFormation = {
+        usa: {
+          w9_Form: files["companyFormation_usa_w9_Form"]
+            ? files["companyFormation_usa_w9_Form"][0].presignedUrl
+            : null,
+          utility_Bill: files["companyFormation_usa_utility_Bill"]
+            ? files["companyFormation_usa_utility_Bill"][0].presignedUrl
+            : null,
+        },
+      };
+    }
+
     if (type === "user") {
       body.stepCompleted = validateUserData(body);
     } else if (type === "carrier") {

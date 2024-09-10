@@ -10,7 +10,6 @@ const {
 
 const fetchProfile = async (req, res) => {
   let { logger, carrierId } = req;
-  console.log('carrierId :>> ', carrierId);
   try {
     let getData = await Carrier.aggregate([
       {
