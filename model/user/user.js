@@ -24,7 +24,7 @@ const collectionSchema = new Schema(
       default: null,
     },
     contactNumber: {
-      type: Number,
+      type: String,
       default: null,
     },
     email: {

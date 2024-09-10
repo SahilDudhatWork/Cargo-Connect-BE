@@ -77,7 +77,7 @@
                     "example": "John Doe"
                   },
                   "contactNumber": {
-                    "type": "integer",
+                    "type": "string",
                     "example": "1234567890"
                   },
                   "email": {
@@ -298,7 +298,7 @@
                     "example": "john doe"
                   },
                   "contactNumber": {
-                    "type": "integer",
+                    "type": "string",
                     "example": "1234567890"
                   },
                   "commercialReference[0][companyName]": {
@@ -594,7 +594,7 @@
                   "contactDetails": {
                     "contactName": "John Doe",
                     "contactEmail": "johndoe@example.com",
-                    "contactNumber": 9876543210
+                    "contactNumber": "9876543210"
                   }
                 }
               }
