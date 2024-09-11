@@ -25,6 +25,7 @@ const collectionSchema = new Schema(
     },
     countryCode: {
       type: Number,
+      default: 1,
     },
     contactNumber: {
       type: String,
@@ -69,23 +70,29 @@ const collectionSchema = new Schema(
       usa: {
         w9_Form: {
           type: String,
+          default: null,
         },
         utility_Bill: {
           type: String,
+          default: null,
         },
       },
       maxico: {
         copia_Rfc_Form: {
           type: String,
+          default: null,
         },
         constance_Of_Fiscal_Situation: {
           type: String,
+          default: null,
         },
         proof_of_Favorable: {
           type: String,
+          default: null,
         },
         proof_Of_Address: {
           type: String,
+          default: null,
         },
       },
     },
@@ -93,18 +100,23 @@ const collectionSchema = new Schema(
       {
         companyName: {
           type: String,
+          default: null,
         },
         contactName: {
           type: String,
+          default: null,
         },
         emailAddress: {
           type: String,
+          default: null,
         },
         countryCode: {
           type: Number,
+          default: 1,
         },
         contactNo: {
           type: Number,
+          default: null,
         },
       },
     ],
