@@ -18,6 +18,9 @@ const collectionSchema = new Schema(
       lowercase: true,
       default: null,
     },
+    countryCode: {
+      type: Number,
+    },
     contactName: {
       type: String,
       lowercase: true,
@@ -69,7 +72,7 @@ const collectionSchema = new Schema(
     commercialReference: [
       {
         accountId: {
-          type: String ,
+          type: String,
           default: null,
           unique: true,
         },
