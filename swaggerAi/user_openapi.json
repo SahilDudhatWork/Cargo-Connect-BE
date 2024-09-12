@@ -472,6 +472,7 @@
                   "quantityForStraps": "20",
                   "quantityForTarps": "5",
                   "restrictedTime": "2024-08-22T14:00:00Z",
+                  "programming": "schedule",
                   "schedule": {
                     "date": "2024-08-22",
                     "time": "14:00"
@@ -598,6 +599,7 @@
                   "contactDetails": {
                     "contactName": "John Doe",
                     "contactEmail": "johndoe@example.com",
+                    "countryCode": "1",
                     "contactNumber": "9876543210"
                   }
                 }
@@ -664,50 +666,18 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "vehicleName": "truck123456789",
-                  "mxPlates": "MX-ABC-1234",
-                  "mxPlatesExpirationDate": "2025-01-01",
-                  "usPlates": "US-DEF-5678",
-                  "usPlatesExpirationDate": "2025-02-01",
-                  "mxInsurancePlates": "MX-INS-9101",
-                  "mxInsurancePlatesExpirationDate": "2025-03-01",
-                  "usInsurancePlates": "US-INS-1121",
-                  "usInsurancePlatesExpirationDate": "2025-04-01",
-                  "typeOfService": [
-                    {
-                      "title": "Express Delivery",
-                      "description": "Fast delivery service within 24 hours."
-                    },
-                    {
-                      "title": "Standard Delivery",
-                      "description": "Regular delivery service within 3-5 business days."
-                    }
-                  ],
-                  "typeOfTransportation": [
-                    {
-                      "title": "Refrigerated",
-                      "description": "Transport of perishable goods."
-                    },
-                    {
-                      "title": "Dry Goods",
-                      "description": "Transport of non-perishable goods."
-                    }
-                  ],
-                  "modeOfTransportation": {
-                    "FTL": [
-                      {
-                        "title": "Full Truckload",
-                        "description": "Dedicated truck for one shipment."
-                      }
-                    ],
-                    "LTL": [
-                      {
-                        "title": "Less Than Truckload",
-                        "description": "Shared truck for multiple shipments."
-                      }
-                    ]
+                  "addressDetails": {
+                    "buildinName": "Sunrise Apartments",
+                    "postalCode": 123456,
+                    "laneNumber": 5,
+                    "additionalDetails": "Near Central Park"
                   },
-                  "status": "Active"
+                  "contactDetails": {
+                    "contactName": "John Doe",
+                    "contactEmail": "johndoe@example.com",
+                    "countryCode": "1",
+                    "contactNumber": "9876543210"
+                  }
                 }
               }
             }
