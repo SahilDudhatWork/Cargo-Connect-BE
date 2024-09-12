@@ -76,6 +76,10 @@
                     "type": "string",
                     "example": "John Doe"
                   },
+                  "countryCode": {
+                    "type": "integer",
+                    "example": "1"
+                  },
                   "contactNumber": {
                     "type": "string",
                     "example": "1234567890"
@@ -621,32 +625,6 @@
         "security": [
           {
             "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            },
-            "example": "1"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer"
-            },
-            "example": "10"
-          },
-          {
-            "name": "sortBy",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "example": "recent"
           }
         ],
         "responses": {

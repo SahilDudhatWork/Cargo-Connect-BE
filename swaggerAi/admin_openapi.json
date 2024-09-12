@@ -141,6 +141,10 @@
                     "type": "string",
                     "example": "John Doe"
                   },
+                  "countryCode": {
+                    "type": "integer",
+                    "example": "1"
+                  },
                   "contactNumber": {
                     "type": "string",
                     "example": "1234567890"
@@ -330,6 +334,10 @@
                   "contactName": {
                     "type": "string",
                     "example": "John Doe"
+                  },
+                  "countryCode": {
+                    "type": "integer",
+                    "example": "1"
                   },
                   "contactNumber": {
                     "type": "string",
@@ -525,6 +533,10 @@
                   "contactName": {
                     "type": "string",
                     "example": "John Doe"
+                  },
+                  "countryCode": {
+                    "type": "integer",
+                    "example": "1"
                   },
                   "contactNumber": {
                     "type": "string",
@@ -735,6 +747,10 @@
                   "contactName": {
                     "type": "string",
                     "example": "John Doe"
+                  },
+                  "countryCode": {
+                    "type": "integer",
+                    "example": "1"
                   },
                   "contactNumber": {
                     "type": "string",
