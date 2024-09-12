@@ -34,6 +34,10 @@ const collectionSchema = new Schema(
         type: String,
         default: null,
       },
+      countryCode: {
+        type: Number,
+        default: 1,
+      },
       contactNumber: {
         type: String,
         default: null,
