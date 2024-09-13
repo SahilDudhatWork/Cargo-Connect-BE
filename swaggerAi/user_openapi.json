@@ -467,6 +467,7 @@
                   },
                   "port_BridgeOfCrossing": "Port of Los Angeles 4564",
                   "userReference": "MSUPUBHRQF5527977606",
+                  "movementId": "UDFEUBHRQF5527977707",
                   "specialRequirements": ["Handle with care", "Urgent"],
                   "quantityForChains": "10",
                   "quantityForStraps": "20",

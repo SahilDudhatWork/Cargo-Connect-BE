@@ -1,7 +1,6 @@
 const Movement = require("../../../model/movement/movement");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
-const { generateNumOrCharId } = require("../../../utils/generateUniqueId");
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -11,10 +10,7 @@ const {
 const createOrder = async (req, res) => {
   let { logger, userId, body } = req;
   try {
-    const movementId = await generateNumOrCharId();
-
     body.userId = userId;
-    body.movementId = movementId;
 
     const saveData = await Movement.create(body);
 
