@@ -38,7 +38,7 @@ const validateUserData = (data) => {
     }
   }
   // Check company formation based on companyFormationType
-  const formationType = data.companyFormationType;
+  const formationType = data.companyFormationType || null;
   if (formationType === "usa") {
     const usaFields = ["w9_Form", "utility_Bill"];
     for (const field of usaFields) {

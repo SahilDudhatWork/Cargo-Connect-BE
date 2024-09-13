@@ -41,7 +41,7 @@ const signUp = async (req, res) => {
     } = body;
     let newCommercialReference;
 
-    if (commercialReference.length > 0) {
+    if (commercialReference && commercialReference?.length > 0) {
       newCommercialReference = commercialReference.map((i) => ({
         ...i,
         accountId: generateNumOrCharId(),
