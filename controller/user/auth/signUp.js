@@ -39,7 +39,7 @@ const signUp = async (req, res) => {
       commercialReference,
       companyFormationType,
     } = body;
-    let newCommercialReference;
+    let newCommercialReference = [];
 
     if (commercialReference && commercialReference?.length > 0) {
       newCommercialReference = commercialReference.map((i) => ({
