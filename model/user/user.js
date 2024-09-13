@@ -40,7 +40,7 @@ const collectionSchema = new Schema(
     password: {
       type: String,
       default: null,
-      unique: true,
+      // unique: true,
     },
     companyFormationType: {
       type: String,
@@ -81,7 +81,6 @@ const collectionSchema = new Schema(
         accountId: {
           type: String,
           default: null,
-          unique: true,
         },
         companyName: {
           type: String,
