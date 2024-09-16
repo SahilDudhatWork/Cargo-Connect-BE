@@ -195,7 +195,7 @@
                   },
                   "companyFormationType": {
                     "type": "string",
-                    "example": "usa"
+                    "example": "USA"
                   },
                   "commercialReference[1][contactNo]": {
                     "type": "integer",
@@ -389,7 +389,7 @@
                   },
                   "companyFormationType": {
                     "type": "string",
-                    "example": "usa"
+                    "example": "USA"
                   },
                   "commercialReference[1][contactNo]": {
                     "type": "integer",
@@ -592,7 +592,7 @@
                   },
                   "companyFormationType": {
                     "type": "string",
-                    "example": "usa"
+                    "example": "USA"
                   },
                   "profilePicture": {
                     "type": "string",
@@ -806,7 +806,7 @@
                   },
                   "companyFormationType": {
                     "type": "string",
-                    "example": "usa"
+                    "example": "USA"
                   },
                   "profilePicture": {
                     "type": "string",

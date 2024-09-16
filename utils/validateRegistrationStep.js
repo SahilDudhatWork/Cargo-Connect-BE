@@ -39,7 +39,7 @@ const validateUserData = (data) => {
   }
   // Check company formation based on companyFormationType
   const formationType = data.companyFormationType || null;
-  if (formationType === "usa") {
+  if (formationType === "USA") {
     const usaFields = ["w9_Form", "utility_Bill"];
     for (const field of usaFields) {
       if (isNullOrEmpty(data.companyFormation.usa[field])) {
@@ -47,7 +47,7 @@ const validateUserData = (data) => {
         break;
       }
     }
-  } else if (formationType === "maxico") {
+  } else if (formationType === "MAXICO") {
     const maxicoFields = [
       "copia_Rfc_Form",
       "constance_Of_Fiscal_Situation",
@@ -112,7 +112,7 @@ const validateCarrierData = (data) => {
   }
   // Check company formation based on companyFormationType
   const formationType = data.companyFormationType;
-  if (formationType === "usa") {
+  if (formationType === "USA") {
     const usaFields = ["w9_Form", "utility_Bill"];
     for (const field of usaFields) {
       if (isNullOrEmpty(data.companyFormation.usa[field])) {
@@ -120,7 +120,7 @@ const validateCarrierData = (data) => {
         break;
       }
     }
-  } else if (formationType === "maxico") {
+  } else if (formationType === "MAXICO") {
     const maxicoFields = [
       "copia_Rfc_Form",
       "constance_Of_Fiscal_Situation",

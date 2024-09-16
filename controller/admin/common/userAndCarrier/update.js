@@ -49,8 +49,8 @@ const update = async (req, res) => {
       files?.companyFormation_maxico_proof_Of_Address,
     ];
 
-    // If companyFormationType is "usa", ensure no Maxico fields are provided
-    if (companyFormationType === "usa") {
+    // If companyFormationType is "USA", ensure no Maxico fields are provided
+    if (companyFormationType === "USA") {
       const hasMaxicoFields = maxicoFields.some((field) => field !== undefined);
       if (hasMaxicoFields) {
         return Response.error({
@@ -62,7 +62,7 @@ const update = async (req, res) => {
     }
 
     // If companyFormationType is "maxico", ensure no USA fields are provided
-    if (companyFormationType === "maxico") {
+    if (companyFormationType === "MAXICO") {
       const hasUsaFields = usaFields.some((field) => field !== undefined);
       if (hasUsaFields) {
         return Response.error({
@@ -115,7 +115,7 @@ const update = async (req, res) => {
       ? files["ctpat"][0].presignedUrl
       : existingData.oea;
 
-    if (companyFormationType === "usa") {
+    if (companyFormationType === "USA") {
       body.companyFormation = {
         usa: {
           w9_Form: files?.companyFormation_usa_w9_Form
@@ -132,7 +132,7 @@ const update = async (req, res) => {
           proof_Of_Address: null,
         },
       };
-    } else if (companyFormationType === "maxico") {
+    } else if (companyFormationType === "MAXICO") {
       body.companyFormation = {
         maxico: {
           copia_Rfc_Form: files?.companyFormation_maxico_copia_Rfc_Form
