@@ -44,7 +44,7 @@ const fetchData = async (req, res) => {
       qry.verifyByAdmin = false;
       sortCriteria = { createdAt: -1 };
     } else if (sortBy === "all") {
-      sortCriteria = { createdAt: 1 };
+      sortCriteria = { createdAt: -1 };
     } else {
       sortCriteria = { createdAt: 1 };
     }

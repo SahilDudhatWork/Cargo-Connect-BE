@@ -98,6 +98,10 @@ const collectionSchema = new Schema(
     },
     commercialReference: [
       {
+        accountId: {
+          type: String,
+          default: null,
+        },
         companyName: {
           type: String,
           default: null,
