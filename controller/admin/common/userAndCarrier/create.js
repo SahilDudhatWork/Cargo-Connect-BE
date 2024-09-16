@@ -72,8 +72,8 @@ const create = async (req, res) => {
       files["companyFormation_maxico_proof_Of_Address"],
     ];
 
-    // If companyFormationType is "usa", ensure no Maxico fields are provided
-    if (companyFormationType === "usa") {
+    // If companyFormationType is "USA", ensure no Maxico fields are provided
+    if (companyFormationType === "USA") {
       const hasMaxicoFields = maxicoFields.some((field) => field !== undefined);
       if (hasMaxicoFields) {
         return Response.error({
@@ -84,8 +84,8 @@ const create = async (req, res) => {
       }
     }
 
-    // If companyFormationType is "maxico", ensure no USA fields are provided
-    if (companyFormationType === "maxico") {
+    // If companyFormationType is "MAXICO", ensure no USA fields are provided
+    if (companyFormationType === "MAXICO") {
       const hasUsaFields = usaFields.some((field) => field !== undefined);
       if (hasUsaFields) {
         return Response.error({
@@ -124,7 +124,7 @@ const create = async (req, res) => {
     body.oea = files["oea"] ? files["oea"][0].presignedUrl : null;
     body.ctpat = files["ctpat"] ? files["ctpat"][0].presignedUrl : null;
 
-    if (companyFormationType === "maxico") {
+    if (companyFormationType === "MAXICO") {
       body.companyFormation = {
         maxico: {
           copia_Rfc_Form: files["companyFormation_maxico_copia_Rfc_Form"]
@@ -147,7 +147,7 @@ const create = async (req, res) => {
             : null,
         },
       };
-    } else if (companyFormationType === "usa") {
+    } else if (companyFormationType === "USA") {
       body.companyFormation = {
         usa: {
           w9_Form: files["companyFormation_usa_w9_Form"]

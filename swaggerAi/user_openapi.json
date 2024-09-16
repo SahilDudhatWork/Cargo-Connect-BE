@@ -347,7 +347,7 @@
                   },
                   "companyFormationType": {
                     "type": "string",
-                    "example": "usa"
+                    "example": "USA"
                   },
                   "profilePicture": {
                     "type": "string",
