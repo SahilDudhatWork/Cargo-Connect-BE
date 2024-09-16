@@ -41,7 +41,7 @@ const signUp = async (req, res) => {
     } = body;
     let newCommercialReference;
 
-    if (commercialReference.length > 0) {
+    if (Array.isArray(commercialReference) && commercialReference.length > 0) {
       newCommercialReference = commercialReference.map((i) => ({
         ...i,
         accountId: generateNumOrCharId(),
@@ -162,7 +162,7 @@ const signUp = async (req, res) => {
       contactNumber,
       email,
       password: passwordHash,
-      commercialReference: newCommercialReference,
+      commercialReference: newCommercialReference ?? [],
       profilePicture: body.profilePicture,
       scac: body.scac,
       caat: body.caat,

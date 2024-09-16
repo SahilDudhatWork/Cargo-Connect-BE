@@ -3,7 +3,10 @@ const { handleException } = require("../../../helper/exception");
 const { encrypt } = require("../../../helper/encrypt-decrypt");
 const Response = require("../../../helper/response");
 const jwt = require("jsonwebtoken");
-const { generateAccountId } = require("../../../utils/generateUniqueId");
+const {
+  generateAccountId,
+  generateNumOrCharId,
+} = require("../../../utils/generateUniqueId");
 const {
   validateCarrierData,
 } = require("../../../utils/validateRegistrationStep");
@@ -45,6 +48,14 @@ const signUp = async (req, res) => {
       commercialReference,
       companyFormationType,
     } = body;
+    let newCommercialReference;
+
+    if (Array.isArray(commercialReference) && commercialReference.length > 0) {
+      newCommercialReference = commercialReference.map((i) => ({
+        ...i,
+        accountId: generateNumOrCharId(),
+      }));
+    }
 
     if (fileValidationError) {
       return Response.error({
@@ -159,7 +170,7 @@ const signUp = async (req, res) => {
       contactNumber,
       email,
       password: passwordHash,
-      commercialReference,
+      commercialReference: newCommercialReference ?? [],
       profilePicture: body.profilePicture,
       scac: body.scac,
       caat: body.caat,
