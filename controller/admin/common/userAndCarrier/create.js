@@ -3,7 +3,10 @@ const Response = require("../../../../helper/response");
 const { encrypt } = require("../../../../helper/encrypt-decrypt");
 const upload = require("../../../../middleware/multer");
 const { hendleModel } = require("../../../../utils/hendleModel");
-const { generateAccountId } = require("../../../../utils/generateUniqueId");
+const {
+  generateAccountId,
+  generateNumOrCharId,
+} = require("../../../../utils/generateUniqueId");
 const {
   validateCarrierData,
   validateUserData,
@@ -36,7 +39,8 @@ const uploadMiddleware = upload.fields([
 const create = async (req, res) => {
   const { logger, body, params, files, fileValidationError } = req;
   try {
-    const { email, password, companyFormationType } = body;
+    const { email, password, companyFormationType, commercialReference } = body;
+    let newCommercialReference;
     const { type } = params;
 
     if (fileValidationError) {
@@ -46,6 +50,14 @@ const create = async (req, res) => {
         msg: fileValidationError,
       });
     }
+
+    if (Array.isArray(commercialReference) && commercialReference.length > 0) {
+      newCommercialReference = commercialReference.map((i) => ({
+        ...i,
+        accountId: generateNumOrCharId(),
+      }));
+    }
+    body.commercialReference = newCommercialReference ?? [];
 
     // Validate company formation fields based on the type
     const usaFields = [

@@ -34,7 +34,14 @@ const uploadMiddleware = upload.fields([
 const update = async (req, res) => {
   const { logger, carrierId, body, files, fileValidationError } = req;
   try {
-    const { email, password, accountId, companyFormationType } = body;
+    const {
+      email,
+      password,
+      accountId,
+      companyFormationType,
+      commercialReference,
+    } = body;
+    let newCommercialReference;
 
     if (fileValidationError) {
       return Response.error({
@@ -43,6 +50,13 @@ const update = async (req, res) => {
         msg: fileValidationError,
       });
     }
+
+    if (Array.isArray(commercialReference) && commercialReference.length > 0) {
+      newCommercialReference = commercialReference.map((i) => ({
+        ...i,
+      }));
+    }
+    body.commercialReference = newCommercialReference ?? [];
 
     if (accountId || password) {
       const errorMsg = accountId
