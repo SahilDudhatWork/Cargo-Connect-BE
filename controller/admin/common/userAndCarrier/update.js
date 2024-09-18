@@ -1,7 +1,7 @@
 const { handleException } = require("../../../../helper/exception");
 const Response = require("../../../../helper/response");
 const { hendleModel } = require("../../../../utils/hendleModel");
-const { encrypt } = require("../../../../helper/encrypt-decrypt");
+const { encrypt, decrypt } = require("../../../../helper/encrypt-decrypt");
 const { findOne } = require("../../../../utils/helper");
 const {
   validateCarrierData,
@@ -185,13 +185,20 @@ const update = async (req, res) => {
     }
     const result = updatedData.toObject();
     delete result.token;
+    delete result.forgotPassword;
+
+    const decryptPassword = decrypt(
+      result.password,
+      process.env.PASSWORD_ENCRYPTION_KEY
+    );
+    result.password = decryptPassword;
 
     return Response.success({
       req,
       res,
       status: STATUS_CODE.OK,
       msg: INFO_MSGS.UPDATED_SUCCESSFULLY,
-      data: updatedData,
+      data: result,
     });
   } catch (error) {
     console.error("Error :", error);

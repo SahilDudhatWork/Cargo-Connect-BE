@@ -68,6 +68,8 @@ module.exports = {
       "Access denied. Your account has been restricted by the administrator.",
     EMAIL_EXIST:
       "This email is already registered. Please use a different one.",
+    ACCESS_TOKEN_REQUIRED:
+      "Access token is required, but a refresh token was provided. Please provide a valid access token.",
   },
 
   INFO_MSGS: {

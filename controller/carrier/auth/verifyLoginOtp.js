@@ -1,24 +1,32 @@
 const Otp = require("../../../model/common/otp");
-const Operator = require("../../../model/operator/operator");
+const Carrier = require("../../../model/carrier/carrier");
 const Response = require("../../../helper/response");
 const jwt = require("jsonwebtoken");
-const { encrypt, decrypt } = require("../../../helper/encrypt-decrypt");
+const { handleException } = require("../../../helper/exception");
+const { encrypt } = require("../../../helper/encrypt-decrypt");
 const {
   STATUS_CODE,
   ERROR_MSGS,
   INFO_MSGS,
 } = require("../../../helper/constant");
 
-const { handleException } = require("../../../helper/exception");
-
-const verifyAndLogin = async (req, res) => {
+const verifyLoginOtp = async (req, res) => {
   const { logger, body } = req;
   try {
-    const { mobile, otp } = body;
+    const { email, otp } = body;
 
-    const otpData = await Otp.findOne({ mobile });
+    const otpData = await Otp.findOne({ email });
 
-    if (!otpData || otpData?.otp !== otp) {
+    if (!otpData) {
+      const obj = {
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: ERROR_MSGS.EXPIRED_OTP,
+      };
+      return Response.error(obj);
+    }
+
+    if (otpData.otp !== otp) {
       const obj = {
         res,
         status: STATUS_CODE.BAD_REQUEST,
@@ -41,27 +49,29 @@ const verifyAndLogin = async (req, res) => {
       return Response.error(obj);
     }
 
-    const operatorInfo = await Operator.findOne({ operatorNumber: mobile });
+    await Otp.findOneAndDelete({ email, otp });
+    let fetchData = await Carrier.aggregate([{ $match: { email: email } }]);
+    fetchData = fetchData[0];
 
-    const encryptOperator = encrypt(
-      operatorInfo._id,
-      process.env.OPERATOR_ENCRYPTION_KEY
+    const encryptCarrier = encrypt(
+      fetchData._id,
+      process.env.CARRIER_ENCRYPTION_KEY
     );
     const accessToken = await commonAuth(
-      encryptOperator,
-      process.env.OPERATOR_ACCESS_TIME,
-      process.env.OPERATOR_ACCESS_TOKEN,
+      encryptCarrier,
+      process.env.CARRIER_ACCESS_TIME,
+      process.env.CARRIER_ACCESS_TOKEN,
       "Access"
     );
     const refreshToken = await commonAuth(
-      encryptOperator,
+      encryptCarrier,
       process.env.REFRESH_TOKEN_TIME,
       process.env.REFRESH_ACCESS_TOKEN,
       "Refresh"
     );
 
-    await Operator.findByIdAndUpdate(
-      operatorInfo._id,
+    await Carrier.findByIdAndUpdate(
+      fetchData._id,
       {
         lastLogin: new Date(),
         "token.token": accessToken,
@@ -71,15 +81,11 @@ const verifyAndLogin = async (req, res) => {
       { new: true }
     );
 
-    await Otp.findOneAndDelete({ mobile, otp });
-    const obj = {
+    let obj = {
       res,
+      msg: INFO_MSGS.SUCCESSFUL_LOGIN,
       status: STATUS_CODE.OK,
-      msg: INFO_MSGS.OTP_VERIFIED,
-      data: {
-        accessToken,
-        refreshToken,
-      },
+      data: { accessToken, refreshToken },
     };
     return Response.success(obj);
   } catch (error) {
@@ -89,14 +95,14 @@ const verifyAndLogin = async (req, res) => {
 };
 
 // Common Auth function for 2FA checking and JWT token generation
-const commonAuth = async (encryptOperator, ACCESS_TIME, ACCESS_TOKEN, type) => {
+const commonAuth = async (encryptCarrier, ACCESS_TIME, ACCESS_TOKEN, type) => {
   try {
     const payload = {
-      encryptOperator,
+      encryptCarrier,
       expiresIn: ACCESS_TIME,
       accessToken: ACCESS_TOKEN,
       type,
-      role: "Operator",
+      role: "Carrier",
     };
     const accessToken = await generateJWTToken(payload);
     return accessToken;
@@ -109,9 +115,9 @@ const commonAuth = async (encryptOperator, ACCESS_TIME, ACCESS_TOKEN, type) => {
 // Generate JWT Token
 const generateJWTToken = async (payload) => {
   try {
-    const { encryptOperator, expiresIn, accessToken, type, role } = payload;
+    const { encryptCarrier, expiresIn, accessToken, type, role } = payload;
     const token = jwt.sign(
-      { operatorId: encryptOperator, type, role },
+      { carrierId: encryptCarrier, type, role },
       accessToken,
       {
         expiresIn,
@@ -124,5 +130,5 @@ const generateJWTToken = async (payload) => {
 };
 
 module.exports = {
-  verifyAndLogin,
+  verifyLoginOtp,
 };

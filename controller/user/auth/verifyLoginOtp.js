@@ -2,7 +2,6 @@ const Otp = require("../../../model/common/otp");
 const User = require("../../../model/user/user");
 const Response = require("../../../helper/response");
 const jwt = require("jsonwebtoken");
-const { hendleModel } = require("../../../utils/hendleModel");
 const { handleException } = require("../../../helper/exception");
 const { encrypt } = require("../../../helper/encrypt-decrypt");
 const {
@@ -12,27 +11,10 @@ const {
 } = require("../../../helper/constant");
 
 const verifyLoginOtp = async (req, res) => {
-  const { logger, body, params } = req;
+  const { logger, body } = req;
   try {
     const { email, otp } = body;
-    const { type } = params;
-    let ENCRYPTION_KEY;
-    let ACCESS_TOKEN;
-    let ACCESS_TIME;
 
-    if (type === "user") {
-      ENCRYPTION_KEY = process.env.USER_ENCRYPTION_KEY;
-      ACCESS_TOKEN = process.env.USER_ACCESS_TOKEN;
-      ACCESS_TIME = process.env.USER_ACCESS_TIME;
-      tokenId = "userId";
-    } else if (type === "carrier") {
-      ENCRYPTION_KEY = process.env.CARRIER_ENCRYPTION_KEY;
-      ACCESS_TOKEN = process.env.CARRIER_ACCESS_TOKEN;
-      ACCESS_TIME = process.env.CARRIER_ACCESS_TIME;
-      tokenId = "carrierId";
-    }
-
-    const Model = await hendleModel(res, type);
     const otpData = await Otp.findOne({ email });
 
     if (!otpData) {
@@ -68,18 +50,23 @@ const verifyLoginOtp = async (req, res) => {
     }
 
     await Otp.findOneAndDelete({ email, otp });
-    let fetchData = await Model.aggregate([{ $match: { email: email } }]);
+    let fetchData = await User.aggregate([{ $match: { email: email } }]);
     fetchData = fetchData[0];
-    const encryptUser = encrypt(fetchData._id, ENCRYPTION_KEY);
-    
-    let encryptObj;
-    if (type === "user") {
-      encryptObj = { userId: encryptUser };
-    } else if (type === "carrier") {
-      encryptObj = { carrierId: encryptUser };
-    }
 
-    const accessToken = await commonAuth(encryptObj, ACCESS_TOKEN, ACCESS_TIME);
+    const encryptUser = encrypt(fetchData._id, process.env.USER_ENCRYPTION_KEY);
+    const accessToken = await commonAuth(
+      encryptUser,
+      process.env.USER_ACCESS_TIME,
+      process.env.USER_ACCESS_TOKEN,
+      "Access"
+    );
+    const refreshToken = await commonAuth(
+      encryptUser,
+      process.env.REFRESH_TOKEN_TIME,
+      process.env.REFRESH_ACCESS_TOKEN,
+      "Refresh"
+    );
+
     await User.findByIdAndUpdate(
       fetchData._id,
       {
@@ -95,7 +82,7 @@ const verifyLoginOtp = async (req, res) => {
       res,
       msg: INFO_MSGS.SUCCESSFUL_LOGIN,
       status: STATUS_CODE.OK,
-      data: { accessToken },
+      data: { accessToken, refreshToken },
     };
     return Response.success(obj);
   } catch (error) {
@@ -104,40 +91,36 @@ const verifyLoginOtp = async (req, res) => {
   }
 };
 
-// Generate JWT Token
-const generateJWTToken = (payload) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const { encryptObj, expiresIn, type, role, ACCESS_TOKEN } = payload;
-      const token = jwt.sign({ ...encryptObj, type, role }, ACCESS_TOKEN, {
-        expiresIn,
-      });
-      resolve(token);
-    } catch (error) {
-      reject(error.message);
-    }
-  });
+// Common Auth function for 2FA checking and JWT token generation
+const commonAuth = async (encryptUser, ACCESS_TIME, ACCESS_TOKEN, type) => {
+  try {
+    const payload = {
+      encryptUser,
+      expiresIn: ACCESS_TIME,
+      accessToken: ACCESS_TOKEN,
+      type,
+      role: "User",
+    };
+    const accessToken = await generateJWTToken(payload);
+    return accessToken;
+  } catch (error) {
+    console.log("commonAuth Error:", error);
+    throw error;
+  }
 };
 
-// Common Auth function for 2FA checking and JWT token generation
-const commonAuth = (encryptObj, ACCESS_TOKEN, ACCESS_TIME) =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const payload = {
-        expiresIn: ACCESS_TIME,
-        encryptObj,
-        type: "Access",
-        role: "User",
-        ACCESS_TOKEN,
-      };
-      const accessToken = await generateJWTToken(payload);
-
-      resolve(accessToken);
-    } catch (error) {
-      console.log("common Auth Log :", error);
-      reject(error);
-    }
-  });
+// Generate JWT Token
+const generateJWTToken = async (payload) => {
+  try {
+    const { encryptUser, expiresIn, accessToken, type, role } = payload;
+    const token = jwt.sign({ userId: encryptUser, type, role }, accessToken, {
+      expiresIn,
+    });
+    return token;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
 module.exports = {
   verifyLoginOtp,

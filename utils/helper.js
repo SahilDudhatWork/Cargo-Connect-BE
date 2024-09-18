@@ -8,7 +8,6 @@ const findOne = async (actId, Model) => {
     {
       $project: {
         __v: 0,
-        password: 0,
         forgotPassword: 0,
         token: 0,
       },
