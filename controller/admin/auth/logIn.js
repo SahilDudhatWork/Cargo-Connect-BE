@@ -12,29 +12,10 @@ const LoginValidation = require("../../../helper/joi-validation");
 require("dotenv").config();
 
 /**
- * Generate JWT Token
- */
-const generateJWTToken = (payload) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const { encryptAdmin, expiresIn, type, role } = payload;
-      const token = jwt.sign(
-        { adminId: encryptAdmin, type, role },
-        process.env.ADMIN_ACCESS_TOKEN,
-        { expiresIn }
-      );
-      resolve(token);
-    } catch (error) {
-      reject(error.message);
-    }
-  });
-};
-
-/**
  * Login
  */
 const logIn = async (req, res) => {
-  const { logger, body, headers, connection } = req;
+  const { logger, body } = req;
   try {
     const { email, password } = body;
 
@@ -72,16 +53,28 @@ const logIn = async (req, res) => {
       };
       return Response.error(obj);
     }
-    let key1 = process.env.ADMIN_ENCRYPTION_KEY;
-    const encryptAdmin = encrypt(adminInfo._id, key1);
-    const clientIp = headers["x-forwarded-for"] || connection.remoteAddress;
-    const data = await commonAuth(encryptAdmin, clientIp);
+    const encryptAdmin = encrypt(
+      adminInfo._id,
+      process.env.ADMIN_ENCRYPTION_KEY
+    );
+    const accessToken = await commonAuth(
+      encryptAdmin,
+      process.env.ADMIN_ACCESS_TIME,
+      process.env.ADMIN_ACCESS_TOKEN,
+      "Access"
+    );
+    const refreshToken = await commonAuth(
+      encryptAdmin,
+      process.env.REFRESH_TOKEN_TIME,
+      process.env.REFRESH_ACCESS_TOKEN,
+      "Refresh"
+    );
 
     await Admin.findByIdAndUpdate(
       adminInfo._id,
       {
         lastLogin: new Date(Date.now()),
-        "token.token": data.accessToken,
+        "token.token": accessToken,
         "token.type": "Access",
         "token.createdAt": new Date(Date.now()),
       },
@@ -91,7 +84,10 @@ const logIn = async (req, res) => {
       res,
       msg: INFO_MSGS.SUCCESSFUL_LOGIN,
       status: STATUS_CODE.OK,
-      data,
+      data: {
+        accessToken,
+        refreshToken,
+      },
     };
     return Response.success(obj);
   } catch (error) {
@@ -100,31 +96,37 @@ const logIn = async (req, res) => {
   }
 };
 
-/**
- * Common Auth function for 2FA checking and JWT token generation
- */
-const commonAuth = (encryptAdmin, ip) =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const payload = {
-        expiresIn: process.env.ADMIN_ACCESS_TIME,
-        encryptAdmin,
-        type: "Access",
-        role: "Admin",
-      };
-      const accessToken = await generateJWTToken(payload);
-      const data = {
-        accessToken,
-      };
-      resolve(data);
-    } catch (error) {
-      console.log("common Auth Log :", error);
-      reject(error);
-    }
-  });
+// Common Auth function for 2FA checking and JWT token generation
+const commonAuth = async (encryptAdmin, ACCESS_TIME, ACCESS_TOKEN, type) => {
+  try {
+    const payload = {
+      encryptAdmin,
+      expiresIn: ACCESS_TIME,
+      accessToken: ACCESS_TOKEN,
+      type,
+      role: "Admin",
+    };
+    const accessToken = await generateJWTToken(payload);
+    return accessToken;
+  } catch (error) {
+    console.log("commonAuth Error:", error);
+    throw error;
+  }
+};
+
+// Generate JWT Token
+const generateJWTToken = async (payload) => {
+  try {
+    const { encryptAdmin, expiresIn, accessToken, type, role } = payload;
+    const token = jwt.sign({ adminId: encryptAdmin, type, role }, accessToken, {
+      expiresIn,
+    });
+    return token;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
 module.exports = {
   logIn,
-  generateJWTToken,
-  commonAuth,
 };

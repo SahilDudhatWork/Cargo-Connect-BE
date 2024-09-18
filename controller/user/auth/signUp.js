@@ -176,7 +176,18 @@ const signUp = async (req, res) => {
 
     // Generate JWT Token
     const encryptUser = encrypt(saveData._id, process.env.USER_ENCRYPTION_KEY);
-    const accessToken = await commonAuth(encryptUser);
+    const accessToken = await commonAuth(
+      encryptUser,
+      process.env.USER_ACCESS_TIME,
+      process.env.USER_ACCESS_TOKEN,
+      "Access"
+    );
+    const refreshToken = await commonAuth(
+      encryptUser,
+      process.env.REFRESH_TOKEN_TIME,
+      process.env.REFRESH_ACCESS_TOKEN,
+      "Refresh"
+    );
 
     // Update user with token details
     await User.findByIdAndUpdate(
@@ -194,7 +205,7 @@ const signUp = async (req, res) => {
       res,
       status: STATUS_CODE.CREATED,
       msg: INFO_MSGS.SUCCESSFUL_REGISTER,
-      data: { accessToken },
+      data: { accessToken, refreshToken },
     });
   } catch (error) {
     console.log("error--->", error);
@@ -203,12 +214,13 @@ const signUp = async (req, res) => {
 };
 
 // Common Auth function for 2FA checking and JWT token generation
-const commonAuth = async (encryptUser) => {
+const commonAuth = async (encryptUser, ACCESS_TIME, ACCESS_TOKEN, type) => {
   try {
     const payload = {
       encryptUser,
-      expiresIn: process.env.USER_ACCESS_TIME,
-      type: "Access",
+      expiresIn: ACCESS_TIME,
+      accessToken: ACCESS_TOKEN,
+      type,
       role: "User",
     };
     const accessToken = await generateJWTToken(payload);
@@ -222,12 +234,10 @@ const commonAuth = async (encryptUser) => {
 // Generate JWT Token
 const generateJWTToken = async (payload) => {
   try {
-    const { encryptUser, expiresIn, type, role } = payload;
-    const token = jwt.sign(
-      { userId: encryptUser, type, role },
-      process.env.USER_ACCESS_TOKEN,
-      { expiresIn }
-    );
+    const { encryptUser, expiresIn, accessToken, type, role } = payload;
+    const token = jwt.sign({ userId: encryptUser, type, role }, accessToken, {
+      expiresIn,
+    });
     return token;
   } catch (error) {
     throw new Error(error.message);

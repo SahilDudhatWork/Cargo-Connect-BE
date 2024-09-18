@@ -206,7 +206,7 @@
         }
       }
     },
-    "/v1/common/otp/verify/user": {
+    "/v1/user/auth/verifyOtp": {
       "post": {
         "tags": ["Auth"],
         "summary": "Verify Otp",
@@ -247,6 +247,26 @@
             }
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/user/auth/token": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Refresh Token",
+        "description": "This endpoint is used to refresh an expired access token using a valid refresh token.",
         "security": [
           {
             "bearerAuth": []

@@ -183,11 +183,22 @@ const signUp = async (req, res) => {
     });
 
     // Generate JWT Token
-    const encryptUser = encrypt(
+    const encryptCarrier = encrypt(
       saveData._id,
       process.env.CARRIER_ENCRYPTION_KEY
     );
-    const accessToken = await commonAuth(encryptUser);
+    const accessToken = await commonAuth(
+      encryptCarrier,
+      process.env.CARRIER_ACCESS_TIME,
+      process.env.CARRIER_ACCESS_TOKEN,
+      "Access"
+    );
+    const refreshToken = await commonAuth(
+      encryptCarrier,
+      process.env.REFRESH_TOKEN_TIME,
+      process.env.REFRESH_ACCESS_TOKEN,
+      "Refresh"
+    );
 
     // Update carrier with token details
     await Carrier.findByIdAndUpdate(
@@ -205,7 +216,7 @@ const signUp = async (req, res) => {
       res,
       status: STATUS_CODE.CREATED,
       msg: INFO_MSGS.SUCCESSFUL_REGISTER,
-      data: { accessToken },
+      data: { accessToken, refreshToken },
     });
   } catch (error) {
     console.log("error--->", error);
@@ -214,13 +225,14 @@ const signUp = async (req, res) => {
 };
 
 // Common Auth function for 2FA checking and JWT token generation
-const commonAuth = async (encryptUser) => {
+const commonAuth = async (encryptCarrier, ACCESS_TIME, ACCESS_TOKEN, type) => {
   try {
     const payload = {
-      encryptUser,
-      expiresIn: process.env.CARRIER_ACCESS_TIME,
-      type: "Access",
-      role: "User",
+      encryptCarrier,
+      expiresIn: ACCESS_TIME,
+      accessToken: ACCESS_TOKEN,
+      type,
+      role: "Carrier",
     };
     const accessToken = await generateJWTToken(payload);
     return accessToken;
@@ -233,12 +245,10 @@ const commonAuth = async (encryptUser) => {
 // Generate JWT Token
 const generateJWTToken = async (payload) => {
   try {
-    const { encryptUser, expiresIn, type, role } = payload;
-    const token = jwt.sign(
-      { carrierId: encryptUser, type, role },
-      process.env.CARRIER_ACCESS_TOKEN,
-      { expiresIn }
-    );
+    const { encryptCarrier, expiresIn, accessToken, type, role } = payload;
+    const token = jwt.sign({ carrierId: encryptCarrier, type, role }, accessToken, {
+      expiresIn,
+    });
     return token;
   } catch (error) {
     throw new Error(error.message);
