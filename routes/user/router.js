@@ -16,9 +16,9 @@ router.get("/", (req, res) => {
 });
 
 router.use("/auth", authRoute);
-router.use("/banners", bannersRoute);
 router.use("/transitInfo", transitInfoRoute);
 router.use(userAuth);
+router.use("/banners", bannersRoute);
 router.use("/profile", profileRoute);
 router.use(userPermission);
 router.use("/order", orderRoute);

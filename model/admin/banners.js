@@ -2,20 +2,20 @@ const { Schema, model } = require("mongoose");
 
 const collectionSchema = new Schema(
   {
-    user: {
-      mainBanner: {
-        type: String,
-        default: null,
-      },
-      serviceBanner: {
-        type: String,
-        default: null,
-      },
-      operationsBanner: {
-        type: String,
-        default: null,
-      },
+    role: {
+      type: String,
+      enum: ["User", "Carrier", "Operator"],
     },
+    banners: [
+      {
+        image: {
+          type: String,
+        },
+        link: {
+          type: String,
+        },
+      },
+    ],
   },
   {
     timestamps: true,

@@ -45,6 +45,8 @@ const userAuth = async (req, res, next) => {
       }
       req.userId = decrypt(decoded.userId, process.env.USER_ENCRYPTION_KEY);
       req.type = decoded.type;
+      req.role = decoded.role;
+      
       let checkUser = await User.findById({ _id: req.userId });
       if (!checkUser) {
         const obj = {

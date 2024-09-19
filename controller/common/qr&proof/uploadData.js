@@ -19,13 +19,11 @@ const uploadQr = async (req, res) => {
   try {
     let proofOfPhotography;
     if (files["proofOfPhotography"]) {
-      proofOfPhotography = files["proofOfPhotography"].map(
-        (i) => i.presignedUrl
-      );
+      proofOfPhotography = files["proofOfPhotography"].map((i) => i.location);
     }
 
     const payload = {
-      qrCode: files["qrCode"] ? files["qrCode"][0].presignedUrl : null,
+      qrCode: files["qrCode"] ? files["qrCode"][0].location : null,
       proofOfPhotography,
     };
 

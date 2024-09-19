@@ -103,26 +103,24 @@ const update = async (req, res) => {
     }
 
     body.profilePicture = files?.profilePicture
-      ? files["profilePicture"][0].presignedUrl
+      ? files["profilePicture"][0].location
       : existingData.profilePicture;
-    body.scac = files?.scac ? files["scac"][0].presignedUrl : existingData.scac;
-    body.caat = files?.caat ? files["caat"][0].presignedUrl : existingData.caat;
+    body.scac = files?.scac ? files["scac"][0].location : existingData.scac;
+    body.caat = files?.caat ? files["caat"][0].location : existingData.caat;
     body.insurancePolicy = files?.insurancePolicy
-      ? files["insurancePolicy"][0].presignedUrl
+      ? files["insurancePolicy"][0].location
       : existingData.insurancePolicy;
-    body.oea = files?.oea ? files["oea"][0].presignedUrl : null;
-    body.ctpat = files?.ctpat
-      ? files["ctpat"][0].presignedUrl
-      : existingData.oea;
+    body.oea = files?.oea ? files["oea"][0].location : null;
+    body.ctpat = files?.ctpat ? files["ctpat"][0].location : existingData.oea;
 
     if (companyFormationType === "USA") {
       body.companyFormation = {
         usa: {
           w9_Form: files?.companyFormation_usa_w9_Form
-            ? files["companyFormation_usa_w9_Form"][0].presignedUrl
+            ? files["companyFormation_usa_w9_Form"][0].location
             : existingData?.companyFormation.usa.w9_Form,
           utility_Bill: files?.companyFormation_usa_utility_Bill
-            ? files["companyFormation_usa_utility_Bill"][0].presignedUrl
+            ? files["companyFormation_usa_utility_Bill"][0].location
             : existingData?.companyFormation.usa.utility_Bill,
         },
         maxico: {
@@ -136,21 +134,20 @@ const update = async (req, res) => {
       body.companyFormation = {
         maxico: {
           copia_Rfc_Form: files?.companyFormation_maxico_copia_Rfc_Form
-            ? files["companyFormation_maxico_copia_Rfc_Form"][0].presignedUrl
+            ? files["companyFormation_maxico_copia_Rfc_Form"][0].location
             : existingData?.companyFormation.maxico.copia_Rfc_Form,
           constance_Of_Fiscal_Situation:
             files?.companyFormation_maxico_constance_Of_Fiscal_Situation
               ? files[
                   "companyFormation_maxico_constance_Of_Fiscal_Situation"
-                ][0].presignedUrl
+                ][0].location
               : existingData?.companyFormation.maxico
                   .constance_Of_Fiscal_Situation,
           proof_of_Favorable: files?.companyFormation_maxico_proof_of_Favorable
-            ? files["companyFormation_maxico_proof_of_Favorable"][0]
-                .presignedUrl
+            ? files["companyFormation_maxico_proof_of_Favorable"][0].location
             : existingData?.companyFormation.maxico.proof_of_Favorable,
           proof_Of_Address: files?.companyFormation_maxico_proof_Of_Address
-            ? files["companyFormation_maxico_proof_Of_Address"][0].presignedUrl
+            ? files["companyFormation_maxico_proof_Of_Address"][0].location
             : existingData?.companyFormation.maxico.proof_Of_Address,
         },
         usa: {

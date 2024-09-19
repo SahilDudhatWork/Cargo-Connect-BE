@@ -116,36 +116,35 @@ const signUp = async (req, res) => {
 
     // Store file paths in the body
     body.profilePicture = files["profilePicture"]
-      ? files["profilePicture"][0].presignedUrl
+      ? files["profilePicture"][0].location
       : null;
-    body.scac = files["scac"] ? files["scac"][0].presignedUrl : null;
-    body.caat = files["caat"] ? files["caat"][0].presignedUrl : null;
+    body.scac = files["scac"] ? files["scac"][0].location : null;
+    body.caat = files["caat"] ? files["caat"][0].location : null;
     body.insurancePolicy = files["insurancePolicy"]
-      ? files["insurancePolicy"][0].presignedUrl
+      ? files["insurancePolicy"][0].location
       : null;
-    body.oea = files["oea"] ? files["oea"][0].presignedUrl : null;
-    body.ctpat = files["ctpat"] ? files["ctpat"][0].presignedUrl : null;
+    body.oea = files["oea"] ? files["oea"][0].location : null;
+    body.ctpat = files["ctpat"] ? files["ctpat"][0].location : null;
 
     if (companyFormationType === "MAXICO") {
       body.companyFormation = {
         maxico: {
           copia_Rfc_Form: files["companyFormation_maxico_copia_Rfc_Form"]
-            ? files["companyFormation_maxico_copia_Rfc_Form"][0].presignedUrl
+            ? files["companyFormation_maxico_copia_Rfc_Form"][0].location
             : null,
           constance_Of_Fiscal_Situation: files[
             "companyFormation_maxico_constance_Of_Fiscal_Situation"
           ]
             ? files["companyFormation_maxico_constance_Of_Fiscal_Situation"][0]
-                .presignedUrl
+                .location
             : null,
           proof_of_Favorable: files[
             "companyFormation_maxico_proof_of_Favorable"
           ]
-            ? files["companyFormation_maxico_proof_of_Favorable"][0]
-                .presignedUrl
+            ? files["companyFormation_maxico_proof_of_Favorable"][0].location
             : null,
           proof_Of_Address: files["companyFormation_maxico_proof_Of_Address"]
-            ? files["companyFormation_maxico_proof_Of_Address"][0].presignedUrl
+            ? files["companyFormation_maxico_proof_Of_Address"][0].location
             : null,
         },
       };
@@ -153,10 +152,10 @@ const signUp = async (req, res) => {
       body.companyFormation = {
         usa: {
           w9_Form: files["companyFormation_usa_w9_Form"]
-            ? files["companyFormation_usa_w9_Form"][0].presignedUrl
+            ? files["companyFormation_usa_w9_Form"][0].location
             : null,
           utility_Bill: files["companyFormation_usa_utility_Bill"]
-            ? files["companyFormation_usa_utility_Bill"][0].presignedUrl
+            ? files["companyFormation_usa_utility_Bill"][0].location
             : null,
         },
       };
@@ -246,9 +245,13 @@ const commonAuth = async (encryptCarrier, ACCESS_TIME, ACCESS_TOKEN, type) => {
 const generateJWTToken = async (payload) => {
   try {
     const { encryptCarrier, expiresIn, accessToken, type, role } = payload;
-    const token = jwt.sign({ carrierId: encryptCarrier, type, role }, accessToken, {
-      expiresIn,
-    });
+    const token = jwt.sign(
+      { carrierId: encryptCarrier, type, role },
+      accessToken,
+      {
+        expiresIn,
+      }
+    );
     return token;
   } catch (error) {
     throw new Error(error.message);

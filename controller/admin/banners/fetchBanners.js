@@ -11,7 +11,10 @@ const {
 const fetchBanners = async (req, res) => {
   const { logger } = req;
   try {
-    const getData = await Banners.findOne();
+    const getData = await Banners.find(
+      {},
+      { __v: 0, createdAt: 0, updatedAt: 0 }
+    );
 
     const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.OK;
     const message = getData ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;

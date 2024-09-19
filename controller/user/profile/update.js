@@ -110,17 +110,17 @@ const update = async (req, res) => {
 
     // Store the profile picture and company formation documents
     body.profilePicture = files?.profilePicture
-      ? files["profilePicture"][0].presignedUrl
+      ? files["profilePicture"][0].location
       : fetchUser?.profilePicture;
 
     if (companyFormationType === "USA") {
       body.companyFormation = {
         usa: {
           w9_Form: files?.companyFormation_usa_w9_Form
-            ? files["companyFormation_usa_w9_Form"][0].presignedUrl
+            ? files["companyFormation_usa_w9_Form"][0].location
             : fetchUser?.companyFormation.usa.w9_Form,
           utility_Bill: files?.companyFormation_usa_utility_Bill
-            ? files["companyFormation_usa_utility_Bill"][0].presignedUrl
+            ? files["companyFormation_usa_utility_Bill"][0].location
             : fetchUser?.companyFormation.usa.utility_Bill,
         },
         maxico: {
@@ -134,21 +134,21 @@ const update = async (req, res) => {
       body.companyFormation = {
         maxico: {
           copia_Rfc_Form: files?.companyFormation_maxico_copia_Rfc_Form
-            ? files["companyFormation_maxico_copia_Rfc_Form"][0].presignedUrl
+            ? files["companyFormation_maxico_copia_Rfc_Form"][0].location
             : fetchUser?.companyFormation.maxico.copia_Rfc_Form,
           constance_Of_Fiscal_Situation:
             files?.companyFormation_maxico_constance_Of_Fiscal_Situation
               ? files[
                   "companyFormation_maxico_constance_Of_Fiscal_Situation"
-                ][0].presignedUrl
+                ][0].location
               : fetchUser?.companyFormation.maxico
                   .constance_Of_Fiscal_Situation,
           proof_of_Favorable: files?.companyFormation_maxico_proof_of_Favorable
             ? files["companyFormation_maxico_proof_of_Favorable"][0]
-                .presignedUrl
+                .location
             : fetchUser?.companyFormation.maxico.proof_of_Favorable,
           proof_Of_Address: files?.companyFormation_maxico_proof_Of_Address
-            ? files["companyFormation_maxico_proof_Of_Address"][0].presignedUrl
+            ? files["companyFormation_maxico_proof_Of_Address"][0].location
             : fetchUser?.companyFormation.maxico.proof_Of_Address,
         },
         usa: {
