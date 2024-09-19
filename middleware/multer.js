@@ -2,7 +2,6 @@ const { S3Client } = require("@aws-sdk/client-s3");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 const path = require("path");
-const { generatePresignedUrl } = require("../utils/generatePresignedUrl");
 
 // AWS S3 Configuration using AWS SDK v3
 const s3 = new S3Client({
@@ -37,8 +36,6 @@ const upload = multer({
     bucket: process.env.AWS_S3_BUCKET,
     key: (req, file, cb) => {
       const filename = `${Date.now()}-${file.originalname}`;
-      const presignedUrl = generatePresignedUrl(filename);
-      file.presignedUrl = presignedUrl;
       cb(null, filename);
     },
   }),

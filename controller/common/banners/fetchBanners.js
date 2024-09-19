@@ -8,11 +8,10 @@ const {
 } = require("../../../helper/constant");
 
 const fetchBanners = async (req, res) => {
-  let { logger } = req;
+  let { logger, role } = req;
   try {
-    let getData = await Banners.find();
+    let getData = await Banners.findOne({ role });
 
-    getData = getData[0];
     const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.OK;
     const message = getData ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;
 

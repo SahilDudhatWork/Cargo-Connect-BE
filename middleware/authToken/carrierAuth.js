@@ -51,6 +51,8 @@ const carrierAuth = async (req, res, next) => {
           process.env.CARRIER_ENCRYPTION_KEY
         );
         req.type = decoded.type;
+        req.role = decoded.role;
+
         let checkCarrier = await Carrier.findById({ _id: req.carrierId });
         if (checkCarrier && decoded.type !== checkCarrier.token.type) {
           const obj = {

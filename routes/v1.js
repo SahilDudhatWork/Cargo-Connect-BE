@@ -12,9 +12,9 @@ v1.get("/", (req, res) => {
 });
 
 v1.use("/admin", adminRouter);
+v1.use("/user", userRouter);
 v1.use("/carrier", carrierRouter);
 v1.use("/operator", operatorRouter);
-v1.use("/user", userRouter);
 v1.use("/common", commonRouter);
 v1.use("/swagger", swaggerRouter);
 

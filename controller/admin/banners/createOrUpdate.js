@@ -8,11 +8,7 @@ const {
   INFO_MSGS,
 } = require("../../../helper/constant");
 
-const uploadMiddleware = upload.fields([
-  { name: "user_mainBanner", maxCount: 1 },
-  { name: "user_serviceBanner", maxCount: 1 },
-  { name: "user_operationsBanner", maxCount: 1 },
-]);
+const uploadMiddleware = upload.any();
 
 const createOrUpdate = async (req, res) => {
   const { logger, body, files, fileValidationError } = req;
@@ -25,27 +21,29 @@ const createOrUpdate = async (req, res) => {
       });
     }
 
-    body.user = {
-      mainBanner: files["user_mainBanner"]
-        ? files["user_mainBanner"][0].presignedUrl
-        : null,
-      serviceBanner: files["user_serviceBanner"]
-        ? files["user_serviceBanner"][0].presignedUrl
-        : null,
-      operationsBanner: files["user_operationsBanner"]
-        ? files["user_operationsBanner"][0].presignedUrl
-        : null,
-    };
+    const { role } = body;
+    const banners = [];
 
-    let banner = await Banners.findOne();
+    files.forEach((file) => {
+      const fieldIndex = file.fieldname.match(/\d+/)[0];
+      const linkKey = `banners[${fieldIndex}].link`;
+      banners.push({
+        image: file.location  ,
+        link: body[linkKey] || "",
+      });
+    });
+
+    const data = { role, banners };
+
+    let banner = await Banners.findOne({ role });
 
     let saveData;
     if (banner) {
-      saveData = await Banners.findByIdAndUpdate(banner._id, body, {
+      saveData = await Banners.findByIdAndUpdate(banner._id, data, {
         new: true,
       });
     } else {
-      saveData = await Banners.create(body);
+      saveData = await Banners.create(data);
     }
 
     const statusCode = saveData ? STATUS_CODE.OK : STATUS_CODE.BAD_REQUEST;

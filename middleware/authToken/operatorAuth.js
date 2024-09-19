@@ -51,6 +51,8 @@ const operatorAuth = async (req, res, next) => {
           process.env.OPERATOR_ENCRYPTION_KEY
         );
         req.type = decoded.type;
+        req.role = decoded.role;
+
         let checkOperator = await Operator.findById({ _id: req.operatorId });
         if (checkOperator && decoded.type !== checkOperator.token.type) {
           const obj = {
