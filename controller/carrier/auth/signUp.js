@@ -91,7 +91,7 @@ const signUp = async (req, res) => {
     }
 
     // If companyFormationType is "maxico", ensure no USA fields are provided
-    if (companyFormationType === "MAXICO") {
+    if (companyFormationType === "MEXICO") {
       const hasUsaFields = usaFields.some((field) => field !== undefined);
       if (hasUsaFields) {
         return Response.error({
@@ -126,7 +126,7 @@ const signUp = async (req, res) => {
     body.oea = files["oea"] ? files["oea"][0].location : null;
     body.ctpat = files["ctpat"] ? files["ctpat"][0].location : null;
 
-    if (companyFormationType === "MAXICO") {
+    if (companyFormationType === "MEXICO") {
       body.companyFormation = {
         maxico: {
           copia_Rfc_Form: files["companyFormation_maxico_copia_Rfc_Form"]

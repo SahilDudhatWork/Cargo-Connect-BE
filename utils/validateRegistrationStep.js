@@ -47,7 +47,7 @@ const validateUserData = (data) => {
         break;
       }
     }
-  } else if (formationType === "MAXICO") {
+  } else if (formationType === "MEXICO") {
     const maxicoFields = [
       "copia_Rfc_Form",
       "constance_Of_Fiscal_Situation",
@@ -120,7 +120,7 @@ const validateCarrierData = (data) => {
         break;
       }
     }
-  } else if (formationType === "MAXICO") {
+  } else if (formationType === "MEXICO") {
     const maxicoFields = [
       "copia_Rfc_Form",
       "constance_Of_Fiscal_Situation",
