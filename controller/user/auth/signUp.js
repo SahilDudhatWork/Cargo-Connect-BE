@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const { generateAccountId } = require("../../../utils/generateUniqueId");
 const { validateUserData } = require("../../../utils/validateRegistrationStep");
 const { generateNumOrCharId } = require("../../../utils/generateUniqueId");
+const { signUpSchemaValidate } = require("../../../helper/joi-validation");
 const upload = require("../../../middleware/multer");
 const {
   STATUS_CODE,
@@ -41,6 +42,25 @@ const signUp = async (req, res) => {
     } = body;
     let newCommercialReference = [];
 
+    const { error } = signUpSchemaValidate({
+      companyName,
+      contactName,
+      contactNumber,
+      email,
+      password,
+      commercialReference,
+      companyFormationType,
+    });
+
+    if (error) {
+      const firstErrorMessage = error.details[0].message;
+      return Response.error({
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: firstErrorMessage,
+      });
+    }
+
     if (Array.isArray(commercialReference) && commercialReference.length > 0) {
       newCommercialReference = commercialReference.map((i) => ({
         ...i,
@@ -70,30 +90,6 @@ const signUp = async (req, res) => {
       files["companyFormation_maxico_proof_Of_Address"],
     ];
 
-    // If companyFormationType is "USA", ensure no Maxico fields are provided
-    if (companyFormationType === "USA") {
-      const hasMaxicoFields = maxicoFields.some((field) => field !== undefined);
-      if (hasMaxicoFields) {
-        return Response.error({
-          res,
-          status: STATUS_CODE.BAD_REQUEST,
-          msg: "USA company formation selected, but Maxico fields are provided.",
-        });
-      }
-    }
-
-    // If companyFormationType is "maxico", ensure no USA fields are provided
-    if (companyFormationType === "MEXICO") {
-      const hasUsaFields = usaFields.some((field) => field !== undefined);
-      if (hasUsaFields) {
-        return Response.error({
-          res,
-          status: STATUS_CODE.BAD_REQUEST,
-          msg: "Maxico company formation selected, but USA fields are provided.",
-        });
-      }
-    }
-
     // Check if the email already exists
     const userEmailExist = await User.findOne({ email });
     if (userEmailExist) {
@@ -112,6 +108,15 @@ const signUp = async (req, res) => {
       : null;
 
     if (companyFormationType === "MEXICO") {
+      const hasUsaFields = usaFields.some((field) => field !== undefined);
+      if (hasUsaFields) {
+        return Response.error({
+          res,
+          status: STATUS_CODE.BAD_REQUEST,
+          msg: "Maxico company formation selected, but USA fields are provided.",
+        });
+      }
+
       body.companyFormation = {
         maxico: {
           copia_Rfc_Form: files["companyFormation_maxico_copia_Rfc_Form"]
@@ -133,7 +138,45 @@ const signUp = async (req, res) => {
             : null,
         },
       };
+      const requiredFields = [
+        {
+          field: "copia_Rfc_Form",
+          label: "companyFormation.maxico.copia_Rfc_Form",
+        },
+        {
+          field: "constance_Of_Fiscal_Situation",
+          label: "companyFormation.maxico.constance_Of_Fiscal_Situation",
+        },
+        {
+          field: "proof_of_Favorable",
+          label: "companyFormation.maxico.proof_of_Favorable",
+        },
+        {
+          field: "proof_Of_Address",
+          label: "companyFormation.maxico.proof_Of_Address",
+        },
+      ];
+
+      for (const { field, label } of requiredFields) {
+        if (!body.companyFormation.maxico[field]) {
+          const message = `${label} ${ERROR_MSGS.KEY_REQUIRED}`;
+          return Response.error({
+            res,
+            status: STATUS_CODE.BAD_REQUEST,
+            msg: message,
+          });
+        }
+      }
     } else if (companyFormationType === "USA") {
+      const hasMaxicoFields = maxicoFields.some((field) => field !== undefined);
+      if (hasMaxicoFields) {
+        return Response.error({
+          res,
+          status: STATUS_CODE.BAD_REQUEST,
+          msg: "USA company formation selected, but Maxico fields are provided.",
+        });
+      }
+
       body.companyFormation = {
         usa: {
           w9_Form: files["companyFormation_usa_w9_Form"]
@@ -144,6 +187,22 @@ const signUp = async (req, res) => {
             : null,
         },
       };
+
+      const requiredFields = [
+        { field: "w9_Form", label: "companyFormation.usa.w9_Form" },
+        { field: "utility_Bill", label: "companyFormation.usa.utility_Bill" },
+      ];
+
+      for (const { field, label } of requiredFields) {
+        if (!body.companyFormation.usa[field]) {
+          const message = `${label} ${ERROR_MSGS.KEY_REQUIRED}`;
+          return Response.error({
+            res,
+            status: STATUS_CODE.BAD_REQUEST,
+            msg: message,
+          });
+        }
+      }
     }
 
     delete body.companyFormation_usa_w9_Form;

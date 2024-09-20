@@ -70,6 +70,17 @@ const update = async (req, res) => {
         msg: ERROR_MSGS.EMAIL_EXIST,
       });
     }
+    if (
+      fetchUser.companyFormationType &&
+      companyFormationType &&
+      fetchUser.companyFormationType !== companyFormationType
+    ) {
+      return Response.error({
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: `companyFormationType ${ERROR_MSGS.NOT_EDITABLE}`,
+      });
+    }
 
     // Validate USA and Maxico fields based on the companyFormationType
     const usaFields = [
@@ -84,7 +95,11 @@ const update = async (req, res) => {
       files?.companyFormation_maxico_proof_Of_Address,
     ];
 
-    // If companyFormationType is "USA", ensure no Maxico fields are provided
+    // Store the profile picture and company formation documents
+    body.profilePicture = files?.profilePicture
+      ? files["profilePicture"][0].location
+      : fetchUser?.profilePicture;
+
     if (companyFormationType === "USA") {
       const hasMaxicoFields = maxicoFields.some((field) => field !== undefined);
       if (hasMaxicoFields) {
@@ -94,26 +109,7 @@ const update = async (req, res) => {
           msg: "USA company formation selected, but Maxico fields are provided.",
         });
       }
-    }
 
-    // If companyFormationType is "maxico", ensure no USA fields are provided
-    if (companyFormationType === "MEXICO") {
-      const hasUsaFields = usaFields.some((field) => field !== undefined);
-      if (hasUsaFields) {
-        return Response.error({
-          res,
-          status: STATUS_CODE.BAD_REQUEST,
-          msg: "Maxico company formation selected, but USA fields are provided.",
-        });
-      }
-    }
-
-    // Store the profile picture and company formation documents
-    body.profilePicture = files?.profilePicture
-      ? files["profilePicture"][0].location
-      : fetchUser?.profilePicture;
-
-    if (companyFormationType === "USA") {
       body.companyFormation = {
         usa: {
           w9_Form: files?.companyFormation_usa_w9_Form
@@ -131,6 +127,15 @@ const update = async (req, res) => {
         },
       };
     } else if (companyFormationType === "MEXICO") {
+      const hasUsaFields = usaFields.some((field) => field !== undefined);
+      if (hasUsaFields) {
+        return Response.error({
+          res,
+          status: STATUS_CODE.BAD_REQUEST,
+          msg: "Maxico company formation selected, but USA fields are provided.",
+        });
+      }
+
       body.companyFormation = {
         maxico: {
           copia_Rfc_Form: files?.companyFormation_maxico_copia_Rfc_Form
