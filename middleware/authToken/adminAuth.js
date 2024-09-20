@@ -56,7 +56,17 @@ const adminAuth = async (req, res, next) => {
         return Response.error(obj);
       }
       let checkAdmin = await Admin.findById({ _id: req.adminId });
-      if (decoded.type !== checkAdmin.token.type) {
+
+      if (!checkAdmin) {
+        const obj = {
+          res,
+          status: STATUS_CODE.UN_AUTHORIZED,
+          msg: ERROR_MSGS.UN_AUTHORIZED,
+        };
+        return Response.error(obj);
+      }
+
+      if (checkAdmin.token.accessToken !== token) {
         const obj = {
           res,
           status: STATUS_CODE.UN_AUTHORIZED,
@@ -64,11 +74,12 @@ const adminAuth = async (req, res, next) => {
         };
         return Response.error(obj);
       }
-      if (!checkAdmin) {
+
+      if (decoded.type !== checkAdmin.token.type) {
         const obj = {
           res,
           status: STATUS_CODE.UN_AUTHORIZED,
-          msg: ERROR_MSGS.UN_AUTHORIZED,
+          msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
         };
         return Response.error(obj);
       }

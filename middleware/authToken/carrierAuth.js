@@ -54,7 +54,17 @@ const carrierAuth = async (req, res, next) => {
         req.role = decoded.role;
 
         let checkCarrier = await Carrier.findById({ _id: req.carrierId });
-        if (checkCarrier && decoded.type !== checkCarrier.token.type) {
+
+        if (!checkCarrier) {
+          const obj = {
+            res,
+            status: STATUS_CODE.UN_AUTHORIZED,
+            msg: ERROR_MSGS.UN_AUTHORIZED,
+          };
+          return Response.error(obj);
+        }
+
+        if (checkCarrier.token.accessToken !== token) {
           const obj = {
             res,
             status: STATUS_CODE.UN_AUTHORIZED,
@@ -62,11 +72,12 @@ const carrierAuth = async (req, res, next) => {
           };
           return Response.error(obj);
         }
-        if (!checkCarrier) {
+
+        if (checkCarrier && decoded.type !== checkCarrier.token.type) {
           const obj = {
             res,
             status: STATUS_CODE.UN_AUTHORIZED,
-            msg: ERROR_MSGS.UN_AUTHORIZED,
+            msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
           };
           return Response.error(obj);
         }

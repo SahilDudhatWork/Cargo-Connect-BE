@@ -23,13 +23,25 @@ const refreshToken = async (req, res) => {
     }
 
     const encryptUser = encrypt(userId, process.env.USER_ENCRYPTION_KEY);
-    const accessToken = await commonAuth(encryptUser);
+    const accessToken = await commonAuth(
+      encryptUser,
+      process.env.USER_ACCESS_TIME,
+      process.env.USER_ACCESS_TOKEN,
+      "Access"
+    );
+    const refreshToken = await commonAuth(
+      encryptUser,
+      process.env.REFRESH_TOKEN_TIME,
+      process.env.REFRESH_ACCESS_TOKEN,
+      "Refresh"
+    );
 
     await User.findByIdAndUpdate(
       userId,
       {
         lastLogin: new Date(),
-        "token.token": accessToken,
+        "token.accessToken": accessToken,
+        "token.refreshToken": refreshToken,
         "token.type": "Access",
         "token.createdAt": new Date(),
       },
@@ -40,7 +52,7 @@ const refreshToken = async (req, res) => {
       res,
       msg: INFO_MSGS.SUCCESSFUL_LOGIN,
       status: STATUS_CODE.OK,
-      data: { accessToken },
+      data: { accessToken, refreshToken },
     };
     return Response.success(obj);
   } catch (error) {
@@ -50,12 +62,13 @@ const refreshToken = async (req, res) => {
 };
 
 // Common Auth function for 2FA checking and JWT token generation
-const commonAuth = async (encryptUser) => {
+const commonAuth = async (encryptUser, ACCESS_TIME, ACCESS_TOKEN, type) => {
   try {
     const payload = {
       encryptUser,
-      expiresIn: process.env.USER_ACCESS_TIME,
-      type: "Access",
+      expiresIn: ACCESS_TIME,
+      accessToken: ACCESS_TOKEN,
+      type,
       role: "User",
     };
     const accessToken = await generateJWTToken(payload);
@@ -69,12 +82,10 @@ const commonAuth = async (encryptUser) => {
 // Generate JWT Token
 const generateJWTToken = async (payload) => {
   try {
-    const { encryptUser, expiresIn, type, role } = payload;
-    const token = jwt.sign(
-      { userId: encryptUser, type, role },
-      process.env.USER_ACCESS_TOKEN,
-      { expiresIn }
-    );
+    const { encryptUser, expiresIn, accessToken, type, role } = payload;
+    const token = jwt.sign({ userId: encryptUser, type, role }, accessToken, {
+      expiresIn,
+    });
     return token;
   } catch (error) {
     throw new Error(error.message);

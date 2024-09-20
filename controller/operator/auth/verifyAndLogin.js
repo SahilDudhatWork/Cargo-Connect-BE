@@ -64,7 +64,8 @@ const verifyAndLogin = async (req, res) => {
       operatorInfo._id,
       {
         lastLogin: new Date(),
-        "token.token": accessToken,
+        "token.accessToken": accessToken,
+        "token.refreshToken": refreshToken,
         "token.type": "Access",
         "token.createdAt": new Date(),
       },

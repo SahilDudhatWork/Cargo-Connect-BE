@@ -74,7 +74,8 @@ const logIn = async (req, res) => {
       adminInfo._id,
       {
         lastLogin: new Date(Date.now()),
-        "token.token": accessToken,
+        "token.accessToken": accessToken,
+        "token.refreshToken": refreshToken,
         "token.type": "Access",
         "token.createdAt": new Date(Date.now()),
       },
