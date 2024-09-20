@@ -83,6 +83,7 @@ const refreshAuth = async (req, res, next) => {
           id = req.operatorId;
         }
         let checkData = await Model.findById(id);
+
         if (!checkData) {
           const obj = {
             res,
@@ -91,6 +92,16 @@ const refreshAuth = async (req, res, next) => {
           };
           return Response.error(obj);
         }
+
+        if (checkData.token.refreshToken !== token) {
+          const obj = {
+            res,
+            status: STATUS_CODE.UN_AUTHORIZED,
+            msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
+          };
+          return Response.error(obj);
+        }
+
         if (checkData && decoded.type !== "Refresh") {
           const obj = {
             res,

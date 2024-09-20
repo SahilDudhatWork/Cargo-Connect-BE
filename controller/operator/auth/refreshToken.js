@@ -26,13 +26,26 @@ const refreshToken = async (req, res) => {
       operatorId,
       process.env.OPERATOR_ENCRYPTION_KEY
     );
-    const accessToken = await commonAuth(encryptOperator);
+    const accessToken = await commonAuth(
+      encryptOperator,
+      process.env.OPERATOR_ACCESS_TIME,
+      process.env.OPERATOR_ACCESS_TOKEN,
+      "Access"
+    );
+
+    const refreshToken = await commonAuth(
+      encryptOperator,
+      process.env.REFRESH_TOKEN_TIME,
+      process.env.REFRESH_ACCESS_TOKEN,
+      "Refresh"
+    );
 
     await Operator.findByIdAndUpdate(
       operatorId,
       {
         lastLogin: new Date(),
-        "token.token": accessToken,
+        "token.accessToken": accessToken,
+        "token.refreshToken": refreshToken,
         "token.type": "Access",
         "token.createdAt": new Date(),
       },
@@ -43,7 +56,7 @@ const refreshToken = async (req, res) => {
       res,
       msg: INFO_MSGS.SUCCESSFUL_LOGIN,
       status: STATUS_CODE.OK,
-      data: { accessToken },
+      data: { accessToken, refreshToken },
     };
     return Response.success(obj);
   } catch (error) {
@@ -53,12 +66,13 @@ const refreshToken = async (req, res) => {
 };
 
 // Common Auth function for 2FA checking and JWT token generation
-const commonAuth = async (encryptOperator) => {
+const commonAuth = async (encryptOperator, ACCESS_TIME, ACCESS_TOKEN, type) => {
   try {
     const payload = {
       encryptOperator,
-      expiresIn: process.env.OPERATOR_ACCESS_TIME,
-      type: "Access",
+      expiresIn: ACCESS_TIME,
+      accessToken: ACCESS_TOKEN,
+      type,
       role: "Operator",
     };
     const accessToken = await generateJWTToken(payload);
@@ -72,11 +86,13 @@ const commonAuth = async (encryptOperator) => {
 // Generate JWT Token
 const generateJWTToken = async (payload) => {
   try {
-    const { encryptOperator, expiresIn, type, role } = payload;
+    const { encryptOperator, expiresIn, accessToken, type, role } = payload;
     const token = jwt.sign(
       { operatorId: encryptOperator, type, role },
-      process.env.OPERATOR_ACCESS_TOKEN,
-      { expiresIn }
+      accessToken,
+      {
+        expiresIn,
+      }
     );
     return token;
   } catch (error) {

@@ -54,7 +54,17 @@ const operatorAuth = async (req, res, next) => {
         req.role = decoded.role;
 
         let checkOperator = await Operator.findById({ _id: req.operatorId });
-        if (checkOperator && decoded.type !== checkOperator.token.type) {
+
+        if (!checkOperator) {
+          const obj = {
+            res,
+            status: STATUS_CODE.UN_AUTHORIZED,
+            msg: ERROR_MSGS.UN_AUTHORIZED,
+          };
+          return Response.error(obj);
+        }
+
+        if (checkOperator.token.accessToken !== token) {
           const obj = {
             res,
             status: STATUS_CODE.UN_AUTHORIZED,
@@ -62,11 +72,12 @@ const operatorAuth = async (req, res, next) => {
           };
           return Response.error(obj);
         }
-        if (!checkOperator) {
+
+        if (checkOperator && decoded.type !== checkOperator.token.type) {
           const obj = {
             res,
             status: STATUS_CODE.UN_AUTHORIZED,
-            msg: ERROR_MSGS.UN_AUTHORIZED,
+            msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
           };
           return Response.error(obj);
         }

@@ -141,7 +141,10 @@ const collectionSchema = new Schema(
         type: String,
         enum: ["Access", "Denied"],
       },
-      token: {
+      accessToken: {
+        type: String,
+      },
+      refreshToken: {
         type: String,
       },
       createdAt: {

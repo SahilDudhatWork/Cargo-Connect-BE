@@ -22,17 +22,28 @@ const refreshToken = async (req, res) => {
       return Response.error(obj);
     }
 
-    const encryptAdmin = encrypt(
-      adminId,
-      process.env.ADMIN_ENCRYPTION_KEY
+    const encryptAdmin = encrypt(adminId, process.env.ADMIN_ENCRYPTION_KEY);
+
+    const accessToken = await commonAuth(
+      encryptAdmin,
+      process.env.ADMIN_ACCESS_TIME,
+      process.env.ADMIN_ACCESS_TOKEN,
+      "Access"
     );
-    const accessToken = await commonAuth(encryptAdmin);
+
+    const refreshToken = await commonAuth(
+      encryptAdmin,
+      process.env.REFRESH_TOKEN_TIME,
+      process.env.REFRESH_ACCESS_TOKEN,
+      "Refresh"
+    );
 
     await Admin.findByIdAndUpdate(
       adminId,
       {
         lastLogin: new Date(),
-        "token.token": accessToken,
+        "token.accessToken": accessToken,
+        "token.refreshToken": refreshToken,
         "token.type": "Access",
         "token.createdAt": new Date(),
       },
@@ -43,7 +54,7 @@ const refreshToken = async (req, res) => {
       res,
       msg: INFO_MSGS.SUCCESSFUL_LOGIN,
       status: STATUS_CODE.OK,
-      data: { accessToken },
+      data: { accessToken, refreshToken },
     };
     return Response.success(obj);
   } catch (error) {
@@ -53,12 +64,13 @@ const refreshToken = async (req, res) => {
 };
 
 // Common Auth function for 2FA checking and JWT token generation
-const commonAuth = async (encryptAdmin) => {
+const commonAuth = async (encryptAdmin, ACCESS_TIME, ACCESS_TOKEN, type) => {
   try {
     const payload = {
       encryptAdmin,
-      expiresIn: process.env.ADMIN_ACCESS_TIME,
-      type: "Access",
+      expiresIn: ACCESS_TIME,
+      accessToken: ACCESS_TOKEN,
+      type,
       role: "Admin",
     };
     const accessToken = await generateJWTToken(payload);
@@ -72,12 +84,10 @@ const commonAuth = async (encryptAdmin) => {
 // Generate JWT Token
 const generateJWTToken = async (payload) => {
   try {
-    const { encryptAdmin, expiresIn, type, role } = payload;
-    const token = jwt.sign(
-      { adminId: encryptAdmin, type, role },
-      process.env.ADMIN_ACCESS_TOKEN,
-      { expiresIn }
-    );
+    const { encryptAdmin, expiresIn, accessToken, type, role } = payload;
+    const token = jwt.sign({ adminId: encryptAdmin, type, role }, accessToken, {
+      expiresIn,
+    });
     return token;
   } catch (error) {
     throw new Error(error.message);
