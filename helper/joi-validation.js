@@ -50,14 +50,6 @@ const mobileSchema = Joi.number()
     "any.required": `Mobile number is required`,
   });
 
-const fullNameSchema = Joi.string().empty().max(150).messages({
-  "string.base": `fullName must be a type of string`,
-  "string.empty": `fullName is required `,
-  "string.max": `fullName can have maximum  of {#limit} characters`,
-  "any.required": `fullName is required `,
-  "any.optional": `fullName is optional `,
-});
-
 const emailSchema = Joi.string()
   .empty()
   .custom(email, "custom validation")
@@ -94,6 +86,78 @@ const emailVerifySchema = Joi.object().keys({
   email: emailSchema,
 });
 
+const companyNameSchema = Joi.string().max(150).required().messages({
+  "string.base": `Company name must be a string`,
+  "string.max": `Company name cannot exceed {#limit} characters`,
+  "any.required": `Company name is required`,
+});
+
+const contactNameSchema = Joi.string().max(150).required().messages({
+  "string.base": `Contact name must be a string`,
+  "string.max": `Contact name cannot exceed {#limit} characters`,
+  "any.required": `Contact name is required`,
+});
+
+const contactNumberSchema = Joi.string()
+  .pattern(/^(?:\+?[1-9]\d{1,14}|[0-9]{10})$/) // Supports international and national formats
+  .required()
+  .messages({
+    "string.pattern.base": `Contact number must be a valid national (10 digits) or international format (+1234567890)`,
+    "any.required": `Contact number is required`,
+  });
+
+// --------------
+// !-*-*-*-*-*-*-*-*-*-*-!
+// --------------
+
+const commercialReferenceSchema = Joi.object({
+  companyName: Joi.string().required().messages({
+    "any.required": "Company name for the commercial reference is required",
+    "string.empty": "Company name for the commercial reference is required",
+  }),
+  contactName: Joi.string().required().messages({
+    "any.required": "Contact name for the commercial reference is required",
+    "string.empty": "Contact name for the commercial reference is required",
+  }),
+  emailAddress: Joi.string().email().required().messages({
+    "string.email":
+      "A valid email address is required for the commercial reference",
+    "any.required": "Email address for the commercial reference is required",
+    "string.empty": "Email address for the commercial reference is required",
+  }),
+  countryCode: Joi.string().pattern(/^\d+$/).required().messages({
+    "string.pattern.base":
+      "Country code for the commercial reference must be numeric",
+    "any.required": "Country code for the commercial reference is required",
+    "string.empty": "Country code for the commercial reference is required",
+  }),
+  contactNo: Joi.string().required().messages({
+    "any.required": "Contact number for the commercial reference is required",
+    "string.empty": "Contact number for the commercial reference is required",
+  }),
+}).optional();
+
+const signUpSchema = Joi.object().keys({
+  companyName: companyNameSchema,
+  contactName: contactNameSchema,
+  contactNumber: contactNumberSchema,
+  email: emailSchema,
+  password: passwordSchema,
+  commercialReference: Joi.array()
+    .items(commercialReferenceSchema)
+    .optional()
+    .messages({
+      "array.base": "Commercial reference must be an array",
+    }),
+  companyFormationType: Joi.string()
+    .valid("USA", "MEXICO")
+    .allow(null, "")
+    .optional()
+    .messages({
+      "any.only": `Company formation type must be either "USA" or "MEXICO"`,
+    }),
+});
+
 const emailVerify = Joi.object().keys({
   email: emailSchema,
 });
@@ -117,6 +181,10 @@ const GoogleSchema = Joi.object().keys({
 });
 
 // Function
+
+const signUpSchemaValidate = (data) => {
+  return signUpSchema.validate({ ...data }, options);
+};
 
 const emailAndPasswordVerification = (data) => {
   return emailPasswordSchema.validate(data, options);
@@ -146,17 +214,6 @@ const google = (data) => {
   return GoogleSchema.validate(data, options);
 };
 
-// check Email Or Mobile
-const validateEmail = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
-
-const validatePhoneNumber = (phoneNumber) => {
-  const phoneRegex = /^[0-9]+$/;
-  return phoneRegex.test(phoneNumber);
-};
-
 module.exports = {
   emailAndPasswordVerification,
   registerWithEmail,
@@ -166,4 +223,5 @@ module.exports = {
   google,
   mobileVerification,
   adminLogin,
+  signUpSchemaValidate,
 };
