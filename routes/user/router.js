@@ -20,8 +20,8 @@ router.use("/transitInfo", transitInfoRoute);
 router.use(userAuth);
 router.use("/banners", bannersRoute);
 router.use("/profile", profileRoute);
-router.use(userPermission);
 router.use("/order", orderRoute);
+router.use(userPermission);
 router.use("/address", addressRoute);
 
 module.exports = router;
