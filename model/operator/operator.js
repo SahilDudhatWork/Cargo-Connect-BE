@@ -22,6 +22,10 @@ const collectionSchema = new Schema(
       lowercase: true,
       default: null,
     },
+    countryCode: {
+      type: Number,
+      default: 1,
+    },
     operatorNumber: {
       type: Number,
       default: null,

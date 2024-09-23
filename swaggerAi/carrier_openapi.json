@@ -573,6 +573,7 @@
                 "type": "object",
                 "example": {
                   "operatorName": "john doe",
+                  "countryCode": 1,
                   "operatorNumber": 9876543211,
                   "mxIdBadge": "MX12345",
                   "mxIdBadgeExpirationDate": "2025-12-31",
