@@ -14,8 +14,16 @@ const fetchData = async (req, res) => {
   let { logger, params, query } = req;
   try {
     const { carrierId } = params;
-    let { page, limit, sortBy } = query;
+    let { page, limit, sortBy, keyWord } = query;
     const actId = parseInt(carrierId);
+
+    let qry = {};
+
+    if (keyWord) {
+      qry = {
+        $or: [{ vehicleName: { $regex: keyWord, $options: "i" } }],
+      };
+    }
 
     const fetchCarrier = await findOne(actId, Carrier);
     sortBy = sortBy === "recent" ? { createdAt: -1 } : { createdAt: 1 };
@@ -26,6 +34,7 @@ const fetchData = async (req, res) => {
     const getData = await Vehicle.aggregate([
       { $match: { carrierId: fetchCarrier._id } },
       { $sort: sortBy },
+      { $match: qry },
       {
         $facet: {
           paginatedResult: [

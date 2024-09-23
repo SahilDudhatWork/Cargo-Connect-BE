@@ -15,7 +15,25 @@ const fetchData = async (req, res) => {
   try {
     const { carrierId } = params;
     const actId = parseInt(carrierId);
-    let { page, limit, sortBy } = query;
+    let { page, limit, sortBy, keyWord } = query;
+
+    let qry = {};
+
+    if (keyWord) {
+      qry = {
+        $or: [
+          { operatorName: { $regex: keyWord, $options: "i" } },
+          {
+            $expr: {
+              $regexMatch: {
+                input: { $toString: { $toLong: "$operatorNumber" } },
+                regex: keyWord,
+              },
+            },
+          },
+        ],
+      };
+    }
 
     const fetchCarrier = await findOne(actId, Carrier);
 
@@ -26,6 +44,7 @@ const fetchData = async (req, res) => {
     const skip = limit * (offset - 1);
     const getData = await Operator.aggregate([
       { $match: { carrierId: fetchCarrier._id } },
+      { $match: qry },
       { $sort: sortBy },
       {
         $facet: {
