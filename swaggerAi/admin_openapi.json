@@ -1078,6 +1078,7 @@
                 "example": {
                   "carrierId": "66d1ab55fd174dd1db7c9737",
                   "operatorName": "john doe",
+                  "countryCode": 1,
                   "operatorNumber": 9876543212,
                   "mxIdBadge": "MX12345",
                   "mxIdBadgeExpirationDate": "2025-12-31",
