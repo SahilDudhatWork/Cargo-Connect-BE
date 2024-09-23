@@ -13,9 +13,42 @@ const getDetails = async (req, res) => {
   const { logger, params } = req;
   try {
     const { type, id } = params;
+    let getData;
     const actId = parseInt(id);
     const Model = await hendleModel(res, type);
-    const getData = await findOne(actId, Model);
+    if (type === "carrier") {
+      getData = await Model.aggregate([
+        { $match: { accountId: actId } },
+        {
+          $lookup: {
+            from: "operators",
+            localField: "_id",
+            foreignField: "carrierId",
+            as: "operatorDetails",
+          },
+        },
+        {
+          $lookup: {
+            from: "vehicles",
+            localField: "_id",
+            foreignField: "carrierId",
+            as: "vehiclesDetails",
+          },
+        },
+        {
+          $project: {
+            __v: 0,
+            forgotPassword: 0,
+            token: 0,
+            "operatorDetails.token": 0,
+            "operatorDetails.__v": 0,
+          },
+        },
+      ]);
+      getData = getData[0];
+    } else {
+      getData = await findOne(actId, Model);
+    }
 
     const decryptPassword = decrypt(
       getData.password,
