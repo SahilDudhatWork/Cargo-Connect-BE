@@ -4,6 +4,6 @@ const {
 } = require("../../controller/common/banners/fetchBanners");
 const router = Router();
 
-router.get("/", fetchBanners);
+router.get("/:type", fetchBanners);
 
 module.exports = router;

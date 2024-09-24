@@ -1590,17 +1590,23 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "user_mainBanner": {
+                  "role": {
+                    "type": "string",
+                    "enum": ["User", "Carrier", "Operator"]
+                  },
+                  "banners[0].image": {
                     "type": "string",
                     "format": "binary"
                   },
-                  "user_serviceBanner": {
+                  "banners[0].link": {
+                    "type": "string"
+                  },
+                  "banners[1].image": {
                     "type": "string",
                     "format": "binary"
                   },
-                  "user_operationsBanner": {
-                    "type": "string",
-                    "format": "binary"
+                  "banners[1].link": {
+                    "type": "string"
                   }
                 }
               }

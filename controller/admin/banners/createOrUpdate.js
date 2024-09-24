@@ -28,7 +28,7 @@ const createOrUpdate = async (req, res) => {
       const fieldIndex = file.fieldname.match(/\d+/)[0];
       const linkKey = `banners[${fieldIndex}].link`;
       banners.push({
-        image: file.location  ,
+        image: file.location,
         link: body[linkKey] || "",
       });
     });
