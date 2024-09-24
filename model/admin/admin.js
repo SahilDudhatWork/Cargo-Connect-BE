@@ -5,7 +5,6 @@ const collectionSchema = new Schema(
   {
     contactName: {
       type: String,
-      lowercase: true,
       default: null,
     },
     email: {

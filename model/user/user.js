@@ -5,7 +5,6 @@ const collectionSchema = new Schema(
   {
     accountId: {
       type: Number,
-      lowercase: true,
       default: null,
       unique: true,
     },
@@ -15,7 +14,6 @@ const collectionSchema = new Schema(
     },
     companyName: {
       type: String,
-      lowercase: true,
       default: null,
     },
     countryCode: {
@@ -24,7 +22,6 @@ const collectionSchema = new Schema(
     },
     contactName: {
       type: String,
-      lowercase: true,
       default: null,
     },
     contactNumber: {
