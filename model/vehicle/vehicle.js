@@ -9,7 +9,6 @@ const collectionSchema = new Schema(
     },
     vehicleName: {
       type: String,
-      lowercase: true,
       default: null,
     },
     mxPlates: {
