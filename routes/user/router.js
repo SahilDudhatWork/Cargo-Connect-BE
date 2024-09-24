@@ -5,7 +5,6 @@ const profileRoute = require("./profile");
 const transitInfoRoute = require("./transitInfo");
 const orderRoute = require("./movement");
 const addressRoute = require("./address");
-const bannersRoute = require("./banners");
 const { userAuth } = require("../../middleware/authToken/userAuth");
 const {
   userPermission,
@@ -18,7 +17,6 @@ router.get("/", (req, res) => {
 router.use("/auth", authRoute);
 router.use("/transitInfo", transitInfoRoute);
 router.use(userAuth);
-router.use("/banners", bannersRoute);
 router.use("/profile", profileRoute);
 router.use("/order", orderRoute);
 router.use(userPermission);

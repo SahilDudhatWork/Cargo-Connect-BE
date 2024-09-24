@@ -205,15 +205,10 @@
         }
       }
     },
-    "/v1/operator/banners": {
+    "/v1/common/benners/operator": {
       "get": {
         "tags": ["Banners"],
         "summary": "Fetch Banners",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successful response",

@@ -8,8 +8,11 @@ const {
 } = require("../../../helper/constant");
 
 const fetchBanners = async (req, res) => {
-  let { logger, role } = req;
+  let { logger, params } = req;
   try {
+    const { type } = params;
+    const role = type[0].toUpperCase() + type.slice(1).toLowerCase();
+
     let getData = await Banners.findOne({ role });
 
     const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.OK;
