@@ -10,27 +10,29 @@ const {
 } = require("../../../helper/constant");
 
 const fetchData = async (req, res) => {
-  let { logger, carrierId, query } = req;
+  const { logger, carrierId, query } = req;
   try {
     let { page, limit, sortBy, keyWord } = query;
 
-    let qry = {};
+    let qry = { carrierId: new ObjectId(carrierId) };
 
     if (keyWord) {
-      qry = {
-        $or: [{ vehicleName: { $regex: keyWord, $options: "i" } }],
-      };
+      qry.$or = [{ vehicleName: { $regex: keyWord, $options: "i" } }];
     }
 
-    sortBy = sortBy === "recent" ? { createdAt: -1 } : { createdAt: 1 };
+    if (sortBy === "active") {
+      qry.status = "Active";
+    } else if (sortBy === "deactive") {
+      qry.status = "Deactive";
+    }
 
     offset = page || 1;
     limit = limit || 10;
     const skip = limit * (offset - 1);
+
     const getData = await Vehicle.aggregate([
-      { $match: { carrierId: new ObjectId(carrierId) } },
       { $match: qry },
-      { $sort: sortBy },
+      { $sort: { createdAt: -1 } },
       {
         $facet: {
           paginatedResult: [
@@ -68,7 +70,6 @@ const fetchData = async (req, res) => {
       data: response,
     });
   } catch (error) {
-    console.error("error-->", error);
     return handleException(logger, res, error);
   }
 };

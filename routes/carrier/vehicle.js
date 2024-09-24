@@ -5,6 +5,9 @@ const { getDetails } = require("../../controller/carrier/vehicle/getDetails");
 const { update } = require("../../controller/carrier/vehicle/update");
 const { remove } = require("../../controller/carrier/vehicle/delete");
 const {
+  hendleStatus,
+} = require("../../controller/carrier/vehicle/hendleStatus");
+const {
   fetchTransitInfo,
 } = require("../../controller/carrier/vehicle/fetchTransitInfo");
 const router = Router();
@@ -15,5 +18,6 @@ router.get("/:id", getDetails);
 router.put("/:id", update);
 router.delete("/:id", remove);
 router.get("/fetch/transitInfo", fetchTransitInfo);
+router.put("/status/:id", hendleStatus);
 
 module.exports = router;
