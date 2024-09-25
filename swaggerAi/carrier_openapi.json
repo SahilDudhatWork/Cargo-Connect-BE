@@ -1031,7 +1031,7 @@
       }
     },
 
-    "/v1/common/otp/sent/admin": {
+    "/v1/common/otp/sent/carrier": {
       "post": {
         "tags": ["Otp"],
         "summary": "Sent Otp",
@@ -1041,7 +1041,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "email": "admin@gmail.com"
+                  "email": "carrier@gmail.com"
                 }
               }
             }
@@ -1084,7 +1084,7 @@
         }
       }
     },
-    "/v1/common/resetPassword/admin": {
+    "/v1/common/resetPassword/carrier": {
       "post": {
         "tags": ["Forgot Password"],
         "summary": "Reset Password",
