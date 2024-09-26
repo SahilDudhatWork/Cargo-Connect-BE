@@ -11,41 +11,50 @@ const {
 } = require("../../../helper/constant");
 
 const fetchData = async (req, res) => {
-  let { logger, params, query } = req;
+  const { logger, params, query } = req;
   try {
     const { carrierId } = params;
     const actId = parseInt(carrierId);
     let { page, limit, sortBy, keyWord } = query;
 
-    let qry = {};
-
-    if (keyWord) {
-      qry = {
-        $or: [
-          { operatorName: { $regex: keyWord, $options: "i" } },
-          {
-            $expr: {
-              $regexMatch: {
-                input: { $toString: { $toLong: "$operatorNumber" } },
-                regex: keyWord,
-              },
-            },
-          },
-        ],
-      };
+    const fetchCarrier = await findOne(actId, Carrier);
+    if (!fetchCarrier) {
+      return Response.success({
+        req,
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: ERROR_MSGS.DATA_NOT_AVAILABLE,
+      });
     }
 
-    const fetchCarrier = await findOne(actId, Carrier);
+    let qry = { carrierId: fetchCarrier._id };
 
-    sortBy = sortBy === "recent" ? { createdAt: -1 } : { createdAt: 1 };
+    if (keyWord) {
+      qry.$or = [
+        { operatorName: { $regex: keyWord, $options: "i" } },
+        {
+          $expr: {
+            $regexMatch: {
+              input: { $toString: { $toLong: "$operatorNumber" } },
+              regex: keyWord,
+            },
+          },
+        },
+      ];
+    }
+
+    if (sortBy === "active") {
+      qry.status = "Active";
+    } else if (sortBy === "deactive") {
+      qry.status = "Deactive";
+    }
 
     offset = page || 1;
     limit = limit || 10;
     const skip = limit * (offset - 1);
     const getData = await Operator.aggregate([
-      { $match: { carrierId: fetchCarrier._id } },
       { $match: qry },
-      { $sort: sortBy },
+      { $sort: { createdAt: -1 } },
       {
         $facet: {
           paginatedResult: [
@@ -83,7 +92,6 @@ const fetchData = async (req, res) => {
       data: response,
     });
   } catch (error) {
-    console.error("error-->", error);
     return handleException(logger, res, error);
   }
 };
