@@ -1,4 +1,5 @@
 const User = require("../../../model/user/user");
+const Reference = require("../../../model/common/reference");
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -34,7 +35,6 @@ const update = async (req, res) => {
       companyFormationType,
       commercialReference,
     } = body;
-    let newCommercialReference;
 
     if (fileValidationError) {
       return Response.error({
@@ -45,11 +45,18 @@ const update = async (req, res) => {
     }
 
     if (Array.isArray(commercialReference) && commercialReference.length > 0) {
-      newCommercialReference = commercialReference.map((i) => ({
-        ...i,
-      }));
+      for (const reference of commercialReference) {
+        if (reference._id) {
+          await Reference.findByIdAndUpdate(reference._id, reference, {
+            new: true,
+          });
+        } else {
+          reference.clientRelationId = userId;
+          reference.type = "User";
+          await Reference.create(reference);
+        }
+      }
     }
-    body.commercialReference = newCommercialReference ?? [];
 
     if (accountId || password) {
       const errorMsg = accountId
@@ -71,9 +78,9 @@ const update = async (req, res) => {
       });
     }
     if (
-      fetchUser.companyFormationType &&
+      fetchUser?.companyFormationType &&
       companyFormationType &&
-      fetchUser.companyFormationType !== companyFormationType
+      fetchUser?.companyFormationType !== companyFormationType
     ) {
       return Response.error({
         res,
@@ -168,7 +175,9 @@ const update = async (req, res) => {
       body,
       { new: true }
     );
-
+    const getReference = await Reference.find({
+      clientRelationId: new ObjectId(userId),
+    });
     updateData.stepCompleted = validateUserData(updateData);
     updateData.save();
 
@@ -176,6 +185,8 @@ const update = async (req, res) => {
     delete result.password;
     delete result.token;
     delete result.forgotPassword;
+    delete result.__v;
+    result.commercialReference = getReference;
 
     const statusCode = updateData ? STATUS_CODE.OK : STATUS_CODE.BAD_REQUEST;
     const message = updateData

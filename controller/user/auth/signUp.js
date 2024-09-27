@@ -1,11 +1,11 @@
 const User = require("../../../model/user/user");
+const Reference = require("../../../model/common/reference");
 const { handleException } = require("../../../helper/exception");
 const { encrypt } = require("../../../helper/encrypt-decrypt");
 const Response = require("../../../helper/response");
 const jwt = require("jsonwebtoken");
 const { generateAccountId } = require("../../../utils/generateUniqueId");
 const { validateUserData } = require("../../../utils/validateRegistrationStep");
-const { generateNumOrCharId } = require("../../../utils/generateUniqueId");
 const { signUpSchemaValidate } = require("../../../helper/joi-validation");
 const upload = require("../../../middleware/multer");
 const {
@@ -40,7 +40,6 @@ const signUp = async (req, res) => {
       commercialReference,
       companyFormationType,
     } = body;
-    let newCommercialReference = [];
 
     const { error } = signUpSchemaValidate({
       companyName,
@@ -59,13 +58,6 @@ const signUp = async (req, res) => {
         status: STATUS_CODE.BAD_REQUEST,
         msg: firstErrorMessage,
       });
-    }
-
-    if (Array.isArray(commercialReference) && commercialReference.length > 0) {
-      newCommercialReference = commercialReference.map((i) => ({
-        ...i,
-        accountId: generateNumOrCharId(),
-      }));
     }
 
     // Validate file upload errors
@@ -220,7 +212,6 @@ const signUp = async (req, res) => {
       contactNumber,
       email,
       password: passwordHash,
-      commercialReference: newCommercialReference ?? [],
       profilePicture: body.profilePicture,
       scac: body.scac,
       caat: body.caat,
@@ -231,6 +222,19 @@ const signUp = async (req, res) => {
       companyFormation: body.companyFormation,
       stepCompleted: validateUserData(body),
     });
+
+    if (Array.isArray(commercialReference) && commercialReference.length > 0) {
+      const commercialReferencesToInsert = commercialReference.map(
+        (reference) => {
+          return {
+            ...reference,
+            clientRelationId: saveData._id,
+            type: "User",
+          };
+        }
+      );
+      await Reference.insertMany(commercialReferencesToInsert);
+    }
 
     // Generate JWT Token
     const encryptUser = encrypt(saveData._id, process.env.USER_ENCRYPTION_KEY);

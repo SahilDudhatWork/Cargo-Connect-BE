@@ -14,19 +14,7 @@ const s3 = new S3Client({
 
 // File filter for validation
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = /pdf|doc|docx|jpg|jpeg|png/i;
-  const extname = allowedTypes.test(
-    path.extname(file.originalname).toLowerCase()
-  );
-  const mimetype = allowedTypes.test(file.mimetype);
-
-  // if (mimetype && extname) {
   cb(null, true);
-  // } else {
-  //   req.fileValidationError =
-  //     "Only PDF, DOC, DOCX, JPG, JPEG, and PNG files are allowed";
-  //   cb(null, false);
-  // }
 };
 
 // Multer S3 Storage Configuration

@@ -36,6 +36,14 @@ const getDetails = async (req, res) => {
           },
         },
         {
+          $lookup: {
+            from: "references",
+            localField: "_id",
+            foreignField: "clientRelationId",
+            as: "commercialReference",
+          },
+        },
+        {
           $addFields: {
             "operator.total": { $size: "$operatorDetails" },
             "operator.active": {
@@ -84,6 +92,9 @@ const getDetails = async (req, res) => {
             __v: 0,
             forgotPassword: 0,
             token: 0,
+            "commercialReference.__v": 0,
+            "commercialReference.createdAt": 0,
+            "commercialReference.updatedAt": 0,
           },
         },
       ]);

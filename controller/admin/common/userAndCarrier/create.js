@@ -1,3 +1,4 @@
+const Reference = require("../../../../model/common/reference");
 const { handleException } = require("../../../../helper/exception");
 const Response = require("../../../../helper/response");
 const { encrypt } = require("../../../../helper/encrypt-decrypt");
@@ -40,7 +41,6 @@ const create = async (req, res) => {
   const { logger, body, params, files, fileValidationError } = req;
   try {
     const { email, password, companyFormationType, commercialReference } = body;
-    let newCommercialReference;
     const { type } = params;
 
     if (fileValidationError) {
@@ -50,14 +50,6 @@ const create = async (req, res) => {
         msg: fileValidationError,
       });
     }
-
-    if (Array.isArray(commercialReference) && commercialReference.length > 0) {
-      newCommercialReference = commercialReference.map((i) => ({
-        ...i,
-        accountId: generateNumOrCharId(),
-      }));
-    }
-    body.commercialReference = newCommercialReference ?? [];
 
     // Validate company formation fields based on the type
     const usaFields = [
@@ -166,6 +158,19 @@ const create = async (req, res) => {
     }
 
     let saveData = await Model.create(body);
+
+    if (Array.isArray(commercialReference) && commercialReference.length > 0) {
+      const commercialReferencesToInsert = commercialReference.map(
+        (reference) => {
+          return {
+            ...reference,
+            clientRelationId: saveData._id,
+            type: type.replace(/\b\w/g, (char) => char.toUpperCase()),
+          };
+        }
+      );
+      await Reference.insertMany(commercialReferencesToInsert);
+    }
 
     const statusCode = saveData ? STATUS_CODE.CREATED : STATUS_CODE.BAD_REQUEST;
     const message = saveData

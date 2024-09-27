@@ -1,5 +1,4 @@
 const { Schema, model, Types } = require("mongoose");
-const { ObjectId } = Types;
 
 const collectionSchema = new Schema(
   {
@@ -37,7 +36,6 @@ const collectionSchema = new Schema(
     password: {
       type: String,
       default: null,
-      // unique: true,
     },
     companyFormationType: {
       type: String,
@@ -73,34 +71,6 @@ const collectionSchema = new Schema(
         },
       },
     },
-    commercialReference: [
-      {
-        accountId: {
-          type: String,
-          default: null,
-        },
-        companyName: {
-          type: String,
-          default: null,
-        },
-        contactName: {
-          type: String,
-          default: null,
-        },
-        emailAddress: {
-          type: String,
-          default: null,
-        },
-        countryCode: {
-          type: Number,
-          default: 1,
-        },
-        contactNo: {
-          type: Number,
-          default: null,
-        },
-      },
-    ],
     verifyByAdmin: {
       type: Boolean,
       default: false,

@@ -18,11 +18,22 @@ const fetchProfile = async (req, res) => {
         },
       },
       {
+        $lookup: {
+          from: "references",
+          localField: "_id",
+          foreignField: "clientRelationId",
+          as: "commercialReference",
+        },
+      },
+      {
         $project: {
           __v: 0,
           password: 0,
           forgotPassword: 0,
           token: 0,
+          "commercialReference.__v": 0,
+          "commercialReference.createdAt": 0,
+          "commercialReference.updatedAt": 0,
         },
       },
     ]);

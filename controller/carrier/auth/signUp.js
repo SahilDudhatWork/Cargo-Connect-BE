@@ -1,4 +1,5 @@
 const Carrier = require("../../../model/carrier/carrier");
+const Reference = require("../../../model/common/reference");
 const { handleException } = require("../../../helper/exception");
 const { encrypt } = require("../../../helper/encrypt-decrypt");
 const Response = require("../../../helper/response");
@@ -49,7 +50,6 @@ const signUp = async (req, res) => {
       commercialReference,
       companyFormationType,
     } = body;
-    let newCommercialReference;
 
     const { error } = signUpSchemaValidate({
       companyName,
@@ -68,13 +68,6 @@ const signUp = async (req, res) => {
         status: STATUS_CODE.BAD_REQUEST,
         msg: firstErrorMessage,
       });
-    }
-
-    if (Array.isArray(commercialReference) && commercialReference.length > 0) {
-      newCommercialReference = commercialReference.map((i) => ({
-        ...i,
-        accountId: generateNumOrCharId(),
-      }));
     }
 
     if (fileValidationError) {
@@ -228,7 +221,6 @@ const signUp = async (req, res) => {
       contactNumber,
       email,
       password: passwordHash,
-      commercialReference: newCommercialReference ?? [],
       profilePicture: body.profilePicture,
       scac: body.scac,
       caat: body.caat,
@@ -239,6 +231,19 @@ const signUp = async (req, res) => {
       companyFormation: body.companyFormation,
       stepCompleted: validateCarrierData(body),
     });
+
+    if (Array.isArray(commercialReference) && commercialReference.length > 0) {
+      const commercialReferencesToInsert = commercialReference.map(
+        (reference) => {
+          return {
+            ...reference,
+            clientRelationId: saveData._id,
+            type: "Carrier",
+          };
+        }
+      );
+      await Reference.insertMany(commercialReferencesToInsert);
+    }
 
     // Generate JWT Token
     const encryptCarrier = encrypt(

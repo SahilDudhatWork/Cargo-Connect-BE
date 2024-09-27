@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-const otpSchema = new mongoose.Schema(
+const collectionSchema = new Schema(
   {
     email: {
       type: String,
@@ -26,4 +26,4 @@ const otpSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("otp", otpSchema);
+module.exports = model("otp", collectionSchema);
