@@ -11,6 +11,9 @@ const validateUserData = (data) => {
     "contactNumber",
     "email",
     "password",
+    "commercialReference",
+    "companyFormationType",
+    "profilePicture",
   ];
   for (const field of mainFields) {
     if (isNullOrEmpty(data[field])) {
@@ -79,6 +82,9 @@ const validateCarrierData = (data) => {
     "contactNumber",
     "email",
     "password",
+    "commercialReference",
+    "companyFormationType",
+    "profilePicture",
     "scac",
     "caat",
     "insurancePolicy",

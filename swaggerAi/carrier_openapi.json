@@ -490,9 +490,9 @@
             "name": "sortBy",
             "in": "query",
             "schema": {
-              "type": "string"
-            },
-            "example": "Requests"
+              "type": "string",
+              "enum": ["Requests", "InProgress", "Completed"]
+            }
           },
           {
             "name": "keyWord",
