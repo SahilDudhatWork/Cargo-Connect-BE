@@ -1,4 +1,5 @@
 const Carrier = require("../../../model/carrier/carrier");
+const Reference = require("../../../model/common/reference");
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -41,7 +42,6 @@ const update = async (req, res) => {
       companyFormationType,
       commercialReference,
     } = body;
-    let newCommercialReference;
 
     if (fileValidationError) {
       return Response.error({
@@ -52,11 +52,18 @@ const update = async (req, res) => {
     }
 
     if (Array.isArray(commercialReference) && commercialReference.length > 0) {
-      newCommercialReference = commercialReference.map((i) => ({
-        ...i,
-      }));
+      for (const reference of commercialReference) {
+        if (reference._id) {
+          await Reference.findByIdAndUpdate(reference._id, reference, {
+            new: true,
+          });
+        } else {
+          reference.clientRelationId = carrierId;
+          reference.type = "Carrier";
+          await Reference.create(reference);
+        }
+      }
     }
-    body.commercialReference = newCommercialReference ?? [];
 
     if (accountId || password) {
       const errorMsg = accountId
@@ -92,9 +99,9 @@ const update = async (req, res) => {
     }
 
     if (
-      fetchCarrier.companyFormationType &&
+      fetchCarrier?.companyFormationType &&
       companyFormationType &&
-      fetchCarrier.companyFormationType !== companyFormationType
+      fetchCarrier?.companyFormationType !== companyFormationType
     ) {
       return Response.error({
         res,
@@ -105,14 +112,14 @@ const update = async (req, res) => {
 
     body.profilePicture = files?.profilePicture
       ? files["profilePicture"][0].location
-      : fetchCarrier.profilePicture;
-    body.scac = files?.scac ? files["scac"][0].location : fetchCarrier.scac;
-    body.caat = files?.caat ? files["caat"][0].location : fetchCarrier.caat;
+      : fetchCarrier?.profilePicture;
+    body.scac = files?.scac ? files["scac"][0].location : fetchCarrier?.scac;
+    body.caat = files?.caat ? files["caat"][0].location : fetchCarrier?.caat;
     body.insurancePolicy = files?.insurancePolicy
       ? files["insurancePolicy"][0].location
-      : fetchCarrier.insurancePolicy;
-    body.oea = files?.oea ? files["oea"][0].location : fetchCarrier.oea;
-    body.ctpat = files?.ctpat ? files["ctpat"][0].location : fetchCarrier.ctpat;
+      : fetchCarrier?.insurancePolicy;
+    body.oea = files?.oea ? files["oea"][0].location : fetchCarrier?.oea;
+    body.ctpat = files?.ctpat ? files["ctpat"][0].location : fetchCarrier?.ctpat;
 
     if (companyFormationType === "USA") {
       const hasMaxicoFields = maxicoFields.some((field) => field !== undefined);
@@ -181,6 +188,9 @@ const update = async (req, res) => {
       body,
       { new: true }
     );
+    const getReference = await Reference.find({
+      clientRelationId: new ObjectId(carrierId),
+    });
 
     updateData.stepCompleted = validateCarrierData(updateData);
     updateData.save();
@@ -189,6 +199,8 @@ const update = async (req, res) => {
     delete result.password;
     delete result.token;
     delete result.forgotPassword;
+    delete result.__v;
+    result.commercialReference = getReference;
 
     const statusCode = updateData ? STATUS_CODE.OK : STATUS_CODE.BAD_REQUEST;
     const message = updateData

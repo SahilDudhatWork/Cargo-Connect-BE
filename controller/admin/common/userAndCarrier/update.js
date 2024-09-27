@@ -1,3 +1,4 @@
+const Reference = require("../../../../model/common/reference");
 const { handleException } = require("../../../../helper/exception");
 const Response = require("../../../../helper/response");
 const { hendleModel } = require("../../../../utils/hendleModel");
@@ -14,7 +15,14 @@ const {
 } = require("../../../../helper/constant");
 
 const update = async (req, res) => {
-  const { logger, params, body, files, fileValidationError } = req;
+  const {
+    logger,
+    params,
+    body,
+    files,
+    fileValidationError,
+    commercialReference,
+  } = req;
   try {
     const { type, id } = params;
     const { email, accountId, password, companyFormationType } = body;
@@ -157,6 +165,20 @@ const update = async (req, res) => {
       };
     }
 
+    if (Array.isArray(commercialReference) && commercialReference.length > 0) {
+      for (const reference of commercialReference) {
+        if (reference._id) {
+          await Reference.findByIdAndUpdate(reference._id, reference, {
+            new: true,
+          });
+        } else {
+          reference.clientRelationId = existingData._id;
+          reference.type = "User";
+          await Reference.create(reference);
+        }
+      }
+    }
+
     const updatedData = await Model.findOneAndUpdate(
       { accountId: actId },
       body,
@@ -189,6 +211,11 @@ const update = async (req, res) => {
       process.env.PASSWORD_ENCRYPTION_KEY
     );
     result.password = decryptPassword;
+
+    const getReference = await Reference.find({
+      clientRelationId: new ObjectId(existingData._id),
+    });
+    result.commercialReference = getReference;
 
     return Response.success({
       req,
