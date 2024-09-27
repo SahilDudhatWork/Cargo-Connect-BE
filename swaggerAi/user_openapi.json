@@ -529,9 +529,15 @@
             "name": "status",
             "in": "query",
             "schema": {
-              "type": "string"
-            },
-            "example": "Approved"
+              "type": "string",
+              "enum": [
+                "Approved",
+                "Completed",
+                "InProgress",
+                "Pending",
+                "Cancelled"
+              ]
+            }
           }
         ],
         "responses": {
