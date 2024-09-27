@@ -1,4 +1,5 @@
 const User = require("../../../model/user/user");
+const Reference = require("../../../model/common/reference");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { ObjectId } = require("mongoose").Types;
@@ -11,10 +12,9 @@ const {
 const fetchReference = async (req, res) => {
   const { logger, userId } = req;
   try {
-    let getData = await User.findById(
-      { _id: new ObjectId(userId) },
-      { commercialReference: 1, _id: 0 }
-    );
+    let getData = await Reference.find({
+      clientRelationId: new ObjectId(userId),
+    });
 
     const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.OK;
     const message = getData ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;
