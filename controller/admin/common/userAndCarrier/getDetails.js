@@ -36,15 +36,58 @@ const getDetails = async (req, res) => {
           },
         },
         {
+          $addFields: {
+            "operator.total": { $size: "$operatorDetails" },
+            "operator.active": {
+              $size: {
+                $filter: {
+                  input: "$operatorDetails",
+                  as: "operator",
+                  cond: { $eq: ["$$operator.status", "Active"] },
+                },
+              },
+            },
+            "operator.deactive": {
+              $size: {
+                $filter: {
+                  input: "$operatorDetails",
+                  as: "operator",
+                  cond: { $eq: ["$$operator.status", "Deactive"] },
+                },
+              },
+            },
+            "vehicle.total": { $size: "$vehiclesDetails" },
+            "vehicle.active": {
+              $size: {
+                $filter: {
+                  input: "$vehiclesDetails",
+                  as: "vehicle",
+                  cond: { $eq: ["$$vehicle.status", "Active"] },
+                },
+              },
+            },
+            "vehicle.deactive": {
+              $size: {
+                $filter: {
+                  input: "$vehiclesDetails",
+                  as: "vehicle",
+                  cond: { $eq: ["$$vehicle.status", "Deactive"] },
+                },
+              },
+            },
+          },
+        },
+        {
           $project: {
+            operatorDetails: 0,
+            vehiclesDetails: 0,
             __v: 0,
             forgotPassword: 0,
             token: 0,
-            "operatorDetails.token": 0,
-            "operatorDetails.__v": 0,
           },
         },
       ]);
+
       getData = getData[0];
     } else {
       getData = await findOne(actId, Model);
