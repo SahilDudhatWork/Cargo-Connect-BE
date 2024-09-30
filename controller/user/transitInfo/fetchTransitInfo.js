@@ -1,4 +1,5 @@
 const TransitInfo = require("../../../model/admin/transitInfo");
+const SpecialRequirements = require("../../../model/common/specialRequirements");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const {
@@ -11,16 +12,32 @@ const fetchService = async (req, res) => {
   let { logger } = req;
   try {
     let getData = await TransitInfo.findOne();
+    if (!getData) {
+      return Response.error({
+        req,
+        res,
+        status: STATUS_CODE.NOT_FOUND,
+        msg: ERROR_MSGS.DATA_NOT_FOUND,
+      });
+    }
+    const getSpecialRequirements = await SpecialRequirements.find(
+      {},
+      { post_bridge: 1 }
+    );
 
-    const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.OK;
-    const message = getData ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;
+    const newData = {
+      modeOfTransportation: getData.modeOfTransportation,
+      typeOfService: getData.typeOfService,
+      typeOfTransportation: getData.typeOfTransportation,
+      port_BridgeOfCrossing: getSpecialRequirements,
+    };
 
-    return Response[statusCode === STATUS_CODE.OK ? "success" : "error"]({
+    return Response.success({
       req,
       res,
-      status: statusCode,
-      msg: message,
-      data: getData,
+      status: STATUS_CODE.OK,
+      msg: INFO_MSGS.SUCCESS,
+      data: newData,
     });
   } catch (error) {
     console.error("error-->", error);

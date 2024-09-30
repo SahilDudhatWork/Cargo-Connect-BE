@@ -26,7 +26,9 @@ const hendleRequest = async (req, res) => {
       new: true,
     });
 
-    const statusCode = updateData ? STATUS_CODE.OK : STATUS_CODE.INTERNAL_ERROR;
+    const statusCode = updateData
+      ? STATUS_CODE.OK
+      : STATUS_CODE.INTERNAL_SERVER_ERROR;
     const message = updateData
       ? INFO_MSGS.UPDATED_SUCCESSFULLY
       : ERROR_MSGS.UPDATE_ERR;
