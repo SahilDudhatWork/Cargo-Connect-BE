@@ -13,6 +13,10 @@ const collectionSchema = new Schema(
           type: String,
           default: null,
         },
+        price: {
+          type: Number,
+          default: 0,
+        },
       },
     ],
     typeOfTransportation: [
@@ -24,6 +28,10 @@ const collectionSchema = new Schema(
         description: {
           type: String,
           default: null,
+        },
+        price: {
+          type: Number,
+          default: 0,
         },
       },
     ],
@@ -38,6 +46,10 @@ const collectionSchema = new Schema(
             type: String,
             default: null,
           },
+          price: {
+            type: Number,
+            default: 0,
+          },
         },
       ],
       LTL: [
@@ -49,6 +61,10 @@ const collectionSchema = new Schema(
           description: {
             type: String,
             default: null,
+          },
+          price: {
+            type: Number,
+            default: 0,
           },
         },
       ],

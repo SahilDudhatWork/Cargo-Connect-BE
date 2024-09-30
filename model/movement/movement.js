@@ -22,6 +22,18 @@ const collectionSchema = new Schema(
     vehicleId: {
       type: ObjectId,
     },
+    amountDetails: {
+      price: {
+        type: Number,
+        default: 0,
+      },
+      currency: {
+        type: String,
+      },
+      paymentMode: {
+        type: String,
+      },
+    },
     typeOfService: {
       type: ObjectId,
       default: null,
@@ -41,17 +53,18 @@ const collectionSchema = new Schema(
       },
     },
     port_BridgeOfCrossing: {
-      type: String,
-      default: null,
+      type: ObjectId,
     },
     userReference: {
       type: String,
       default: null,
     },
-    specialRequirements: {
-      type: Array,
-      default: null,
-    },
+    specialRequirements: [
+      {
+        type: ObjectId,
+        default: null,
+      },
+    ],
     quantityForChains: {
       type: String,
       default: null,
@@ -96,6 +109,10 @@ const collectionSchema = new Schema(
       type: String,
       default: "Pending",
       enum: ["Approved", "Completed", "InProgress", "Pending", "Cancelled"],
+    },
+    isScheduleTriggered: {
+      type: Boolean,
+      default: false,
     },
     isAssign: {
       type: Boolean,

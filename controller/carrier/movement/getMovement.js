@@ -45,6 +45,7 @@ const fetchMovement = async (req, res) => {
     limit = limit || 10;
     const skip = limit * (offset - 1);
     const getData = await Movement.aggregate([
+      { $match: { isScheduleTriggered: true } },
       { $match: qry },
       // Fetch Addresses
       {

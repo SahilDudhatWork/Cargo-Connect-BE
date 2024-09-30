@@ -9,6 +9,7 @@ const servicesRoute = require("./services");
 const activityRoute = require("./activity");
 const bannersRoute = require("./banners");
 const transitInfoRoute = require("./transitInfo");
+const specialRequirementsRoute = require("./specialRequirements");
 const { adminAuth } = require("../../middleware/authToken/adminAuth");
 
 router.get("/", (req, res) => {
@@ -25,5 +26,6 @@ router.use("/services", servicesRoute);
 router.use("/activity", activityRoute);
 router.use("/banners", bannersRoute);
 router.use("/transitInfo", transitInfoRoute);
+router.use("/specialRequirements", specialRequirementsRoute);
 
 module.exports = router;

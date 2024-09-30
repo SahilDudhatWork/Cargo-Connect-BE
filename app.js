@@ -8,6 +8,7 @@ const path = require("path");
 const cors = require("cors");
 const logger = require("morgan");
 const MongoDBconnect = require("./library/db");
+const scheduleCron = require("./cronJob");
 
 // Body-parser
 app.use(cors({ origin: "*" }));
@@ -22,6 +23,9 @@ app.use("/v1", routes);
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Wel Come Our CaRgO cOnNeCt - V1.0.1" });
 });
+
+// Cron run every 1 min
+scheduleCron();
 
 // DB Connection
 MongoDBconnect()

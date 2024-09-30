@@ -5,6 +5,7 @@ const profileRoute = require("./profile");
 const transitInfoRoute = require("./transitInfo");
 const orderRoute = require("./movement");
 const addressRoute = require("./address");
+const specialRequirementsRoute = require("./specialRequirements");
 const { userAuth } = require("../../middleware/authToken/userAuth");
 const {
   userPermission,
@@ -20,6 +21,7 @@ router.use(userAuth);
 router.use("/profile", profileRoute);
 router.use("/order", orderRoute);
 router.use(userPermission);
+router.use("/specialRequirements", specialRequirementsRoute);
 router.use("/address", addressRoute);
 
 module.exports = router;
