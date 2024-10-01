@@ -57,6 +57,9 @@
       "name": "TransitInfo"
     },
     {
+      "name": "Special Requirements"
+    },
+    {
       "name": "---- Common ----"
     },
     {
@@ -1794,6 +1797,155 @@
       "get": {
         "tags": ["TransitInfo"],
         "summary": "Fetch TransitInfo",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/specialRequirements": {
+      "post": {
+        "tags": ["Special Requirements"],
+        "summary": "Create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "post_bridge": "Value",
+                  "requirements": [
+                    {
+                      "type": "Hazmat",
+                      "price": 11
+                    },
+                    {
+                      "type": "Sanitary Inspections MX",
+                      "price": 12
+                    },
+                    {
+                      "type": "MX customs dispatch",
+                      "price": 13
+                    },
+                    {
+                      "type": "Straps",
+                      "price": 14
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Special Requirements"],
+        "summary": "GetAll",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/specialRequirements/{post_bridgeId}": {
+      "put": {
+        "tags": ["Special Requirements"],
+        "summary": "Update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "post_bridge": "Value",
+                  "requirements": [
+                    {
+                      "type": "Hazmat",
+                      "price": 11
+                    },
+                    {
+                      "type": "Sanitary Inspections MX",
+                      "price": 12
+                    },
+                    {
+                      "type": "MX customs dispatch",
+                      "price": 13
+                    },
+                    {
+                      "type": "Straps",
+                      "price": 14
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Special Requirements"],
+        "summary": "Get Details",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Special Requirements"],
+        "summary": "Delete",
         "security": [
           {
             "bearerAuth": []
