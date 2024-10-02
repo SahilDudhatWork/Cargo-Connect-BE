@@ -16,17 +16,16 @@ const {
 } = require("../../../../helper/constant");
 
 const update = async (req, res) => {
-  const {
-    logger,
-    params,
-    body,
-    files,
-    fileValidationError,
-    commercialReference,
-  } = req;
+  const { logger, params, body, files, fileValidationError } = req;
   try {
     const { type, id } = params;
-    const { email, accountId, password, companyFormationType } = body;
+    const {
+      email,
+      accountId,
+      password,
+      companyFormationType,
+      commercialReference,
+    } = body;
     const actId = parseInt(id);
 
     if (fileValidationError) {
@@ -174,7 +173,7 @@ const update = async (req, res) => {
           });
         } else {
           reference.clientRelationId = existingData._id;
-          reference.type = "User";
+          reference.type = type.replace(/\b\w/g, (char) => char.toUpperCase());
           await Reference.create(reference);
         }
       }
