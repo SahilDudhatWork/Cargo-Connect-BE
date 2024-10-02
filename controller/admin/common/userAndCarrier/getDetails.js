@@ -15,7 +15,7 @@ const getDetails = async (req, res) => {
     const { type, id } = params;
     let getData;
     const actId = parseInt(id);
-    const Model = await hendleModel(res, type);
+    const Model = await hendleModel(type);
     if (type === "carrier") {
       getData = await Model.aggregate([
         { $match: { accountId: actId } },
@@ -98,11 +98,31 @@ const getDetails = async (req, res) => {
           },
         },
       ]);
-
-      getData = getData[0];
     } else {
-      getData = await findOne(actId, Model);
+      getData = await Model.aggregate([
+        { $match: { accountId: actId } },
+        {
+          $lookup: {
+            from: "references",
+            localField: "_id",
+            foreignField: "clientRelationId",
+            as: "commercialReference",
+          },
+        },
+
+        {
+          $project: {
+            __v: 0,
+            forgotPassword: 0,
+            token: 0,
+            "commercialReference.__v": 0,
+            "commercialReference.createdAt": 0,
+            "commercialReference.updatedAt": 0,
+          },
+        },
+      ]);
     }
+    getData = getData[0];
 
     const decryptPassword = decrypt(
       getData.password,

@@ -13,7 +13,7 @@ const remove = async (req, res) => {
     const { type, id } = params;
     const actId = parseInt(id);
 
-    const Model = await hendleModel(res, type);
+    const Model = await hendleModel(type);
 
     const deleteData = await Model.findOneAndDelete({ accountId: actId });
 

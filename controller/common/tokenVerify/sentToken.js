@@ -14,7 +14,7 @@ const sentToken = async (req, res, next) => {
   const { logger, params } = req;
   try {
     const { type } = params;
-    const Model = await hendleModel(res, type);
+    const Model = await hendleModel(type);
     let id;
 
     let authError = false;

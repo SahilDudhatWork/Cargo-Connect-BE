@@ -58,6 +58,9 @@
     },
     {
       "name": "Banners"
+    },
+    {
+      "name": "Image Delete"
     }
   ],
   "paths": {
@@ -1148,6 +1151,34 @@
         "responses": {
           "200": {
             "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/common/imgDelete": {
+      "post": {
+        "tags": ["Image Delete"],
+        "summary": "Image Delete",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "filename": "https://cargo-storage-bucket.s3.us-east-1.amazonaws.com/1727440187782-35mb50-mmiso160-image-taken-morning-260nw-1019329942.webp",
+                  "collection": "user",
+                  "_id": "66f6a53c6587d53d3db87f38"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "File ${filename} deleted successfully from S3 and replaced in the document",
             "content": {
               "application/json": {}
             }
