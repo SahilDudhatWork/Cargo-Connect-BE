@@ -26,7 +26,7 @@ const resetPassword = async (req, res) => {
       return Response.error(obj);
     }
 
-    const Model = await hendleModel(res, type);
+    const Model = await hendleModel(type);
 
     const passwordHash = encrypt(password, process.env.PASSWORD_ENCRYPTION_KEY);
 

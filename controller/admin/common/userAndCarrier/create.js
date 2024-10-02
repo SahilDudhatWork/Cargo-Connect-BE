@@ -88,7 +88,7 @@ const create = async (req, res) => {
       }
     }
 
-    const Model = await hendleModel(res, type);
+    const Model = await hendleModel(type);
     const checkEmailExist = await Model.findOne({
       email: email,
     });

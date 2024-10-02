@@ -14,7 +14,7 @@ const fetchData = async (req, res) => {
     let { keyWord, page, limit, sortBy } = query;
     const { type } = params;
 
-    const Model = await hendleModel(res, type);
+    const Model = await hendleModel(type);
 
     let qry = {};
 

@@ -12,7 +12,7 @@ const unverify = async (req, res) => {
   try {
     const { type, id } = params;
     const actId = parseInt(id);
-    const Model = await hendleModel(res, type);
+    const Model = await hendleModel(type);
 
     await Model.findOneAndUpdate(
       { accountId: actId },

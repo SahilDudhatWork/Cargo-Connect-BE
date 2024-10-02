@@ -15,7 +15,7 @@ const sentOtp = async (req, res) => {
     const { email } = body;
     const { type } = params;
 
-    const Model = await hendleModel(res, type);
+    const Model = await hendleModel(type);
 
     const checkEmailExists = await Model.exists({ email });
 

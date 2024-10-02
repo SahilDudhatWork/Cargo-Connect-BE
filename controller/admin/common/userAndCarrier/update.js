@@ -4,6 +4,7 @@ const Response = require("../../../../helper/response");
 const { hendleModel } = require("../../../../utils/hendleModel");
 const { encrypt, decrypt } = require("../../../../helper/encrypt-decrypt");
 const { findOne } = require("../../../../utils/helper");
+const { ObjectId } = require("mongoose").Types;
 const {
   validateCarrierData,
   validateUserData,
@@ -81,7 +82,7 @@ const update = async (req, res) => {
       }
     }
 
-    const Model = await hendleModel(res, type);
+    const Model = await hendleModel(type);
     const existingData = await findOne(actId, Model);
 
     if (!existingData) {
