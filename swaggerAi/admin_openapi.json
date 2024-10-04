@@ -1815,6 +1815,11 @@
                         "price": 10
                       }
                     ]
+                  },
+                  "securingEquipment": {
+                    "chains": 50,
+                    "tarps": 50,
+                    "straps": 50
                   }
                 }
               }

@@ -69,6 +69,20 @@ const collectionSchema = new Schema(
         },
       ],
     },
+    securingEquipment: {
+      chains: {
+        type: Number,
+        default: 0,
+      },
+      tarps: {
+        type: Number,
+        default: 0,
+      },
+      straps: {
+        type: Number,
+        default: 0,
+      },
+    },
   },
   {
     timestamps: true,
