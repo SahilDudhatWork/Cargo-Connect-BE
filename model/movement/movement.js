@@ -66,20 +66,16 @@ const collectionSchema = new Schema(
       },
     ],
     quantityForChains: {
-      type: String,
+      type: Number,
       default: null,
     },
     quantityForStraps: {
-      type: String,
+      type: Number,
       default: null,
     },
     quantityForTarps: {
-      type: String,
-      default: null,
-    },
-    restrictedTime: {
-      type: String,
-      default: null,
+      type: Number,
+      default: 0,
     },
     programming: {
       type: String,

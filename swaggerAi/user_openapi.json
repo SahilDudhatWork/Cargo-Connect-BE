@@ -466,11 +466,6 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "amountDetails": {
-                    "price": 0,
-                    "currency": "$",
-                    "paymentMode": "Cash"
-                  },
                   "typeOfService": "66da9f1bf2cc8577ceb921a7",
                   "typeOfTransportation": "66da9f1bf2cc8577ceb921a8",
                   "modeOfTransportation": {
@@ -479,15 +474,13 @@
                   },
                   "port_BridgeOfCrossing": "66c873fd6adf34a5133ee001",
                   "userReference": "MSUPUBHRQF5527977606",
-                  "movementId": "UDFEUBHRQF5527977707",
                   "specialRequirements": [
                     "66c873fd6adf34a5133ee001",
                     "66c876a665d2600619d2a2d4"
                   ],
-                  "quantityForChains": "10",
-                  "quantityForStraps": "20",
-                  "quantityForTarps": "5",
-                  "restrictedTime": "2024-08-22T14:00:00Z",
+                  "quantityForChains": 10,
+                  "quantityForStraps": 20,
+                  "quantityForTarps": 5,
                   "programming": "schedule",
                   "schedule": {
                     "date": "2024-08-22",
