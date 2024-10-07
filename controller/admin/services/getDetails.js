@@ -519,6 +519,36 @@ const getDetails = async (req, res) => {
           as: "specialRequirements",
         },
       },
+      // Fetch userReference
+      {
+        $lookup: {
+          from: "references",
+          let: { referencesId: "$userReference" },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$_id", "$$referencesId"] },
+              },
+            },
+            {
+              $project: {
+                __v: 0,
+                type: 0,
+                createdAt: 0,
+                updatedAt: 0,
+                clientRelationId: 0,
+              },
+            },
+          ],
+          as: "userReference",
+        },
+      },
+      {
+        $unwind: {
+          path: "$userReference",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       {
         $project: {
           __v: 0,
