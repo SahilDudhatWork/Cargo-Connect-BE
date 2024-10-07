@@ -473,6 +473,91 @@ const fetchMovement = async (req, res) => {
           preserveNullAndEmptyArrays: true,
         },
       },
+      // Fetch port_BridgeOfCrossing
+      {
+        $lookup: {
+          from: "specialrequirements",
+          let: { port_BridgeOfCrossingId: "$port_BridgeOfCrossing" },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$_id", "$$port_BridgeOfCrossingId"] },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                post_bridge: 1,
+              },
+            },
+          ],
+          as: "port_BridgeOfCrossing",
+        },
+      },
+      {
+        $addFields: {
+          port_BridgeOfCrossing: {
+            $arrayElemAt: ["$port_BridgeOfCrossing.post_bridge", 0],
+          },
+        },
+      },
+      // Fetch specialrequirements
+      {
+        $lookup: {
+          from: "specialrequirements",
+          let: { specialRequirements: "$specialRequirements" },
+          pipeline: [
+            {
+              $unwind: "$requirements",
+            },
+            {
+              $match: {
+                $expr: {
+                  $in: ["$requirements._id", "$$specialRequirements"],
+                },
+              },
+            },
+            {
+              $project: {
+                type: "$requirements.type",
+                price: "$requirements.price",
+                _id: "$requirements._id",
+              },
+            },
+          ],
+          as: "specialRequirements",
+        },
+      },
+      // Fetch userReference
+      {
+        $lookup: {
+          from: "references",
+          let: { referencesId: "$userReference" },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$_id", "$$referencesId"] },
+              },
+            },
+            {
+              $project: {
+                __v: 0,
+                type: 0,
+                createdAt: 0,
+                updatedAt: 0,
+                clientRelationId: 0,
+              },
+            },
+          ],
+          as: "userReference",
+        },
+      },
+      {
+        $unwind: {
+          path: "$userReference",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       {
         $facet: {
           paginatedResult: [
