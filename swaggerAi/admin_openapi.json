@@ -1858,6 +1858,229 @@
         }
       }
     },
+    "/v1/admin/transitInfo/{field}/{subfield}": {
+      "post": {
+        "tags": ["TransitInfo"],
+        "summary": "Add Entry",
+        "parameters": [
+          {
+            "name": "field",
+            "in": "path",
+            "required": true,
+            "description": "Select the field",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "typeOfService",
+                "typeOfTransportation",
+                "typeOfTransportation"
+              ]
+            }
+          },
+          {
+            "name": "subfield",
+            "in": "path",
+            "required": false,
+            "description": "Select the subfield",
+            "schema": {
+              "type": "string",
+              "enum": ["FTL", "LTL"]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "title": "Abc",
+                  "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
+                  "price": 1000
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data created successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/transitInfo/{field}/{subfield}/{subId}": {
+      "get": {
+        "tags": ["TransitInfo"],
+        "summary": "Get Entry",
+        "parameters": [
+          {
+            "name": "subId",
+            "in": "path",
+            "required": true,
+            "description": "Select the subfield _id"
+          },
+          {
+            "name": "field",
+            "in": "path",
+            "required": true,
+            "description": "Select the field",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "typeOfService",
+                "typeOfTransportation",
+                "typeOfTransportation"
+              ]
+            }
+          },
+          {
+            "name": "subfield",
+            "in": "path",
+            "required": false,
+            "description": "Select the subfield",
+            "schema": {
+              "type": "string",
+              "enum": ["FTL", "LTL"]
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request successful.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["TransitInfo"],
+        "summary": "Update Entry",
+        "parameters": [
+          {
+            "name": "subId",
+            "in": "path",
+            "required": true,
+            "description": "Select the subfield _id"
+          },
+          {
+            "name": "field",
+            "in": "path",
+            "required": true,
+            "description": "Select the field",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "typeOfService",
+                "typeOfTransportation",
+                "typeOfTransportation"
+              ]
+            }
+          },
+          {
+            "name": "subfield",
+            "in": "path",
+            "required": false,
+            "description": "Select the subfield",
+            "schema": {
+              "type": "string",
+              "enum": ["FTL", "LTL"]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "title": "Abc",
+                  "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
+                  "price": 1000
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data updated successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["TransitInfo"],
+        "summary": "Delete Entry",
+        "parameters": [
+          {
+            "name": "subId",
+            "in": "path",
+            "required": true,
+            "description": "Select the subfield _id"
+          },
+          {
+            "name": "field",
+            "in": "path",
+            "required": true,
+            "description": "Select the field",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "typeOfService",
+                "typeOfTransportation",
+                "typeOfTransportation"
+              ]
+            }
+          },
+          {
+            "name": "subfield",
+            "in": "path",
+            "required": false,
+            "description": "Select the subfield",
+            "schema": {
+              "type": "string",
+              "enum": ["FTL", "LTL"]
+            }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data deleted successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+
     "/v1/admin/specialRequirements": {
       "post": {
         "tags": ["Special Requirements"],
