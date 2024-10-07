@@ -30,7 +30,20 @@ const update = async (req, res) => {
     });
 
     body.requirements.forEach((req) => {
-      mergedRequirements.set(req._id.toString(), req);
+      if (req._id) {
+        if (mergedRequirements.has(req._id.toString())) {
+          // Update existing entry
+          mergedRequirements.set(req._id.toString(), {
+            ...mergedRequirements.get(req._id.toString()),
+            ...req,
+          });
+        } else {
+          // Add new entry
+          mergedRequirements.set(req._id.toString(), req);
+        }
+      } else {
+        mergedRequirements.set(`${Date.now()}-${Math.random()}`, req);
+      }
     });
 
     const updatedRequirements = Array.from(mergedRequirements.values());
@@ -59,6 +72,7 @@ const update = async (req, res) => {
       data: updatedDoc || null,
     });
   } catch (error) {
+    console.log("error :>> ", error);
     return handleException(logger, res, error);
   }
 };
