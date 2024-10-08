@@ -1,4 +1,5 @@
 const TransitInfo = require("../../../model/admin/transitInfo");
+const { ObjectId } = require("mongodb");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const {
@@ -13,6 +14,7 @@ const addEntry = async (req, res) => {
     const { field, subfield } = params;
     let updateQuery;
     if (subfield) {
+      body._id = new ObjectId();
       updateQuery = { [`${field}.${subfield}`]: body };
     } else {
       updateQuery = { [field]: body };
