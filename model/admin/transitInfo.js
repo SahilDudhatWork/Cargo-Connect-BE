@@ -36,38 +36,8 @@ const collectionSchema = new Schema(
       },
     ],
     modeOfTransportation: {
-      FTL: [
-        {
-          title: {
-            type: String,
-            default: null,
-          },
-          description: {
-            type: String,
-            default: null,
-          },
-          price: {
-            type: Number,
-            default: 0,
-          },
-        },
-      ],
-      LTL: [
-        {
-          title: {
-            type: String,
-            default: null,
-          },
-          description: {
-            type: String,
-            default: null,
-          },
-          price: {
-            type: Number,
-            default: 0,
-          },
-        },
-      ],
+      type: Object,
+      default: {},
     },
     securingEquipment: {
       chains: {
