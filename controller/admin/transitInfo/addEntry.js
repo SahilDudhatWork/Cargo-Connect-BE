@@ -16,6 +16,17 @@ const addEntry = async (req, res) => {
       updateQuery = { [`${field}.${subfield}`]: body };
     } else {
       updateQuery = { [field]: body };
+      if (field == "typeOfTransportation") {
+        await TransitInfo.findOneAndUpdate(
+          {},
+          {
+            $set: {
+              [`modeOfTransportation.${body.title}`]: [],
+            },
+          },
+          { new: true }
+        );
+      }
     }
 
     const saveData = await TransitInfo.findOneAndUpdate(
