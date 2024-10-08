@@ -6,20 +6,21 @@ const {
   ERROR_MSGS,
   INFO_MSGS,
 } = require("../../../helper/constant");
+const { ObjectId } = require("mongoose").Types;
 
 const getEntry = async (req, res) => {
-  let { logger, params } = req;
+  const { logger, params } = req;
   try {
     const { field, subfield, subId } = params;
     let query;
 
     if (subfield) {
       query = {
-        [`${field}.${subfield}`]: { $elemMatch: { _id: subId } },
+        [`${field}.${subfield}`]: { $elemMatch: { _id: new ObjectId(subId) } },
       };
     } else {
       query = {
-        [`${field}`]: { $elemMatch: { _id: subId } },
+        [`${field}`]: { $elemMatch: { _id: new ObjectId(subId) } },
       };
     }
 
@@ -33,28 +34,24 @@ const getEntry = async (req, res) => {
         msg: ERROR_MSGS.DATA_NOT_AVAILABLE,
       });
     }
+
+    let entry;
     if (subfield) {
       const subfieldData = getData[field][subfield];
       if (subfieldData) {
-        const entry = subfieldData.find((item) => item._id == subId);
-        return Response.success({
-          req,
-          res,
-          status: STATUS_CODE.OK,
-          msg: INFO_MSGS.SUCCESS,
-          data: entry || null,
-        });
+        entry = subfieldData.find((item) => item._id.toString() === subId);
       }
     } else {
-      const entry = getData[field].find((item) => item._id == subId);
-      return Response.success({
-        req,
-        res,
-        status: STATUS_CODE.OK,
-        msg: INFO_MSGS.SUCCESS,
-        data: entry || null,
-      });
+      entry = getData[field].find((item) => item._id.toString() === subId);
     }
+
+    return Response.success({
+      req,
+      res,
+      status: STATUS_CODE.OK,
+      msg: INFO_MSGS.SUCCESS,
+      data: entry || null,
+    });
   } catch (error) {
     console.error("error-->", error);
     return handleException(logger, res, error);
