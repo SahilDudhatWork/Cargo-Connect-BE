@@ -1,6 +1,7 @@
 const TransitInfo = require("../../../model/admin/transitInfo");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
+const { ObjectId } = require("mongoose").Types;
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -8,22 +9,11 @@ const {
 } = require("../../../helper/constant");
 
 const deleteEntry = async (req, res) => {
-  let { logger, params } = req;
+  const { logger, params } = req;
   try {
     const { field, subfield, subId } = params;
-    let updateQuery;
 
-    if (subfield) {
-      updateQuery = {
-        [`${field}.${subfield}`]: { $elemMatch: { _id: subId } },
-      };
-    } else {
-      updateQuery = {
-        [`${field}`]: { $elemMatch: { _id: subId } },
-      };
-    }
-
-    let getData = await TransitInfo.findOne(updateQuery);
+    const getData = await TransitInfo.findOne();
 
     if (!getData) {
       return Response.success({
@@ -34,25 +24,31 @@ const deleteEntry = async (req, res) => {
       });
     }
 
-    if (subfield) {
-      const subfieldData = getData[field][subfield];
-      if (subfieldData) {
-        getData[field][subfield] = subfieldData.filter(
-          (item) => item._id != subId
-        );
-      }
+    if (field === "modeOfTransportation") {
+      getData.transportation.forEach((item) => {
+        if (item.title === subfield) {
+          item.modes = item.modes.filter(
+            (mode) => mode._id.toString() !== subId
+          );
+        }
+      });
+    } else if (field === "typeOfTransportation") {
+      getData.transportation = getData.transportation.filter(
+        (item) => !item._id.equals(new ObjectId(subId))
+      );
     } else {
-      getData[field] = getData[field].filter((item) => item._id != subId);
+      getData[field] = getData[field].filter(
+        (item) => !item._id.equals(new ObjectId(subId))
+      );
     }
 
-    await getData.save();
+    await TransitInfo.updateOne({}, getData, { new: true });
 
     return Response.success({
       req,
       res,
       status: STATUS_CODE.OK,
       msg: INFO_MSGS.DELETED_SUCCESSFULLY,
-      data: getData,
     });
   } catch (error) {
     console.error("error-->", error);

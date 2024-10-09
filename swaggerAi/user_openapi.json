@@ -468,10 +468,7 @@
                 "example": {
                   "typeOfService": "66da9f1bf2cc8577ceb921a7",
                   "typeOfTransportation": "66da9f1bf2cc8577ceb921a8",
-                  "modeOfTransportation": {
-                    "FTL": "66da9f1bf2cc8577ceb921aa",
-                    "LTL": "null"
-                  },
+                  "modeOfTransportation": "66da9f1bf2cc8577ceb921aa",
                   "port_BridgeOfCrossing": "66c873fd6adf34a5133ee001",
                   "userReference": "MSUPUBHRQF5527977606",
                   "specialRequirements": [

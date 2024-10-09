@@ -12,15 +12,38 @@ const fetchTransitInfo = async (req, res) => {
   try {
     let getData = await TransitInfo.findOne();
 
-    const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.OK;
-    const message = getData ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;
+    let modeOfTransportation = {};
+
+    getData.transportation.forEach((i) => {
+      modeOfTransportation[i.title] = i.modes.map((mode) => ({
+        title: mode.title,
+        description: mode.description,
+        price: mode.price,
+        _id: mode._id,
+      }));
+    });
+
+    let newResult = {
+      typeOfService: getData.typeOfService,
+      typeOfTransportation: getData.transportation.map((i) => ({
+        title: i.title,
+        price: i.price,
+        description: i.description,
+        _id: i._id,
+      })),
+      modeOfTransportation,
+      securingEquipment: getData.securingEquipment,
+    };
+
+    const statusCode = newResult ? STATUS_CODE.OK : STATUS_CODE.OK;
+    const message = newResult ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;
 
     return Response[statusCode === STATUS_CODE.OK ? "success" : "error"]({
       req,
       res,
       status: statusCode,
       msg: message,
-      data: getData,
+      data: newResult,
     });
   } catch (error) {
     console.error("error-->", error);

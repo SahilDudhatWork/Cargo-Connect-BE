@@ -12,19 +12,8 @@ const getEntry = async (req, res) => {
   const { logger, params } = req;
   try {
     const { field, subfield, subId } = params;
-    let query;
 
-    if (subfield) {
-      query = {
-        [`${field}.${subfield}`]: { $elemMatch: { _id: new ObjectId(subId) } },
-      };
-    } else {
-      query = {
-        [`${field}`]: { $elemMatch: { _id: new ObjectId(subId) } },
-      };
-    }
-
-    const getData = await TransitInfo.findOne(query);
+    const getData = await TransitInfo.findOne();
 
     if (!getData) {
       return Response.success({
@@ -36,13 +25,20 @@ const getEntry = async (req, res) => {
     }
 
     let entry;
-    if (subfield) {
-      const subfieldData = getData[field][subfield];
-      if (subfieldData) {
-        entry = subfieldData.find((item) => item._id.toString() === subId);
-      }
+    if (field === "modeOfTransportation") {
+      getData.transportation.forEach((item) => {
+        if (item.title === subfield) {
+          entry = item.modes.filter((mode) => mode._id.toString() === subId);
+        }
+      });
+    } else if (field === "typeOfTransportation") {
+      entry = getData.transportation.filter((item) =>
+        item._id.equals(new ObjectId(subId))
+      );
     } else {
-      entry = getData[field].find((item) => item._id.toString() === subId);
+      entry = getData[field].filter((item) =>
+        item._id.equals(new ObjectId(subId))
+      );
     }
 
     return Response.success({
@@ -50,7 +46,7 @@ const getEntry = async (req, res) => {
       res,
       status: STATUS_CODE.OK,
       msg: INFO_MSGS.SUCCESS,
-      data: entry || null,
+      data: entry[0] || null,
     });
   } catch (error) {
     console.error("error-->", error);

@@ -19,7 +19,7 @@ const collectionSchema = new Schema(
         },
       },
     ],
-    typeOfTransportation: [
+    transportation: [
       {
         title: {
           type: String,
@@ -33,12 +33,24 @@ const collectionSchema = new Schema(
           type: Number,
           default: 0,
         },
+        modes: [
+          {
+            title: {
+              type: String,
+              default: null,
+            },
+            description: {
+              type: String,
+              default: null,
+            },
+            price: {
+              type: Number,
+              default: 0,
+            },
+          },
+        ],
       },
     ],
-    modeOfTransportation: {
-      type: Object,
-      default: {},
-    },
     securingEquipment: {
       chains: {
         type: Number,

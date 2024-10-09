@@ -1,5 +1,4 @@
 const TransitInfo = require("../../../model/admin/transitInfo");
-const { ObjectId } = require("mongodb");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const {
@@ -12,41 +11,37 @@ const addEntry = async (req, res) => {
   let { logger, params, body } = req;
   try {
     const { field, subfield } = params;
-    let updateQuery;
-    if (subfield) {
-      body._id = new ObjectId();
-      updateQuery = { [`${field}.${subfield}`]: body };
-    } else {
-      updateQuery = { [field]: body };
-      if (field == "typeOfTransportation") {
-        await TransitInfo.findOneAndUpdate(
-          {},
-          {
-            $set: {
-              [`modeOfTransportation.${body.title}`]: [],
-            },
-          },
-          { new: true }
-        );
-      }
+    const getData = await TransitInfo.findOne();
+
+    if (!getData) {
+      return Response.success({
+        req,
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: ERROR_MSGS.DATA_NOT_AVAILABLE,
+      });
     }
 
-    const saveData = await TransitInfo.findOneAndUpdate(
-      {},
-      { $push: updateQuery },
-      { new: true, upsert: true }
-    );
-    const statusCode = saveData ? STATUS_CODE.OK : STATUS_CODE.BAD_REQUEST;
-    const message = saveData
-      ? INFO_MSGS.CREATED_SUCCESSFULLY
-      : ERROR_MSGS.CREATE_ERR;
+    if (field === "modeOfTransportation") {
+      getData.transportation = getData.transportation.map((item) => {
+        if (item.title === subfield) {
+          item.modes.push(body);
+        }
+        return item;
+      });
+    } else if (field === "typeOfTransportation") {
+      getData.transportation = getData.transportation.push(body);
+    } else {
+      getData[field] = getData[field].push(body);
+    }
 
-    return Response[statusCode === STATUS_CODE.OK ? "success" : "error"]({
+    await TransitInfo.updateOne({}, getData, { new: true });
+
+    return Response.success({
       req,
       res,
-      status: statusCode,
-      msg: message,
-      data: saveData || null,
+      status: STATUS_CODE.OK,
+      msg: INFO_MSGS.ADDED_SUCCESSFULLY,
     });
   } catch (error) {
     console.error("error-->", error);

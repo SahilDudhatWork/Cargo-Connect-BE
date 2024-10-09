@@ -43,14 +43,8 @@ const collectionSchema = new Schema(
       default: null,
     },
     modeOfTransportation: {
-      FTL: {
-        type: ObjectId,
-        default: null,
-      },
-      LTL: {
-        type: ObjectId,
-        default: null,
-      },
+      type: ObjectId,
+      default: null,
     },
     port_BridgeOfCrossing: {
       type: ObjectId,
