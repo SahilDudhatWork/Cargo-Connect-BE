@@ -47,10 +47,17 @@ const update = async (req, res) => {
     });
 
     const updatedRequirements = Array.from(mergedRequirements.values());
+    function cleanRequirements(data) {
+      return data.map((item) => {
+        const { type, price, _id } = item;
+        return { type, price, _id };
+      });
+    }
+    const cleanedRequirements = cleanRequirements(updatedRequirements);
 
     const payload = {
       post_bridge: body.post_bridge || existingData.post_bridge,
-      requirements: updatedRequirements,
+      requirements: cleanedRequirements,
     };
 
     const updatedDoc = await SpecialRequirements.findByIdAndUpdate(
