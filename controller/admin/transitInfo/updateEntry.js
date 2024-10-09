@@ -1,5 +1,6 @@
 const TransitInfo = require("../../../model/admin/transitInfo");
 const { handleException } = require("../../../helper/exception");
+const { ObjectId } = require("mongoose").Types;
 const Response = require("../../../helper/response");
 const {
   STATUS_CODE,
@@ -8,23 +9,12 @@ const {
 } = require("../../../helper/constant");
 
 const updateEntry = async (req, res) => {
-  let { logger, params, body } = req;
+  const { logger, params, body } = req;
   try {
     const { field, subfield, subId } = params;
-    let updateQuery;
 
-    if (subfield) {
-      updateQuery = {
-        [`${field}.${subfield}`]: { $elemMatch: { _id: subId } },
-      };
-    } else {
-      updateQuery = {
-        [`${field}`]: { $elemMatch: { _id: subId } },
-      };
-    }
-
-    body._id = subId;
-    let getData = await TransitInfo.findOne(updateQuery, { [field]: 1 });
+    body._id = new ObjectId(subId);
+    const getData = await TransitInfo.findOne();
 
     if (!getData) {
       return Response.success({
@@ -35,37 +25,41 @@ const updateEntry = async (req, res) => {
       });
     }
 
-    if (subfield) {
-      const subfieldData = getData[field][subfield];
-      if (subfieldData) {
-        getData[field][subfield] = subfieldData.map((item) => {
-          if (item._id == subId) {
-            return { ...item, ...body };
-          }
-          return item;
-        });
-      }
+    if (field === "modeOfTransportation") {
+      getData.transportation = getData.transportation.map((item) => {
+        if (item.title === subfield) {
+          item.modes = item.modes.map((mode) => {
+            if (mode._id.toString() === subId) {
+              return { ...mode, ...body };
+            }
+            return mode;
+          });
+        }
+        return item;
+      });
+    } else if (field === "typeOfTransportation") {
+      getData.transportation = getData.transportation.map((item) => {
+        if (item._id.equals(new ObjectId(subId))) {
+          return { ...item, ...body };
+        }
+        return item;
+      });
     } else {
       getData[field] = getData[field].map((item) => {
-        if (item._id == subId) {
+        if (item._id.equals(new ObjectId(subId))) {
           return { ...item, ...body };
         }
         return item;
       });
     }
 
-    getData.save();
-    const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.BAD_REQUEST;
-    const message = getData
-      ? INFO_MSGS.UPDATED_SUCCESSFULLY
-      : ERROR_MSGS.UPDATE_ERR;
+    await TransitInfo.updateOne({}, getData, { new: true });
 
-    return Response[statusCode === STATUS_CODE.OK ? "success" : "error"]({
+    return Response.success({
       req,
       res,
-      status: statusCode,
-      msg: message,
-      data: getData || null,
+      status: STATUS_CODE.OK,
+      msg: INFO_MSGS.UPDATED_SUCCESSFULLY,
     });
   } catch (error) {
     console.error("error-->", error);

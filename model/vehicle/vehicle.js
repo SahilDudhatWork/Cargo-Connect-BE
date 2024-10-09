@@ -53,18 +53,11 @@ const collectionSchema = new Schema(
         type: ObjectId,
       },
     ],
-    modeOfTransportation: {
-      FTL: [
-        {
-          type: ObjectId,
-        },
-      ],
-      LTL: [
-        {
-          type: ObjectId,
-        },
-      ],
-    },
+    modeOfTransportation: [
+      {
+        type: ObjectId,
+      },
+    ],
     status: {
       type: String,
       default: "Active",

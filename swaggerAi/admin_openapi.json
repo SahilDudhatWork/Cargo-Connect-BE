@@ -1260,40 +1260,15 @@
                   "mxInsurancePlatesExpirationDate": "2025-03-01",
                   "usInsurancePlates": "US-INS-1121",
                   "usInsurancePlatesExpirationDate": "2025-04-01",
-                  "typeOfService": [
-                    {
-                      "title": "Express Delivery",
-                      "description": "Fast delivery service within 24 hours."
-                    },
-                    {
-                      "title": "Standard Delivery",
-                      "description": "Regular delivery service within 3-5 business days."
-                    }
-                  ],
+                  "typeOfService": ["67051e026a1d8f08bb51d34c"],
                   "typeOfTransportation": [
-                    {
-                      "title": "Refrigerated",
-                      "description": "Transport of perishable goods."
-                    },
-                    {
-                      "title": "Dry Goods",
-                      "description": "Transport of non-perishable goods."
-                    }
+                    "6705068b150605d66eaefb7b",
+                    "6705068b150605d66eaefb7e"
                   ],
-                  "modeOfTransportation": {
-                    "FTL": [
-                      {
-                        "title": "Full Truckload",
-                        "description": "Dedicated truck for one shipment."
-                      }
-                    ],
-                    "LTL": [
-                      {
-                        "title": "Less Than Truckload",
-                        "description": "Shared truck for multiple shipments."
-                      }
-                    ]
-                  },
+                  "modeOfTransportation": [
+                    "6705068b150605d66eaefb7c",
+                    "6705068b150605d66eaefb7f"
+                  ],
                   "status": "Active"
                 }
               }
@@ -1403,40 +1378,15 @@
                   "mxInsurancePlatesExpirationDate": "2025-03-01",
                   "usInsurancePlates": "US-INS-1121",
                   "usInsurancePlatesExpirationDate": "2025-04-01",
-                  "typeOfService": [
-                    {
-                      "title": "Express Delivery",
-                      "description": "Fast delivery service within 24 hours."
-                    },
-                    {
-                      "title": "Standard Delivery",
-                      "description": "Regular delivery service within 3-5 business days."
-                    }
-                  ],
+                  "typeOfService": ["67051e026a1d8f08bb51d34c"],
                   "typeOfTransportation": [
-                    {
-                      "title": "Refrigerated",
-                      "description": "Transport of perishable goods."
-                    },
-                    {
-                      "title": "Dry Goods",
-                      "description": "Transport of non-perishable goods."
-                    }
+                    "6705068b150605d66eaefb7b",
+                    "6705068b150605d66eaefb7e"
                   ],
-                  "modeOfTransportation": {
-                    "FTL": [
-                      {
-                        "title": "Full Truckload",
-                        "description": "Dedicated truck for one shipment."
-                      }
-                    ],
-                    "LTL": [
-                      {
-                        "title": "Less Than Truckload",
-                        "description": "Shared truck for multiple shipments."
-                      }
-                    ]
-                  },
+                  "modeOfTransportation": [
+                    "6705068b150605d66eaefb7c",
+                    "6705068b150605d66eaefb7f"
+                  ],
                   "status": "Active"
                 }
               }
@@ -1716,110 +1666,48 @@
                       "title": "Northbound",
                       "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
                       "price": 10
-                    },
-                    {
-                      "title": "Southbound",
-                      "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
-                      "price": 10
-                    },
-                    {
-                      "title": "Local Drayage MX",
-                      "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
-                      "price": 10
-                    },
-                    {
-                      "title": "Local Drayage US",
-                      "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
-                      "price": 10
                     }
                   ],
-                  "typeOfTransportation": [
+                  "transportation": [
                     {
-                      "title": "FTL",
+                      "typeTitle": "FTL",
                       "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
-                      "price": 10
+                      "price": 10,
+                      "modes": [
+                        {
+                          "title": "Dry Box",
+                          "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
+                          "price": 10
+                        },
+                        {
+                          "title": "Reefer",
+                          "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
+                          "price": 10
+                        }
+                      ]
                     },
                     {
-                      "title": "LTL",
+                      "typeTitle": "LTL",
                       "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
-                      "price": 10
+                      "price": 10,
+                      "modes": [
+                        {
+                          "title": "Dry Box",
+                          "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
+                          "price": 10
+                        },
+                        {
+                          "title": "Reefer",
+                          "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
+                          "price": 10
+                        }
+                      ]
                     }
                   ],
-                  "modeOfTransportation": {
-                    "FTL": [
-                      {
-                        "title": "Dry Box",
-                        "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
-                        "price": 10
-                      },
-                      {
-                        "title": "Reefer",
-                        "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
-                        "price": 10
-                      },
-                      {
-                        "title": "Flatbed",
-                        "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
-                        "price": 10
-                      },
-                      {
-                        "title": "Lowboy",
-                        "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
-                        "price": 10
-                      },
-                      {
-                        "title": "Semi-Lowbo",
-                        "description": "Lorem ipsum dolor sit amet Mauris risus turpis.",
-                        "price": 10
-                      }
-                    ],
-                    "LTL": [
-                      {
-                        "title": "Pickup",
-                        "description": "Max weight: 12TON",
-                        "price": 10
-                      },
-                      {
-                        "title": "One Ton / 4 PLT",
-                        "description": "Lorem ipsum dolor sit amet consectetur, Mauris risus turpis.",
-                        "price": 10
-                      },
-                      {
-                        "title": "12 Footer",
-                        "description": "Lorem ipsum dolor sit amet consecteturr Mauris risus turpis.",
-                        "price": 10
-                      },
-                      {
-                        "title": "16 Footer",
-                        "description": "Lorem ipsum dolor sit amet consecteturr Mauris risus turpis.",
-                        "price": 10
-                      },
-                      {
-                        "title": "18 Footer",
-                        "description": "Lorem ipsum dolor sit amet consecteturr Mauris risus turpis.",
-                        "price": 10
-                      },
-                      {
-                        "title": "20 Footer",
-                        "description": "Lorem ipsum dolor sit amet consecteturr Mauris risus turpis.",
-                        "price": 10
-                      },
-                      {
-                        "title": "Bobtail 22 footer",
-                        "description": "Lorem ipsum dolor sit amet consecteturr Mauris risus turpis.",
-                        "price": 10
-                      },
-                      {
-                        "title": "Bobtail 26 footer",
-                        "description": "Lorem ipsum dolor sit amet consecteturr Mauris risus turpis.",
-                        "price": 10
-                      }
-                    ]
-                  },
                   "securingEquipment": {
                     "chains": 50,
                     "tarps": 50,
-                    "straps": 50
+                    "straps": 50.5
                   }
                 }
               }

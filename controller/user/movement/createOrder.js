@@ -4,6 +4,9 @@ const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { generateNumOrCharId } = require("../../../utils/generateUniqueId");
 const {
+  getTypeOfService_TypeOfTransportation_Pipeline,
+} = require("../../../utils/lookups");
+const {
   STATUS_CODE,
   ERROR_MSGS,
   INFO_MSGS,
@@ -21,168 +24,6 @@ const createOrder = async (req, res) => {
       {
         $match: {
           _id: saveData._id,
-        },
-      },
-      // Fetch TypeOfService
-      {
-        $lookup: {
-          from: "transitinfos",
-          let: { typeOfServiceId: "$typeOfService" },
-          pipeline: [
-            {
-              $unwind: "$typeOfService",
-            },
-            {
-              $match: {
-                $expr: { $eq: ["$typeOfService._id", "$$typeOfServiceId"] },
-              },
-            },
-            {
-              $project: {
-                _id: 0,
-                title: "$typeOfService.title",
-                description: "$typeOfService.description",
-                price: "$typeOfService.price",
-                _id: "$typeOfService._id",
-              },
-            },
-          ],
-          as: "typeOfService",
-        },
-      },
-      {
-        $unwind: {
-          path: "$typeOfService",
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      // Fetch TypeOfTransportation
-      {
-        $lookup: {
-          from: "transitinfos",
-          let: { typeOfTransportationId: "$typeOfTransportation" },
-          pipeline: [
-            {
-              $unwind: "$typeOfTransportation",
-            },
-            {
-              $match: {
-                $expr: {
-                  $eq: [
-                    "$typeOfTransportation._id",
-                    "$$typeOfTransportationId",
-                  ],
-                },
-              },
-            },
-            {
-              $project: {
-                _id: 0,
-                title: "$typeOfTransportation.title",
-                description: "$typeOfTransportation.description",
-                price: "$typeOfTransportation.price",
-                _id: "$typeOfTransportation._id",
-              },
-            },
-          ],
-          as: "typeOfTransportation",
-        },
-      },
-      {
-        $unwind: {
-          path: "$typeOfTransportation",
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      // Fetch ModeOfTransportation
-      /// FTL
-      {
-        $lookup: {
-          from: "transitinfos",
-          let: { modeOfTransportationFTLId: "$modeOfTransportation.FTL" },
-          pipeline: [
-            {
-              $unwind: "$modeOfTransportation.FTL",
-            },
-            {
-              $match: {
-                $expr: {
-                  $eq: [
-                    "$modeOfTransportation.FTL._id",
-                    "$$modeOfTransportationFTLId",
-                  ],
-                },
-              },
-            },
-            {
-              $project: {
-                _id: 0,
-                title: "$modeOfTransportation.FTL.title",
-                description: "$modeOfTransportation.FTL.description",
-                price: "$modeOfTransportation.FTL.price",
-                _id: "$modeOfTransportation.FTL._id",
-              },
-            },
-          ],
-          as: "modeOfTransportation.FTL",
-        },
-      },
-      {
-        $addFields: {
-          "modeOfTransportation.FTL": {
-            $arrayElemAt: ["$modeOfTransportation.FTL", 0],
-          },
-        },
-      },
-      {
-        $unwind: {
-          path: "$typeOfTransportation.FTL",
-          preserveNullAndEmptyArrays: true,
-        },
-      },
-      /// LTL
-      {
-        $lookup: {
-          from: "transitinfos",
-          let: { modeOfTransportationLTLId: "$modeOfTransportation.LTL" },
-          pipeline: [
-            {
-              $unwind: "$modeOfTransportation.LTL",
-            },
-            {
-              $match: {
-                $expr: {
-                  $eq: [
-                    "$modeOfTransportation.LTL._id",
-                    "$$modeOfTransportationLTLId",
-                  ],
-                },
-              },
-            },
-            {
-              $project: {
-                _id: 0,
-                title: "$modeOfTransportation.LTL.title",
-                description: "$modeOfTransportation.LTL.description",
-                price: "$modeOfTransportation.LTL.price",
-                _id: "$modeOfTransportation.LTL._id",
-              },
-            },
-          ],
-          as: "modeOfTransportation.LTL",
-        },
-      },
-      {
-        $addFields: {
-          "modeOfTransportation.LTL": {
-            $arrayElemAt: ["$modeOfTransportation.LTL", 0],
-          },
-        },
-      },
-      {
-        $unwind: {
-          path: "$typeOfTransportation.LTL",
-          preserveNullAndEmptyArrays: true,
         },
       },
       // Fetch port_BridgeOfCrossing
@@ -240,6 +81,7 @@ const createOrder = async (req, res) => {
           as: "specialRequirements",
         },
       },
+      ...getTypeOfService_TypeOfTransportation_Pipeline(),
       {
         $project: {
           __v: 0,
@@ -255,8 +97,7 @@ const createOrder = async (req, res) => {
     const totalPrice =
       (getData.typeOfService?.price || 0) +
       (getData.typeOfTransportation?.price || 0) +
-      (getData.modeOfTransportation?.FTL?.price || 0) +
-      (getData.modeOfTransportation?.LTL?.price || 0) +
+      (getData.modeOfTransportation?.price || 0) +
       (getData.quantityForChains * chains || 0) +
       (getData.quantityForStraps * tarps || 0) +
       (getData.quantityForTarps * straps || 0) +

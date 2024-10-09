@@ -749,25 +749,15 @@
                   "mxInsurancePlatesExpirationDate": "2025-03-01",
                   "usInsurancePlates": "US-INS-1121",
                   "usInsurancePlatesExpirationDate": "2025-04-01",
-                  "typeOfService": [
-                    "66da9f1bf2cc8577ceb921a4",
-                    "66da9f1bf2cc8577ceb921a5"
-                  ],
+                  "typeOfService": ["67051e026a1d8f08bb51d34c"],
                   "typeOfTransportation": [
-                    "66da9f1bf2cc8577ceb921a8",
-                    "66da9f1bf2cc8577ceb921a9"
+                    "6705068b150605d66eaefb7b",
+                    "6705068b150605d66eaefb7e"
                   ],
-                  "modeOfTransportation": {
-                    "FTL": [
-                      "66da9f1bf2cc8577ceb921aa",
-                      "66da9f1bf2cc8577ceb921ab"
-                    ],
-                    "LTL": [
-                      "66da9f1bf2cc8577ceb921af",
-                      "66da9f1bf2cc8577ceb921b0",
-                      "66da9f1bf2cc8577ceb921b1"
-                    ]
-                  },
+                  "modeOfTransportation": [
+                    "6705068b150605d66eaefb7c",
+                    "6705068b150605d66eaefb7f"
+                  ],
                   "status": "Active"
                 }
               }
@@ -877,25 +867,15 @@
                   "mxInsurancePlatesExpirationDate": "2025-03-01",
                   "usInsurancePlates": "US-INS-1121",
                   "usInsurancePlatesExpirationDate": "2025-04-01",
-                  "typeOfService": [
-                    "66da9f1bf2cc8577ceb921a4",
-                    "66da9f1bf2cc8577ceb921a5"
-                  ],
+                  "typeOfService": ["67051e026a1d8f08bb51d34c"],
                   "typeOfTransportation": [
-                    "66da9f1bf2cc8577ceb921a8",
-                    "66da9f1bf2cc8577ceb921a9"
+                    "6705068b150605d66eaefb7b",
+                    "6705068b150605d66eaefb7e"
                   ],
-                  "modeOfTransportation": {
-                    "FTL": [
-                      "66da9f1bf2cc8577ceb921aa",
-                      "66da9f1bf2cc8577ceb921ab"
-                    ],
-                    "LTL": [
-                      "66da9f1bf2cc8577ceb921af",
-                      "66da9f1bf2cc8577ceb921b0",
-                      "66da9f1bf2cc8577ceb921b1"
-                    ]
-                  },
+                  "modeOfTransportation": [
+                    "6705068b150605d66eaefb7c",
+                    "6705068b150605d66eaefb7f"
+                  ],
                   "status": "Active"
                 }
               }

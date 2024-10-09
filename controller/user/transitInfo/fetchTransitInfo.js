@@ -25,19 +25,39 @@ const fetchService = async (req, res) => {
       { post_bridge: 1 }
     );
 
-    const newData = {
-      modeOfTransportation: getData.modeOfTransportation,
+    let modeOfTransportation = {};
+
+    getData.transportation.forEach((i) => {
+      modeOfTransportation[i.title] = i.modes.map((mode) => ({
+        title: mode.title,
+        description: mode.description,
+        price: mode.price,
+        _id: mode._id,
+      }));
+    });
+
+    let newResult = {
       typeOfService: getData.typeOfService,
-      typeOfTransportation: getData.typeOfTransportation,
+      typeOfTransportation: getData.transportation.map((i) => ({
+        title: i.title,
+        price: i.price,
+        description: i.description,
+        _id: i._id,
+      })),
+      modeOfTransportation,
+      securingEquipment: getData.securingEquipment,
       port_BridgeOfCrossing: getSpecialRequirements,
     };
 
-    return Response.success({
+    const statusCode = newResult ? STATUS_CODE.OK : STATUS_CODE.OK;
+    const message = newResult ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;
+
+    return Response[statusCode === STATUS_CODE.OK ? "success" : "error"]({
       req,
       res,
-      status: STATUS_CODE.OK,
-      msg: INFO_MSGS.SUCCESS,
-      data: newData,
+      status: statusCode,
+      msg: message,
+      data: newResult,
     });
   } catch (error) {
     console.error("error-->", error);
