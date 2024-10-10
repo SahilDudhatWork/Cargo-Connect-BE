@@ -17,6 +17,9 @@ const createOrder = async (req, res) => {
   try {
     body.userId = userId;
     body.movementId = generateNumOrCharId();
+    if ((body.programming = "Instant")) {
+      body.isScheduleTriggered = true;
+    }
 
     const saveData = await Movement.create(body);
 
