@@ -24,6 +24,14 @@ const collectionSchema = new Schema(
         type: String,
         default: null,
       },
+      lat: {
+        type: String,
+        default: null,
+      },
+      long: {
+        type: String,
+        default: null,
+      },
     },
     contactDetails: {
       contactName: {

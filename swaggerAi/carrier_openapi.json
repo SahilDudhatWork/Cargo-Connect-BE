@@ -544,7 +544,8 @@
                 "type": "object",
                 "example": {
                   "operatorId": "66d2e8d1c52af4bbc6be59esa",
-                  "vehicleId": "66d2e8d1c52af4bbc6be59ef"
+                  "vehicleId": "66d2e8d1c52af4bbc6be59ef",
+                  "carrierReference": "NUSDJXQLKS8448448812"
                 }
               }
             }

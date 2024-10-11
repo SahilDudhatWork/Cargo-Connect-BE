@@ -100,7 +100,6 @@ const getTypeOfService_TypeOfTransportation_Pipeline = () => [
     },
   },
 ];
-
 const fetchVehicles_Pipeline = () => [
   {
     $lookup: {
@@ -218,8 +217,218 @@ const fetchVehicles_Pipeline = () => [
     },
   },
 ];
+const userReference_Pipeline = () => [
+  {
+    $lookup: {
+      from: "references",
+      let: { referencesId: "$userReference" },
+      pipeline: [
+        {
+          $match: {
+            $expr: { $eq: ["$_id", "$$referencesId"] },
+          },
+        },
+        {
+          $project: {
+            __v: 0,
+            type: 0,
+            createdAt: 0,
+            updatedAt: 0,
+            clientRelationId: 0,
+          },
+        },
+      ],
+      as: "userReference",
+    },
+  },
+  {
+    $unwind: {
+      path: "$userReference",
+      preserveNullAndEmptyArrays: true,
+    },
+  },
+];
+const carrierReference_Pipeline = () => [
+  {
+    $lookup: {
+      from: "references",
+      let: { referencesId: "$carrierReference" },
+      pipeline: [
+        {
+          $match: {
+            $expr: { $eq: ["$_id", "$$referencesId"] },
+          },
+        },
+        {
+          $project: {
+            __v: 0,
+            type: 0,
+            createdAt: 0,
+            updatedAt: 0,
+            clientRelationId: 0,
+          },
+        },
+      ],
+      as: "carrierReference",
+    },
+  },
+  {
+    $unwind: {
+      path: "$carrierReference",
+      preserveNullAndEmptyArrays: true,
+    },
+  },
+];
+const addresses_Pipeline = () => [
+  {
+    $lookup: {
+      from: "addresses",
+      let: { addressIds: "$pickUpAddressIds" },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $in: [
+                "$_id",
+                {
+                  $map: {
+                    input: "$$addressIds",
+                    as: "id",
+                    in: { $toObjectId: "$$id" },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      ],
+      as: "pickUpAddressData",
+    },
+  },
+  {
+    $lookup: {
+      from: "addresses",
+      let: { addressIds: "$dropAddressIds" },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $in: [
+                "$_id",
+                {
+                  $map: {
+                    input: "$$addressIds",
+                    as: "id",
+                    in: { $toObjectId: "$$id" },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      ],
+      as: "dropAddressData",
+    },
+  },
+];
+const operators_Pipeline = () => [
+  {
+    $lookup: {
+      from: "operators",
+      let: { operatorId: "$operatorId" },
+      pipeline: [
+        {
+          $match: {
+            $expr: { $eq: ["$_id", "$$operatorId"] },
+          },
+        },
+        {
+          $project: {
+            __v: 0,
+            token: 0,
+            createdAt: 0,
+            updatedAt: 0,
+            lastLogin: 0,
+            forgotPassword: 0,
+          },
+        },
+      ],
+      as: "operatorData",
+    },
+  },
+  {
+    $unwind: {
+      path: "$operatorData",
+      preserveNullAndEmptyArrays: true,
+    },
+  },
+];
+const port_BridgeOfCrossing_Pipeline = () => [
+  {
+    $lookup: {
+      from: "specialrequirements",
+      let: { port_BridgeOfCrossingId: "$port_BridgeOfCrossing" },
+      pipeline: [
+        {
+          $match: {
+            $expr: { $eq: ["$_id", "$$port_BridgeOfCrossingId"] },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            post_bridge: 1,
+          },
+        },
+      ],
+      as: "port_BridgeOfCrossing",
+    },
+  },
+  {
+    $addFields: {
+      port_BridgeOfCrossing: {
+        $arrayElemAt: ["$port_BridgeOfCrossing.post_bridge", 0],
+      },
+    },
+  },
+];
+const specialrequirements_Pipeline = () => [
+  {
+    $lookup: {
+      from: "specialrequirements",
+      let: { specialRequirements: "$specialRequirements" },
+      pipeline: [
+        {
+          $unwind: "$requirements",
+        },
+        {
+          $match: {
+            $expr: {
+              $in: ["$requirements._id", "$$specialRequirements"],
+            },
+          },
+        },
+        {
+          $project: {
+            type: "$requirements.type",
+            price: "$requirements.price",
+            _id: "$requirements._id",
+          },
+        },
+      ],
+      as: "specialRequirements",
+    },
+  },
+];
+const _Pipeline = () => [];
 
 module.exports = {
   getTypeOfService_TypeOfTransportation_Pipeline,
   fetchVehicles_Pipeline,
+  userReference_Pipeline,
+  carrierReference_Pipeline,
+  addresses_Pipeline,
+  operators_Pipeline,
+  port_BridgeOfCrossing_Pipeline,
+  specialrequirements_Pipeline,
 };
