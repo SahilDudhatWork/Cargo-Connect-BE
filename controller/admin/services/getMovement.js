@@ -21,7 +21,7 @@ const {
 const fetchMovement = async (req, res) => {
   let { logger, query } = req;
   try {
-    let { page, limit, keyWord } = query;
+    let { page, limit, keyWord, sortBy } = query;
 
     let qry = {};
 
@@ -35,7 +35,12 @@ const fetchMovement = async (req, res) => {
     limit = limit || 10;
     const skip = limit * (offset - 1);
     const getData = await Movement.aggregate([
-      { $match: { isScheduleTriggered: true } },
+      {
+        $match: {
+          isScheduleTriggered: true,
+          status: sortBy,
+        },
+      },
       { $match: qry },
       ...getTypeOfService_TypeOfTransportation_Pipeline(),
       ...fetchVehicles_Pipeline(),
