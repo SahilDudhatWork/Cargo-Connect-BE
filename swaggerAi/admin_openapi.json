@@ -1015,7 +1015,11 @@
             "example": "MYWYBVRRRV4328325499"
           },
           {
-            "sortBy": {
+            "name": "sortBy",
+            "in": "path",
+            "required": true,
+            "description": "Select the sortBy",
+            "schema": {
               "type": "string",
               "enum": [
                 "Approved",
@@ -1066,7 +1070,8 @@
                 "example": {
                   "carrierId": "66c5aa038c1687ae1adc0c22",
                   "operatorId": "66c49148789b754e236b13ac",
-                  "vehicleId": "66c7187e839c733bfb28ace2"
+                  "vehicleId": "66c7187e839c733bfb28ace2",
+                  "carrierReference": "NUSDJXQLKS8448448812"
                 }
               }
             }
