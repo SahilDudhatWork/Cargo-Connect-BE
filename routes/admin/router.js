@@ -9,6 +9,7 @@ const servicesRoute = require("./services");
 const activityRoute = require("./activity");
 const bannersRoute = require("./banners");
 const transitInfoRoute = require("./transitInfo");
+const coordinatesRoute = require("./coordinates");
 const specialRequirementsRoute = require("./specialRequirements");
 const { adminAuth } = require("../../middleware/authToken/adminAuth");
 
@@ -26,6 +27,7 @@ router.use("/services", servicesRoute);
 router.use("/activity", activityRoute);
 router.use("/banners", bannersRoute);
 router.use("/transitInfo", transitInfoRoute);
+router.use("/coordinates", coordinatesRoute);
 router.use("/specialRequirements", specialRequirementsRoute);
 
 module.exports = router;

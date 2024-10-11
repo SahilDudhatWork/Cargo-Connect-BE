@@ -1,5 +1,6 @@
 const Movement = require("../../../model/movement/movement");
 const TransitInfo = require("../../../model/admin/transitInfo");
+const Coordinates = require("../../../model/common/coordinates");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { generateNumOrCharId } = require("../../../utils/generateUniqueId");
@@ -16,12 +17,30 @@ const {
   INFO_MSGS,
 } = require("../../../helper/constant");
 
+// Function to check if a point is inside the polygon
+const isPointInPolygon = (point, polygon) => {
+  let inside = false;
+  const { lat, lng } = point;
+
+  for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+    const xi = polygon[i][1],
+      yi = polygon[i][0]; // Lat, Long
+    const xj = polygon[j][1],
+      yj = polygon[j][0]; // Lat, Long
+
+    const intersect =
+      yi > lng !== yj > lng && lat < ((xj - xi) * (lng - yi)) / (yj - yi) + xi;
+    if (intersect) inside = !inside;
+  }
+  return inside;
+};
+
 const createOrder = async (req, res) => {
   let { logger, userId, body } = req;
   try {
     body.userId = userId;
     body.movementId = generateNumOrCharId();
-    if ((body.programming = "Instant")) {
+    if (body.programming === "Instant") {
       body.isScheduleTriggered = true;
     }
 
@@ -47,6 +66,40 @@ const createOrder = async (req, res) => {
 
     getData = getData[0];
 
+    // Fetch coordinates from the database
+    const fetchCoordinates = await Coordinates.find();
+
+    // Initialize total matching price
+    let totalMatchingPrice = 0;
+
+    // Check prices for each pickup address
+    for (const pickUpAddress of getData.pickUpAddressData) {
+      const pickUpLat = parseFloat(pickUpAddress.addressDetails.lat);
+      const pickUpLong = parseFloat(pickUpAddress.addressDetails.long);
+      const userSelectedLocation = { lat: pickUpLat, lng: pickUpLong };
+
+      for (const coordinate of fetchCoordinates) {
+        if (isPointInPolygon(userSelectedLocation, coordinate.coordinates)) {
+          totalMatchingPrice += coordinate.price;
+          break;
+        }
+      }
+    }
+
+    // Check prices for each drop address
+    for (const dropAddress of getData.dropAddressData) {
+      const dropLat = parseFloat(dropAddress.addressDetails.lat);
+      const dropLong = parseFloat(dropAddress.addressDetails.long);
+      const userSelectedLocation = { lat: dropLat, lng: dropLong };
+
+      for (const coordinate of fetchCoordinates) {
+        if (isPointInPolygon(userSelectedLocation, coordinate.coordinates)) {
+          totalMatchingPrice += coordinate.price;
+          break;
+        }
+      }
+    }
+
     let { securingEquipment } = await TransitInfo.findOne();
     const { chains, tarps, straps } = securingEquipment;
 
@@ -62,8 +115,11 @@ const createOrder = async (req, res) => {
         0
       );
 
+    totalMatchingPrice += totalPrice;
+    
+    // Amount details
     let amountDetails = {
-      price: totalPrice,
+      price: totalMatchingPrice,
       currency: "$",
       paymentMode: "Cash",
     };
@@ -78,6 +134,7 @@ const createOrder = async (req, res) => {
     const message = saveData
       ? INFO_MSGS.SEND_USER_TO_CARRIER_REQUEST
       : ERROR_MSGS.CREATE_ERR;
+
     return Response[statusCode === STATUS_CODE.OK ? "success" : "error"]({
       req,
       res,

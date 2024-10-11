@@ -60,6 +60,9 @@
       "name": "Special Requirements"
     },
     {
+      "name": "Coordinates"
+    },
+    {
       "name": "---- Common ----"
     },
     {
@@ -2102,6 +2105,146 @@
       },
       "delete": {
         "tags": ["Special Requirements"],
+        "summary": "Delete",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+
+    "/v1/admin/coordinates/": {
+      "post": {
+        "tags": ["Coordinates"],
+        "summary": "Create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "price": 200,
+                  "coordinates": [
+                    [-0.1278, 51.5074],
+                    [-0.118092, 51.509865]
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Data created successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Coordinates"],
+        "summary": "Fetch Data",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "10"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/coordinates/{coordinatesId}": {
+      "get": {
+        "tags": ["Coordinates"],
+        "summary": "Get Details",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Coordinates"],
+        "summary": "Update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "price": 200,
+                  "coordinates": [
+                    [-0.1278, 51.5074],
+                    [-0.118092, 51.509865]
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data updated successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Coordinates"],
         "summary": "Delete",
         "security": [
           {
