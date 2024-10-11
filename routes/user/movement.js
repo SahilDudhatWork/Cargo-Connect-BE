@@ -8,10 +8,14 @@ const {
 const {
   fetchReference,
 } = require("../../controller/user/movement/fetchReference");
+const {
+  coordinatesPrice,
+} = require("../../controller/user/movement/coordinatesPrice");
 const router = Router();
 
 router.get("/reference", fetchReference);
 router.use(userPermission);
+router.post("/coordinatesPrice", coordinatesPrice);
 router.post("/", createOrder);
 router.get("/", fetchOrder);
 router.get("/:id", getDetails);

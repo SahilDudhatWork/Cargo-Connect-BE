@@ -554,6 +554,38 @@
         }
       }
     },
+    "/v1/user/order/coordinatesPrice": {
+      "post": {
+        "tags": ["Movement"],
+        "summary": "Coordinates Price",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "pickUpAddressIds": ["6708eea4a1f0653d6ef6abbf"],
+                  "dropAddressIds": ["6708ee95a1f0653d6ef6abbb"]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
     "/v1/user/order/{movementId}": {
       "get": {
         "tags": ["Movement"],
