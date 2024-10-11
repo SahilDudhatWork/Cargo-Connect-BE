@@ -60,6 +60,7 @@ module.exports = {
       "Authorization Failed, Please login again!!",
     INVALID_SORTBY: "Invalid sortBy value.",
     INVALID_ROLE: "Invalid role value.",
+    ALREADY_ASSIGN: "This movement has already been assigned.",
     UNSUPPORTED_FILE: "Unsupported file type",
     FORGOT_PASSWORD_TOKEN_EXPIRED:
       "Please initiate the password reset process again to receive a new otp.",
