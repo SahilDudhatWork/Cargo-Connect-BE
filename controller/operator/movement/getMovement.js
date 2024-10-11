@@ -4,6 +4,12 @@ const { paginationResponse } = require("../../../utils/paginationFormate");
 const {
   getTypeOfService_TypeOfTransportation_Pipeline,
   fetchVehicles_Pipeline,
+  userReference_Pipeline,
+  carrierReference_Pipeline,
+  addresses_Pipeline,
+  operators_Pipeline,
+  port_BridgeOfCrossing_Pipeline,
+  specialrequirements_Pipeline,
 } = require("../../../utils/lookups");
 const { ObjectId } = require("mongoose").Types;
 const Response = require("../../../helper/response");
@@ -37,80 +43,14 @@ const fetchMovement = async (req, res) => {
     const getData = await Movement.aggregate([
       { $match: { operatorId: new ObjectId(operatorId) } },
       { $match: qry },
-      // Fetch Addresses
-      {
-        $lookup: {
-          from: "addresses",
-          let: { addressIds: "$pickUpAddressIds" },
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $in: [
-                    "$_id",
-                    {
-                      $map: {
-                        input: "$$addressIds",
-                        as: "id",
-                        in: { $toObjectId: "$$id" },
-                      },
-                    },
-                  ],
-                },
-              },
-            },
-          ],
-          as: "pickUpAddressData",
-        },
-      },
-      {
-        $lookup: {
-          from: "addresses",
-          let: { addressIds: "$dropAddressIds" },
-          pipeline: [
-            {
-              $match: {
-                $expr: {
-                  $in: [
-                    "$_id",
-                    {
-                      $map: {
-                        input: "$$addressIds",
-                        as: "id",
-                        in: { $toObjectId: "$$id" },
-                      },
-                    },
-                  ],
-                },
-              },
-            },
-          ],
-          as: "dropAddressData",
-        },
-      },
-      // Fetch Operators
-      {
-        $lookup: {
-          from: "operators",
-          let: { operatorId: "$operatorId" },
-          pipeline: [
-            {
-              $match: {
-                $expr: { $eq: ["$_id", "$$operatorId"] },
-              },
-            },
-          ],
-          as: "operatorData",
-        },
-      },
-      {
-        $unwind: {
-          path: "$operatorData",
-          preserveNullAndEmptyArrays: true,
-        },
-      },
       ...getTypeOfService_TypeOfTransportation_Pipeline(),
       ...fetchVehicles_Pipeline(),
+      ...userReference_Pipeline(),
+      ...carrierReference_Pipeline(),
+      ...addresses_Pipeline(),
+      ...operators_Pipeline(),
+      ...port_BridgeOfCrossing_Pipeline(),
+      ...specialrequirements_Pipeline(),
       {
         $facet: {
           paginatedResult: [

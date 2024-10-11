@@ -53,6 +53,10 @@ const collectionSchema = new Schema(
       type: String,
       default: null,
     },
+    carrierReference: {
+      type: String,
+      default: null,
+    },
     specialRequirements: [
       {
         type: ObjectId,
