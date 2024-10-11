@@ -1013,6 +1013,18 @@
               "type": "string"
             },
             "example": "MYWYBVRRRV4328325499"
+          },
+          {
+            "sortBy": {
+              "type": "string",
+              "enum": [
+                "Approved",
+                "Completed",
+                "InProgress",
+                "Pending",
+                "Cancelled"
+              ]
+            }
           }
         ],
         "responses": {

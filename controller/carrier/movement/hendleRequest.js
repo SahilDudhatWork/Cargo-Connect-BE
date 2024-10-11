@@ -13,8 +13,8 @@ const hendleRequest = async (req, res) => {
   try {
     const { id } = params;
     const { operatorId, vehicleId } = body;
-    let getData = await Movement.findOne({ movementId: id });
 
+    let getData = await Movement.findOne({ movementId: id });
     if (
       getData.isAssign &&
       getData?.carrierId !== null &&

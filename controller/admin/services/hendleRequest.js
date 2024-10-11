@@ -14,6 +14,20 @@ const hendleRequest = async (req, res) => {
     const { id } = params;
     const { carrierId, operatorId, vehicleId } = body;
 
+    let getData = await Movement.findOne({ movementId: id });
+    if (
+      getData.isAssign &&
+      getData?.carrierId !== null &&
+      !getData?.carrierId.equals(new ObjectId(carrierId))
+    ) {
+      return Response.error({
+        req,
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: ERROR_MSGS.ALREADY_ASSIGN,
+      });
+    }
+
     // Convert IDs to ObjectId
     body.carrierId = new ObjectId(carrierId);
     body.operatorId = new ObjectId(operatorId);
