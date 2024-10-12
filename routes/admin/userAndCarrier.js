@@ -23,6 +23,9 @@ const {
   unverify,
 } = require("../../controller/admin/common/userAndCarrier/unverify");
 const {
+  fetchReferences,
+} = require("../../controller/admin/common/userAndCarrier/references");
+const {
   validateEmailAndPassword,
 } = require("../../middleware/validateEmailAndPass");
 
@@ -33,5 +36,6 @@ router.put("/:type/:id", uploadMiddleware, update);
 router.delete("/:type/:id", remove);
 router.post("/verify/:type/:id", verify);
 router.delete("/unverify/:type/:id", unverify);
+router.get("/references/:type/:id", fetchReferences);
 
 module.exports = router;

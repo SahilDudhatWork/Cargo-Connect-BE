@@ -30,8 +30,6 @@ const isPointInPolygon = (point, polygon) => {
 const coordinatesPrice = async (req, res) => {
   let { logger, body } = req;
   try {
-    console.log("body :>> ", body);
-
     const pickUpAddressData = await Address.find({
       _id: { $in: body.pickUpAddressIds.map((id) => new ObjectId(id)) },
     });
@@ -42,7 +40,7 @@ const coordinatesPrice = async (req, res) => {
 
     const fetchCoordinates = await Coordinates.find();
 
-    let totalMatchingPrice = 0;
+    let totalMatchingPrice = 50;
 
     // Check prices for each pickup address
     for (const pickUpAddress of pickUpAddressData) {
@@ -58,18 +56,18 @@ const coordinatesPrice = async (req, res) => {
       }
     }
 
-    for (const dropAddress of dropAddressData) {
-      const dropLat = parseFloat(dropAddress.addressDetails.lat);
-      const dropLong = parseFloat(dropAddress.addressDetails.long);
-      const userSelectedLocation = { lat: dropLat, lng: dropLong };
+    // for (const dropAddress of dropAddressData) {
+    //   const dropLat = parseFloat(dropAddress.addressDetails.lat);
+    //   const dropLong = parseFloat(dropAddress.addressDetails.long);
+    //   const userSelectedLocation = { lat: dropLat, lng: dropLong };
 
-      for (const coordinate of fetchCoordinates) {
-        if (isPointInPolygon(userSelectedLocation, coordinate.coordinates)) {
-          totalMatchingPrice += coordinate.price;
-          break;
-        }
-      }
-    }
+    //   for (const coordinate of fetchCoordinates) {
+    //     if (isPointInPolygon(userSelectedLocation, coordinate.coordinates)) {
+    //       totalMatchingPrice += coordinate.price;
+    //       break;
+    //     }
+    //   }
+    // }
 
     let amountDetails = {
       price: totalMatchingPrice,

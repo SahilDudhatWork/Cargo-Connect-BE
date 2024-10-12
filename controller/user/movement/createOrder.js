@@ -70,7 +70,7 @@ const createOrder = async (req, res) => {
     const fetchCoordinates = await Coordinates.find();
 
     // Initialize total matching price
-    let totalMatchingPrice = 0;
+    let totalMatchingPrice = 50;
 
     // Check prices for each pickup address
     for (const pickUpAddress of getData.pickUpAddressData) {
@@ -86,19 +86,19 @@ const createOrder = async (req, res) => {
       }
     }
 
-    // Check prices for each drop address
-    for (const dropAddress of getData.dropAddressData) {
-      const dropLat = parseFloat(dropAddress.addressDetails.lat);
-      const dropLong = parseFloat(dropAddress.addressDetails.long);
-      const userSelectedLocation = { lat: dropLat, lng: dropLong };
+    // // Check prices for each drop address
+    // for (const dropAddress of getData.dropAddressData) {
+    //   const dropLat = parseFloat(dropAddress.addressDetails.lat);
+    //   const dropLong = parseFloat(dropAddress.addressDetails.long);
+    //   const userSelectedLocation = { lat: dropLat, lng: dropLong };
 
-      for (const coordinate of fetchCoordinates) {
-        if (isPointInPolygon(userSelectedLocation, coordinate.coordinates)) {
-          totalMatchingPrice += coordinate.price;
-          break;
-        }
-      }
-    }
+    //   for (const coordinate of fetchCoordinates) {
+    //     if (isPointInPolygon(userSelectedLocation, coordinate.coordinates)) {
+    //       totalMatchingPrice += coordinate.price;
+    //       break;
+    //     }
+    //   }
+    // }
 
     let { securingEquipment } = await TransitInfo.findOne();
     const { chains, tarps, straps } = securingEquipment;
