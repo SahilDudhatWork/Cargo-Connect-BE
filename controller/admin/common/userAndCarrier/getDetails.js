@@ -1,7 +1,6 @@
 const { handleException } = require("../../../../helper/exception");
 const Response = require("../../../../helper/response");
 const { hendleModel } = require("../../../../utils/hendleModel");
-const { findOne } = require("../../../../utils/helper");
 const { decrypt } = require("../../../../helper/encrypt-decrypt");
 const {
   STATUS_CODE,

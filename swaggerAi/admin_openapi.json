@@ -545,6 +545,35 @@
         }
       }
     },
+    "/v1/admin/module/references/user/{userAccountId}": {
+      "get": {
+        "tags": ["Manage User"],
+        "summary": "References",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
     "/v1/admin/module/carrier": {
       "post": {
         "tags": ["Manage Carrier"],
@@ -973,6 +1002,35 @@
         "responses": {
           "200": {
             "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/module/references/carrier/{carrierAccountId}": {
+      "get": {
+        "tags": ["Manage Carrier"],
+        "summary": "References",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "carrierAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
