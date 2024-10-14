@@ -23,25 +23,21 @@ const fetchMovement = async (req, res) => {
   let { logger, operatorId, query } = req;
   try {
     let { page, limit, sortBy } = query;
-    let qry = {};
+    let qry = { operatorId: new ObjectId(operatorId) };
 
-    if (sortBy == "InProgress") {
-      qry = {
-        isAssign: true,
-        status: "InProgress",
-      };
-    } else if (sortBy == "Completed") {
-      qry = {
-        isAssign: true,
-        status: "Completed",
-      };
+    if (sortBy === "InProgress") {
+      qry.isAssign = true;
+      qry.status = "InProgress";
+    } else if (sortBy === "Completed") {
+      qry.isAssign = true;
+      qry.status = "Completed";
     }
 
     offset = page || 1;
     limit = limit || 10;
     const skip = limit * (offset - 1);
     const getData = await Movement.aggregate([
-      { $match: { operatorId: new ObjectId(operatorId) }, qry },
+      { $match: qry },
       { $sort: { createdAt: -1 } },
       ...getTypeOfService_TypeOfTransportation_Pipeline(),
       ...fetchVehicles_Pipeline(),

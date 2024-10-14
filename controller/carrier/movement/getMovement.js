@@ -31,18 +31,21 @@ const fetchMovement = async (req, res) => {
         isAssign: false,
         status: "Pending",
         carrierId: null,
+        isScheduleTriggered: true,
       };
     } else if (sortBy == "InProgress") {
       qry = {
         isAssign: true,
         status: "InProgress",
         carrierId: new ObjectId(carrierId),
+        isScheduleTriggered: true,
       };
     } else if (sortBy == "Completed") {
       qry = {
         isAssign: true,
         status: "Completed",
         carrierId: new ObjectId(carrierId),
+        isScheduleTriggered: true,
       };
     }
 
@@ -55,7 +58,7 @@ const fetchMovement = async (req, res) => {
     limit = limit || 10;
     const skip = limit * (offset - 1);
     const getData = await Movement.aggregate([
-      { $match: { isScheduleTriggered: true }, qry },
+      { $match: qry },
       { $sort: { createdAt: -1 } },
       ...getTypeOfService_TypeOfTransportation_Pipeline(),
       ...fetchVehicles_Pipeline(),
