@@ -6,7 +6,7 @@ const {
   INFO_MSGS,
 } = require("../../../helper/constant");
 const { handleException } = require("../../../helper/exception");
-const { VerificationEmail } = require("../../../utils/emailVerification");
+const { VerificationEmail } = require("../../../utils/nodemailerOtp");
 const { hendleModel } = require("../../../utils/hendleModel");
 
 const sentOtp = async (req, res) => {
