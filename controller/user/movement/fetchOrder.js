@@ -34,6 +34,7 @@ const fetchOrder = async (req, res) => {
           status: status,
         },
       },
+      { $sort: { createdAt: -1 } },
       ...getTypeOfService_TypeOfTransportation_Pipeline(),
       ...fetchVehicles_Pipeline(),
       ...userReference_Pipeline(),

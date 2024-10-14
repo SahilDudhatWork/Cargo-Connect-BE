@@ -41,8 +41,8 @@ const fetchMovement = async (req, res) => {
     limit = limit || 10;
     const skip = limit * (offset - 1);
     const getData = await Movement.aggregate([
-      { $match: { operatorId: new ObjectId(operatorId) } },
-      { $match: qry },
+      { $match: { operatorId: new ObjectId(operatorId) }, qry },
+      { $sort: { createdAt: -1 } },
       ...getTypeOfService_TypeOfTransportation_Pipeline(),
       ...fetchVehicles_Pipeline(),
       ...userReference_Pipeline(),
