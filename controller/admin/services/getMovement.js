@@ -23,25 +23,21 @@ const fetchMovement = async (req, res) => {
   try {
     let { page, limit, keyWord, sortBy } = query;
 
-    let qry = {};
+    let qry = { isScheduleTriggered: true };
 
     if (keyWord) {
-      qry = {
-        $or: [{ movementId: { $regex: keyWord, $options: "i" } }],
-      };
+      qry.$or = [{ movementId: { $regex: keyWord, $options: "i" } }];
+    }
+
+    if (sortBy) {
+      qry.status = sortBy;
     }
 
     offset = page || 1;
     limit = limit || 10;
     const skip = limit * (offset - 1);
     const getData = await Movement.aggregate([
-      {
-        $match: {
-          isScheduleTriggered: true,
-          status: sortBy,
-        },
-        qry,
-      },
+      { $match: qry },
       { $sort: { createdAt: -1 } },
       ...getTypeOfService_TypeOfTransportation_Pipeline(),
       ...fetchVehicles_Pipeline(),

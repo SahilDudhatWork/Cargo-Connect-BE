@@ -1,5 +1,4 @@
 const Joi = require("joi");
-const { ObjectId } = require("mongoose").Types;
 
 /**
  * validating options for Joi
@@ -35,20 +34,27 @@ const passwordSchema = Joi.string()
     "any.required": `Password is required`,
   });
 
-const mobileSchema = Joi.number()
-  .integer()
-  .empty()
-  .min(1000000000)
-  .max(9999999999)
-  .required()
-  .messages({
-    "number.base": `Mobile number must be a number`,
-    "number.empty": `Mobile number is required`,
-    "number.integer": `Mobile number must be an integer`,
-    "number.min": `Mobile number must be at least 10 digits long`,
-    "number.max": `Mobile number cannot exceed 10 digits`,
-    "any.required": `Mobile number is required`,
-  });
+// const mobileSchema = Joi.number()
+//   .integer()
+//   .empty()
+//   .min(1000000000)
+//   .max(9999999999)
+//   .required()
+//   .messages({
+//     "number.base": `Mobile number must be a number`,
+//     "number.empty": `Mobile number is required`,
+//     "number.integer": `Mobile number must be an integer`,
+//     "number.min": `Mobile number must be at least 10 digits long`,
+//     "number.max": `Mobile number cannot exceed 10 digits`,
+//     "any.required": `Mobile number is required`,
+//   });
+
+const mobileSchema = Joi.number().integer().required().messages({
+  "number.base": `Mobile number must be a number`,
+  "number.empty": `Mobile number is required`,
+  "number.integer": `Mobile number must be an integer`,
+  "any.required": `Mobile number is required`,
+});
 
 const emailSchema = Joi.string()
   .empty()
