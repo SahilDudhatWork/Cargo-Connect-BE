@@ -42,7 +42,7 @@ const hendleRequest = async (req, res) => {
 
     const statusCode = updateData
       ? STATUS_CODE.OK
-      : STATUS_CODE.INTERNAL_SERVER_ERROR;
+      : STATUS_CODE.BAD_REQUEST;
     const message = updateData
       ? INFO_MSGS.UPDATED_SUCCESSFULLY
       : ERROR_MSGS.UPDATE_ERR;

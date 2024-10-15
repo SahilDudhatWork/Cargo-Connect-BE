@@ -7,14 +7,24 @@ const {
 const { handleException } = require("../../../helper/exception");
 const Otp = require("../../../model/common/otp");
 const Operator = require("../../../model/operator/operator");
+const twilioSendOtp = require("../../../utils/twilioOtp");
 
 const sentOtp = async (req, res) => {
   const { logger, body } = req;
   try {
-    const { mobile } = body;
+    let { operatorNumber, countryCode } = body;
 
-    const checkMobileExist = await Operator.findOne({ operatorNumber: mobile });
+    countryCode = countryCode.toString();
+    operatorNumber = operatorNumber.toString();
+    let mobileNumber = `+${countryCode + operatorNumber}`;
+    let newMobileNumber = `${countryCode + operatorNumber}`;
 
+    await Otp.deleteMany({ mobile: newMobileNumber });
+
+    const checkMobileExist = await Operator.findOne({
+      operatorNumber,
+      countryCode,
+    });
     if (!checkMobileExist) {
       return Response.error({
         res,
@@ -23,20 +33,19 @@ const sentOtp = async (req, res) => {
       });
     }
 
-    // Generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000);
-    const otpData = { mobile, otp };
+    const twilioResult = await twilioSendOtp(mobileNumber, otp);
 
-    await Otp.findOneAndDelete({ mobile });
-    const saveData = await Otp.create(otpData);
-
-    if (!saveData) {
+    if (!twilioResult.success) {
       return Response.error({
         res,
-        status: STATUS_CODE.BAD_REQUEST,
-        msg: ERROR_MSGS.WENT_WRONG,
+        status: STATUS_CODE.INTERNAL_SERVER_ERROR,
+        msg: twilioResult.error,
       });
     }
+
+    const otpData = { mobile: newMobileNumber, otp };
+    await Otp.create(otpData);
 
     // Schedule OTP expiration
     setTimeout(
@@ -50,7 +59,6 @@ const sentOtp = async (req, res) => {
       res,
       status: STATUS_CODE.CREATED,
       msg: INFO_MSGS.OTP_SENT_IN_MOBILE_SUCC,
-      data: { otp },
     });
   } catch (error) {
     console.error("Error:", error);

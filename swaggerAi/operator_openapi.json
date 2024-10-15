@@ -30,6 +30,9 @@
       "name": "Auth"
     },
     {
+      "name": "Profile"
+    },
+    {
       "name": "Movement"
     },
     {
@@ -50,7 +53,63 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "mobile": 9876543212
+                  "countryCode": 91,
+                  "operatorNumber": 8160098920
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "An OTP has been sent to your mobile number. Please check your messages and use the OTP to proceed.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/operator/profile": {
+      "get": {
+        "tags": ["Profile"],
+        "summary": "Fetch Profile",
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Profile"],
+        "summary": "Update Profile",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "operatorName": "john doe - 1",
+                  "countryCode": 91,
+                  "operatorNumber": 8160098920,
+                  "mxIdBadge": "MX12345",
+                  "mxIdBadgeExpirationDate": "2025-12-31T00:00:00.000Z",
+                  "fastId": "FAST67890",
+                  "fastIdExpirationDate": "2026-05-30T00:00:00.000Z",
+                  "mxDriversLicense": "MXDL98765",
+                  "mxDriversLicenseExpirationDate": "2027-10-15T00:00:00.000Z",
+                  "usDriversLicense": "USDL54321",
+                  "usDriversLicenseExpirationDate": "2028-03-22T00:00:00.000Z",
+                  "isAssigned": false,
+                  "status": "Deactive"
                 }
               }
             }
@@ -58,7 +117,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was updated successfully.",
             "content": {
               "application/json": {}
             }
@@ -76,7 +135,8 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "mobile": 9876543212,
+                  "countryCode": 91,
+                  "operatorNumber": 8160098920,
                   "otp": 171829
                 }
               }
@@ -85,7 +145,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The OTP has been verified successfully.",
             "content": {
               "application/json": {}
             }
@@ -105,7 +165,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "You have logged in successfully.",
             "content": {
               "application/json": {}
             }
@@ -150,7 +210,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -169,7 +229,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -200,7 +260,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was updated successfully.",
             "content": {
               "application/json": {}
             }
@@ -214,7 +274,7 @@
         "summary": "Fetch Banners",
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }

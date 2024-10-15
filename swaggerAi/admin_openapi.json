@@ -95,7 +95,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "You have logged in successfully.",
             "content": {
               "application/json": {}
             }
@@ -115,7 +115,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "You have logged in successfully.",
             "content": {
               "application/json": {}
             }
@@ -144,7 +144,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -269,8 +269,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "The data was created successfully.",
             "content": {
               "application/json": {}
             }
@@ -321,7 +321,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -340,7 +340,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -472,7 +472,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was updated successfully.",
             "content": {
               "application/json": {}
             }
@@ -489,7 +489,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was deleted successfully.",
             "content": {
               "application/json": {}
             }
@@ -518,7 +518,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "User verification successfully.",
             "content": {
               "application/json": {}
             }
@@ -537,7 +537,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "User unverification successfully.",
             "content": {
               "application/json": {}
             }
@@ -711,8 +711,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "The data was created successfully.",
             "content": {
               "application/json": {}
             }
@@ -763,7 +763,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -782,7 +782,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -936,7 +936,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was updated successfully.",
             "content": {
               "application/json": {}
             }
@@ -953,7 +953,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was deleted successfully.",
             "content": {
               "application/json": {}
             }
@@ -982,7 +982,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Carrier verification successfully.",
             "content": {
               "application/json": {}
             }
@@ -1001,7 +1001,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Carrier unverification successfully.",
             "content": {
               "application/json": {}
             }
@@ -1091,7 +1091,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -1110,7 +1110,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -1142,7 +1142,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was updated successfully.",
             "content": {
               "application/json": {}
             }
@@ -1183,8 +1183,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "The data was created successfully.",
             "content": {
               "application/json": {}
             }
@@ -1236,7 +1236,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -1255,7 +1255,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -1293,7 +1293,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was updated successfully.",
             "content": {
               "application/json": {}
             }
@@ -1310,7 +1310,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was deleted successfully.",
             "content": {
               "application/json": {}
             }
@@ -1359,8 +1359,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "The data was created successfully.",
             "content": {
               "application/json": {}
             }
@@ -1412,7 +1412,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -1431,7 +1431,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -1478,7 +1478,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was updated successfully.",
             "content": {
               "application/json": {}
             }
@@ -1495,7 +1495,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was deleted successfully.",
             "content": {
               "application/json": {}
             }
@@ -1526,7 +1526,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was updated successfully.",
             "content": {
               "application/json": {}
             }
@@ -1563,7 +1563,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -1600,7 +1600,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -1637,7 +1637,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -1685,7 +1685,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was created successfully.",
             "content": {
               "application/json": {}
             }
@@ -1702,7 +1702,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -1721,7 +1721,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -1798,8 +1798,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "The data was created successfully.",
             "content": {
               "application/json": {}
             }
@@ -1816,7 +1816,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -1875,7 +1875,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Data created successfully.",
+            "description": "The data was added successfully.",
             "content": {
               "application/json": {}
             }
@@ -1926,7 +1926,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Request successful.",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -1989,7 +1989,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Data updated successfully.",
+            "description": "The data was updated successfully.",
             "content": {
               "application/json": {}
             }
@@ -2038,7 +2038,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Data deleted successfully.",
+            "description": "The data was deleted successfully.",
             "content": {
               "application/json": {}
             }
@@ -2087,8 +2087,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "The data was created successfully.",
             "content": {
               "application/json": {}
             }
@@ -2105,7 +2105,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -2154,7 +2154,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was updated successfully.",
             "content": {
               "application/json": {}
             }
@@ -2171,7 +2171,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -2188,7 +2188,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was deleted successfully.",
             "content": {
               "application/json": {}
             }
@@ -2224,7 +2224,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Data created successfully.",
+            "description": "The data was created successfully.",
             "content": {
               "application/json": {}
             }
@@ -2259,7 +2259,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -2278,7 +2278,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -2311,7 +2311,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Data updated successfully.",
+            "description": "The data was updated successfully.",
             "content": {
               "application/json": {}
             }
@@ -2328,7 +2328,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was deleted successfully.",
             "content": {
               "application/json": {}
             }
@@ -2354,8 +2354,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "An OTP has been sent to your email address. Please check your inbox and use the OTP to proceed.",
             "content": {
               "application/json": {}
             }
@@ -2382,7 +2382,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The OTP has been verified successfully.",
             "content": {
               "application/json": {}
             }
@@ -2420,7 +2420,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Your password has been changed successfully.",
             "content": {
               "application/json": {}
             }
