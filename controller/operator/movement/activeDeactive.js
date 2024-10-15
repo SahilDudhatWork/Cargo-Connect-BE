@@ -15,7 +15,7 @@ const activeDeactive = async (req, res) => {
       new: true,
     });
     const statusCode = saveData ? STATUS_CODE.OK : STATUS_CODE.BAD_REQUEST;
-    const message = saveData ? INFO_MSGS.SUCCESS : ERROR_MSGS.BAD_REQUEST;
+    const message = saveData ? INFO_MSGS.UPDATED_SUCCESSFULLY : ERROR_MSGS.BAD_REQUEST;
     return Response[statusCode === STATUS_CODE.OK ? "success" : "error"]({
       req,
       res,

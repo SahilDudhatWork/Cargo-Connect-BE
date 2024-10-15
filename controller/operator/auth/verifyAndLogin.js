@@ -14,9 +14,13 @@ const { handleException } = require("../../../helper/exception");
 const verifyAndLogin = async (req, res) => {
   const { logger, body } = req;
   try {
-    const { mobile, otp } = body;
+    let { countryCode, operatorNumber, otp } = body;
 
-    const otpData = await Otp.findOne({ mobile });
+    countryCode = countryCode.toString();
+    operatorNumber = operatorNumber.toString();
+    let mobileNumber = `${countryCode + operatorNumber}`;
+
+    const otpData = await Otp.findOne({ mobile: mobileNumber });
 
     if (!otpData || otpData?.otp !== otp) {
       const obj = {
@@ -41,7 +45,10 @@ const verifyAndLogin = async (req, res) => {
       return Response.error(obj);
     }
 
-    const operatorInfo = await Operator.findOne({ operatorNumber: mobile });
+    const operatorInfo = await Operator.findOne({
+      operatorNumber,
+      countryCode,
+    });
 
     const encryptOperator = encrypt(
       operatorInfo._id,
@@ -72,7 +79,7 @@ const verifyAndLogin = async (req, res) => {
       { new: true }
     );
 
-    await Otp.findOneAndDelete({ mobile, otp });
+    await Otp.findOneAndDelete({ mobile: mobileNumber, otp });
     const obj = {
       res,
       status: STATUS_CODE.OK,

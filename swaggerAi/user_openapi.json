@@ -176,8 +176,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "Your registration with Cargo Connect was successful.",
             "content": {
               "application/json": {}
             }
@@ -204,7 +204,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -230,8 +230,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Successfully logged in.",
+          "201": {
+            "description": "An OTP has been sent to your email address. Please check your inbox and use the OTP to proceed.",
             "content": {
               "application/json": {}
             }
@@ -260,7 +260,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -280,7 +280,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "You have logged in successfully.",
             "content": {
               "application/json": {}
             }
@@ -299,7 +299,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -415,7 +415,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was updated successfully.",
             "content": {
               "application/json": {}
             }
@@ -429,7 +429,7 @@
         "summary": "Fetch Type Of TransitInfo",
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -448,7 +448,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -496,8 +496,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "Your request has been sent to the carrier for approval. Please wait for their response.",
             "content": {
               "application/json": {}
             }
@@ -546,7 +546,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -578,7 +578,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -597,7 +597,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -616,7 +616,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -659,8 +659,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "The data was created successfully.",
             "content": {
               "application/json": {}
             }
@@ -677,7 +677,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -696,7 +696,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -738,7 +738,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was updated successfully.",
             "content": {
               "application/json": {}
             }
@@ -755,7 +755,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The data was deleted successfully.",
             "content": {
               "application/json": {}
             }
@@ -774,7 +774,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -800,8 +800,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "An OTP has been sent to your email address. Please check your inbox and use the OTP to proceed.",
             "content": {
               "application/json": {}
             }
@@ -828,7 +828,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The OTP has been verified successfully.",
             "content": {
               "application/json": {}
             }
@@ -866,7 +866,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Your password has been changed successfully.",
             "content": {
               "application/json": {}
             }
@@ -885,7 +885,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -899,7 +899,7 @@
         "summary": "Fetch Banners",
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }

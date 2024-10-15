@@ -84,12 +84,6 @@ const collectionSchema = new Schema(
         type: Date,
       },
     },
-    forgotPassword: {
-      createdAt: {
-        type: Date,
-        default: null,
-      },
-    },
     lastLogin: {
       type: Date,
       default: null,
