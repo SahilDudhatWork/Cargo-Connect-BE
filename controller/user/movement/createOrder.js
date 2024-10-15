@@ -1,4 +1,5 @@
 const Movement = require("../../../model/movement/movement");
+const Payment = require("../../../model/movement/payment");
 const TransitInfo = require("../../../model/admin/transitInfo");
 const Coordinates = require("../../../model/common/coordinates");
 const { handleException } = require("../../../helper/exception");
@@ -38,6 +39,17 @@ const isPointInPolygon = (point, polygon) => {
 const createOrder = async (req, res) => {
   let { logger, userId, body } = req;
   try {
+    let { paymentDetail } = body;
+
+    if (!paymentDetail) {
+      return Response.error({
+        req,
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: `paymentDetail ${ERROR_MSGS.KEY_REQUIRED}`,
+      });
+    }
+
     body.userId = userId;
     body.movementId = generateNumOrCharId();
     if (body.programming === "Instant") {
@@ -45,6 +57,12 @@ const createOrder = async (req, res) => {
     }
 
     const saveData = await Movement.create(body);
+
+    paymentDetail.paymentId = paymentDetail.id;
+    paymentDetail.movementId = saveData._id;
+    paymentDetail.userId = userId;
+
+    await Payment.create(paymentDetail);
 
     let getData = await Movement.aggregate([
       {
@@ -116,7 +134,7 @@ const createOrder = async (req, res) => {
       );
 
     totalMatchingPrice += totalPrice;
-    
+
     // Amount details
     let amountDetails = {
       price: totalMatchingPrice,
