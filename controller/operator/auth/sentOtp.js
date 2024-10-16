@@ -36,13 +36,13 @@ const sentOtp = async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000);
     const twilioResult = await twilioSendOtp(mobileNumber, otp);
 
-    if (!twilioResult.success) {
-      return Response.error({
-        res,
-        status: STATUS_CODE.INTERNAL_SERVER_ERROR,
-        msg: twilioResult.error,
-      });
-    }
+    // if (!twilioResult.success) {
+    //   return Response.error({
+    //     res,
+    //     status: STATUS_CODE.INTERNAL_SERVER_ERROR,
+    //     msg: twilioResult.error,
+    //   });
+    // }
 
     const otpData = { mobile: newMobileNumber, otp };
     await Otp.create(otpData);
@@ -59,6 +59,7 @@ const sentOtp = async (req, res) => {
       res,
       status: STATUS_CODE.CREATED,
       msg: INFO_MSGS.OTP_SENT_IN_MOBILE_SUCC,
+      data: { otp },
     });
   } catch (error) {
     console.error("Error:", error);
