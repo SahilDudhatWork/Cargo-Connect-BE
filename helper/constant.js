@@ -45,6 +45,8 @@ module.exports = {
       "Access denied. This action is restricted to administrators only.",
     ADMIN_ACCESS_DENIED: "Access denied. Only administrators can log in.",
     FAVORITE_ALREADY_EXISTS: "This item is already marked as a favorite.",
+    OPERATOR_MOB_NUM_EXISTS: "This phone number already exists in operator.",
+    CARRIER_MOB_NUM_EXISTS: "This phone number already exists in carrier.",
     DATA_EXISTS: "already exists.",
     KEY_REQUIRED: "is required.",
     INVALID_OTP: "The provided OTP is invalid.",
@@ -77,6 +79,10 @@ module.exports = {
       "A valid access token is required; a refresh token was provided instead.",
     MISSING_ORDERID:
       "The orderId is missing. Please ensure the user has completed the approval process.",
+    USER_REFERENCE_EXIST:
+      "The user reference has already been used. Please provide a unique reference.",
+    CARRIER_REFERENCE_EXIST:
+      "The carrier reference has already been used. Please provide a unique reference.",
   },
 
   INFO_MSGS: {
