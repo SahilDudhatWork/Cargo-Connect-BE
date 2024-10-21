@@ -4,7 +4,7 @@ const TransitInfo = require("../../../model/admin/transitInfo");
 const Coordinates = require("../../../model/common/coordinates");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
-const { generateNumOrCharId } = require("../../../utils/generateUniqueId");
+const { generateMovementId } = require("../../../utils/generateUniqueId");
 const { ObjectId } = require("mongoose").Types;
 const {
   getTypeOfService_TypeOfTransportation_Pipeline,
@@ -74,8 +74,10 @@ const createOrder = async (req, res) => {
       });
     }
 
+    const countMovement = await Movement.countDocuments();
+
     body.userId = userId;
-    body.movementId = generateNumOrCharId();
+    body.movementId = generateMovementId(countMovement);
     if (body.programming === "Instant") {
       body.isScheduleTriggered = true;
     }

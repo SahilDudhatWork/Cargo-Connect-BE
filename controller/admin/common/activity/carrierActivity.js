@@ -56,7 +56,7 @@ const carrierActivity = async (req, res) => {
       {
         $facet: {
           newMovements: [
-            { $match: { status: "NewAssignements" } },
+            { $match: { status: "NewAssignments" } },
             {
               $group: {
                 _id: null,
@@ -77,7 +77,7 @@ const carrierActivity = async (req, res) => {
           ],
           pendingMovements: [
             {
-              $match: { status: "NewAssignements" },
+              $match: { status: "NewAssignments" },
             },
             {
               $group: {

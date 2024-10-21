@@ -30,7 +30,11 @@ const fetchMovement = async (req, res) => {
     }
 
     if (sortBy) {
-      qry.status = sortBy;
+      if (sortBy === "Pending") {
+        qry.status = { $in: ["Pending", "NewAssignments"] };
+      } else {
+        qry.status = sortBy;
+      }
     }
 
     offset = page || 1;

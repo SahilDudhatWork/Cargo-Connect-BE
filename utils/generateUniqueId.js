@@ -23,4 +23,11 @@ const generateNumOrCharId = () => {
   return uniqueId;
 };
 
-module.exports = { generateAccountId, generateNumOrCharId };
+const generateMovementId = (lastSequence) => {
+  const currentYear = new Date().getFullYear().toString().slice(-2);
+  lastSequence += 1;
+  const movementId = `CC${currentYear}${String(lastSequence).padStart(6, "0")}`;
+  return movementId;
+};
+
+module.exports = { generateAccountId, generateNumOrCharId, generateMovementId };

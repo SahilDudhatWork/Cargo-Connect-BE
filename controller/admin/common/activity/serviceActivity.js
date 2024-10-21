@@ -126,7 +126,7 @@ const serviceActivity = async (req, res) => {
             },
           ],
           newMovements: [
-            { $match: { status: "NewAssignements" } },
+            { $match: { status: "NewAssignments" } },
             {
               $group: {
                 _id: null,
@@ -159,7 +159,7 @@ const serviceActivity = async (req, res) => {
           ],
           pendingMovements: [
             {
-              $match: { status: "NewAssignements" },
+              $match: { status: "NewAssignments" },
             },
             {
               $group: {
