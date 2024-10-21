@@ -56,7 +56,7 @@ const hendleRequest = async (req, res) => {
     body.carrierId = new ObjectId(carrierId);
     body.operatorId = new ObjectId(operatorId);
     body.vehicleId = new ObjectId(vehicleId);
-    body.status = "InProgress";
+    body.status = "Pending";
     body.isAssign = true;
 
     // Update the Movement document

@@ -7,14 +7,14 @@ const {
 } = require("../../../helper/constant");
 const { handleException } = require("../../../helper/exception");
 
-const fetchQr = async (req, res) => {
+const fetchData = async (req, res) => {
   const { logger, params } = req;
   try {
-    const fetchMovement = await Movement.findById(
+    const fetchMovement = await Movement.findOne(
       {
-        _id: params.movementId,
+        movementId: params.movementId,
       },
-      { proofOfPhotography: 1, qrCode: 1 }
+      { proofOfPhotography: 1, qrCode: 1, documents: 1 }
     );
     return Response.success({
       res,
@@ -29,5 +29,5 @@ const fetchQr = async (req, res) => {
 };
 
 module.exports = {
-  fetchQr,
+  fetchData,
 };

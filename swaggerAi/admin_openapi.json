@@ -73,6 +73,12 @@
     },
     {
       "name": "Image Delete"
+    },
+    {
+      "name": "Qr & Proof & Doc"
+    },
+    {
+      "name": "LocatOperator"
     }
   ],
   "paths": {
@@ -2449,6 +2455,69 @@
         "responses": {
           "200": {
             "description": "File ${filename} deleted successfully from S3 and replaced in the document",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/common/qr&proof&doc/{movementId}": {
+      "post": {
+        "tags": ["Qr & Proof & Doc"],
+        "summary": "Upload",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "qrCode": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "proofOfPhotography": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "documents": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The data was uploaded successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Qr & Proof & Doc"],
+        "summary": "FetchData",
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/common/locat/operator/{operatorAccountId}": {
+      "get": {
+        "tags": ["LocatOperator"],
+        "summary": "Fetch Operators",
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
