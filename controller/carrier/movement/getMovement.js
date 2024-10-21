@@ -26,21 +26,21 @@ const fetchMovement = async (req, res) => {
 
     let qry = {};
 
-    if (sortBy == "Requests") {
+    if (sortBy === "Requests") {
       qry = {
         isAssign: false,
-        status: "Pending",
+        status: { $in: ["Pending", "NewAssignments"] },
         carrierId: null,
         isScheduleTriggered: true,
       };
-    } else if (sortBy == "InProgress") {
+    } else if (sortBy === "InProgress") {
       qry = {
         isAssign: true,
         status: "InProgress",
         carrierId: new ObjectId(carrierId),
         isScheduleTriggered: true,
       };
-    } else if (sortBy == "Completed") {
+    } else if (sortBy === "Completed") {
       qry = {
         isAssign: true,
         status: "Completed",

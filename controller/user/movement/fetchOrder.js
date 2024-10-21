@@ -27,12 +27,20 @@ const fetchOrder = async (req, res) => {
     offset = page || 1;
     limit = limit || 10;
     const skip = limit * (offset - 1);
+
+    let matchCriteria = {
+      userId: new ObjectId(userId),
+    };
+
+    if (status === "Pending") {
+      matchCriteria.status = { $in: ["Pending", "NewAssignments"] };
+    } else {
+      matchCriteria.status = status;
+    }
+
     const getData = await Movement.aggregate([
       {
-        $match: {
-          userId: new ObjectId(userId),
-          status: status,
-        },
+        $match: matchCriteria,
       },
       { $sort: { createdAt: -1 } },
       ...getTypeOfService_TypeOfTransportation_Pipeline(),

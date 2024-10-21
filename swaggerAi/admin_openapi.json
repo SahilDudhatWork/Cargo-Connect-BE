@@ -1086,11 +1086,11 @@
             "schema": {
               "type": "string",
               "enum": [
-                "Approved",
                 "Completed",
                 "InProgress",
                 "Pending",
-                "Cancelled"
+                "Cancelled",
+                "NewAssignments"
               ]
             }
           }

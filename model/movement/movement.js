@@ -105,14 +105,13 @@ const collectionSchema = new Schema(
     dropAddressIds: [{ type: ObjectId }],
     status: {
       type: String,
-      default: "NewAssignements",
+      default: "NewAssignments",
       enum: [
-        "Approved",
         "Completed",
         "InProgress",
         "Pending",
         "Cancelled",
-        "NewAssignements",
+        "NewAssignments",
       ],
     },
     isScheduleTriggered: {
