@@ -18,7 +18,7 @@ const update = async (req, res) => {
       return Response.error({
         res,
         status: STATUS_CODE.BAD_REQUEST,
-        msg: `Operator Number is ${ERROR_MSGS.DATA_EXISTS}`,
+        msg: ERROR_MSGS.OPERATOR_MOB_NUM_EXISTS,
       });
     }
     const updatedData = await Operator.findOneAndUpdate(

@@ -12,7 +12,31 @@ const hendleRequest = async (req, res) => {
   const { logger, carrierId, params, body } = req;
   try {
     const { id } = params;
-    const { operatorId, vehicleId } = body;
+    const { operatorId, vehicleId, carrierReference } = body;
+
+    let checkCarrierReferenceExist = await Movement.aggregate([
+      {
+        $match: {
+          carrierId: new ObjectId(carrierId),
+          carrierReference: carrierReference,
+        },
+      },
+      {
+        $project: { _id: 1 },
+      },
+      {
+        $limit: 1,
+      },
+    ]);
+
+    if (checkCarrierReferenceExist.length > 0) {
+      return Response.error({
+        req,
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: ERROR_MSGS.CARRIER_REFERENCE_EXIST,
+      });
+    }
 
     let getData = await Movement.findOne({ movementId: id });
     if (

@@ -55,6 +55,7 @@ const fetchMovement = async (req, res) => {
             {
               $project: {
                 __v: 0,
+                amountDetails: 0,
               },
             },
           ],

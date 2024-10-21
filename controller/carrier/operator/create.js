@@ -32,7 +32,7 @@ const create = async (req, res) => {
       const obj = {
         res,
         status: STATUS_CODE.BAD_REQUEST,
-        msg: `Operator Number is ${ERROR_MSGS.DATA_EXISTS}`,
+        msg: ERROR_MSGS.OPERATOR_MOB_NUM_EXISTS,
       };
       return Response.error(obj);
     }

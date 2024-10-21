@@ -5,6 +5,7 @@ const Coordinates = require("../../../model/common/coordinates");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { generateNumOrCharId } = require("../../../utils/generateUniqueId");
+const { ObjectId } = require("mongoose").Types;
 const {
   getTypeOfService_TypeOfTransportation_Pipeline,
   userReference_Pipeline,
@@ -39,8 +40,31 @@ const isPointInPolygon = (point, polygon) => {
 const createOrder = async (req, res) => {
   let { logger, userId, body } = req;
   try {
-    let { paymentDetail } = body;
+    let { paymentDetail, userReference } = body;
 
+    let checkUserReferenceExist = await Movement.aggregate([
+      {
+        $match: {
+          userId: new ObjectId(userId),
+          userReference: userReference,
+        },
+      },
+      {
+        $project: { _id: 1 },
+      },
+      {
+        $limit: 1,
+      },
+    ]);
+
+    if (checkUserReferenceExist.length > 0) {
+      return Response.error({
+        req,
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: ERROR_MSGS.USER_REFERENCE_EXIST,
+      });
+    }
     if (!paymentDetail) {
       return Response.error({
         req,
