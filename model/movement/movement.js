@@ -97,12 +97,23 @@ const collectionSchema = new Schema(
       type: Array,
       default: null,
     },
+    documents: {
+      type: Array,
+      default: null,
+    },
     pickUpAddressIds: [{ type: ObjectId }],
     dropAddressIds: [{ type: ObjectId }],
     status: {
       type: String,
-      default: "Pending",
-      enum: ["Approved", "Completed", "InProgress", "Pending", "Cancelled"],
+      default: "NewAssignements",
+      enum: [
+        "Approved",
+        "Completed",
+        "InProgress",
+        "Pending",
+        "Cancelled",
+        "NewAssignements",
+      ],
     },
     isScheduleTriggered: {
       type: Boolean,

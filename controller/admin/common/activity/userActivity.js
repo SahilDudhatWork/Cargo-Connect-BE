@@ -204,7 +204,7 @@ const userActivity = async (req, res) => {
       {
         $facet: {
           newMovements: [
-            { $match: { status: "Pending" } },
+            { $match: { status: "NewAssignements" } },
             {
               $group: {
                 _id: null,
@@ -214,7 +214,7 @@ const userActivity = async (req, res) => {
           ],
           activeMovements: [
             {
-              $match: { status: { $in: ["InProgress", "Approved"] } },
+              $match: { status: { $in: ["InProgress", "Pending"] } },
             },
             {
               $group: {
@@ -225,7 +225,7 @@ const userActivity = async (req, res) => {
           ],
           pendingMovements: [
             {
-              $match: { status: "Pending" },
+              $match: { status: "NewAssignements" },
             },
             {
               $group: {

@@ -126,7 +126,7 @@ const serviceActivity = async (req, res) => {
             },
           ],
           newMovements: [
-            { $match: { status: "Pending" } },
+            { $match: { status: "NewAssignements" } },
             {
               $group: {
                 _id: null,
@@ -136,7 +136,7 @@ const serviceActivity = async (req, res) => {
           ],
           activeMovements: [
             {
-              $match: { status: { $in: ["InProgress", "Approved"] } },
+              $match: { status: { $in: ["InProgress", "Pending"] } },
             },
             {
               $group: {
@@ -148,7 +148,7 @@ const serviceActivity = async (req, res) => {
           filteredActiveMovements: [
             { $match: { createdAt: { $gte: startDate, $lte: endDate } } },
             {
-              $match: { status: { $in: ["InProgress", "Approved"] } },
+              $match: { status: { $in: ["InProgress", "Pending"] } },
             },
             {
               $group: {
@@ -159,7 +159,7 @@ const serviceActivity = async (req, res) => {
           ],
           pendingMovements: [
             {
-              $match: { status: "Pending" },
+              $match: { status: "NewAssignements" },
             },
             {
               $group: {

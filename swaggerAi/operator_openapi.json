@@ -40,6 +40,15 @@
     },
     {
       "name": "Image Delete"
+    },
+    {
+      "name": "Lat & Long"
+    },
+    {
+      "name": "Qr & Proof & Doc"
+    },
+    {
+      "name": "LocatOperator"
     }
   ],
   "paths": {
@@ -246,6 +255,17 @@
             "bearerAuth": []
           }
         ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["Active", "Deactive"]
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -253,6 +273,38 @@
                 "type": "object",
                 "example": {
                   "status": "Active"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The data was updated successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/operator/lat&Long": {
+      "put": {
+        "tags": ["Lat & Long"],
+        "summary": "Add Lat & Long",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "lat": 40.785091,
+                  "long": -73.968285
                 }
               }
             }
@@ -303,6 +355,69 @@
         "responses": {
           "200": {
             "description": "File ${filename} deleted successfully from S3 and replaced in the document",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/common/qr&proof&doc/{movementId}": {
+      "post": {
+        "tags": ["Qr & Proof & Doc"],
+        "summary": "Upload",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "qrCode": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "proofOfPhotography": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "documents": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The data was uploaded successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Qr & Proof & Doc"],
+        "summary": "FetchData",
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/common/locat/operator/{operatorAccountId}": {
+      "get": {
+        "tags": ["LocatOperator"],
+        "summary": "Fetch Operators",
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
