@@ -146,7 +146,8 @@
                 "example": {
                   "countryCode": 91,
                   "operatorNumber": 8160098920,
-                  "otp": 171829
+                  "otp": 171829,
+                  "deviceToken": "1234567890abcdefghijklmnopqrstuvwxyz"
                 }
               }
             }
