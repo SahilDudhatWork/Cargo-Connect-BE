@@ -4,8 +4,6 @@ const Response = require("../../../helper/response");
 const {
   getTypeOfService_TypeOfTransportation_Pipeline,
   fetchVehicles_Pipeline,
-  userReference_Pipeline,
-  carrierReference_Pipeline,
   addresses_Pipeline,
   operators_Pipeline,
   port_BridgeOfCrossing_Pipeline,
@@ -30,8 +28,6 @@ const getDetails = async (req, res) => {
       },
       ...getTypeOfService_TypeOfTransportation_Pipeline(),
       ...fetchVehicles_Pipeline(),
-      ...userReference_Pipeline(),
-      ...carrierReference_Pipeline(),
       ...addresses_Pipeline(),
       ...operators_Pipeline(),
       ...port_BridgeOfCrossing_Pipeline(),

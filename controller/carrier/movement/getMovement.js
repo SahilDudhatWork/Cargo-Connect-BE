@@ -8,8 +8,6 @@ const {
   operators_Pipeline,
   port_BridgeOfCrossing_Pipeline,
   specialrequirements_Pipeline,
-  userReference_Pipeline,
-  carrierReference_Pipeline,
 } = require("../../../utils/lookups");
 const { ObjectId } = require("mongoose").Types;
 const Response = require("../../../helper/response");
@@ -64,8 +62,6 @@ const fetchMovement = async (req, res) => {
       ...operators_Pipeline(),
       ...port_BridgeOfCrossing_Pipeline(),
       ...specialrequirements_Pipeline(),
-      ...userReference_Pipeline(),
-      ...carrierReference_Pipeline(),
       {
         $facet: {
           paginatedResult: [

@@ -8,8 +8,6 @@ const {
   operators_Pipeline,
   port_BridgeOfCrossing_Pipeline,
   specialrequirements_Pipeline,
-  userReference_Pipeline,
-  carrierReference_Pipeline,
 } = require("../../../utils/lookups");
 const {
   STATUS_CODE,
@@ -34,8 +32,6 @@ const getDetails = async (req, res) => {
       ...operators_Pipeline(),
       ...port_BridgeOfCrossing_Pipeline(),
       ...specialrequirements_Pipeline(),
-      ...userReference_Pipeline(),
-      ...carrierReference_Pipeline(),
       {
         $project: {
           __v: 0,
