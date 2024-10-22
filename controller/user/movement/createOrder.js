@@ -2,6 +2,7 @@ const Movement = require("../../../model/movement/movement");
 const Payment = require("../../../model/movement/payment");
 const TransitInfo = require("../../../model/admin/transitInfo");
 const Coordinates = require("../../../model/common/coordinates");
+const Setting = require("../../../model/common/settings");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { generateMovementId } = require("../../../utils/generateUniqueId");
@@ -37,6 +38,48 @@ const isPointInPolygon = (point, polygon) => {
   return inside;
 };
 
+// Helper function to calculate price for pickup/drop addresses
+const calculatePrice = (
+  addresses,
+  fetchCoordinates,
+  basePrice,
+  additionalPrice
+) => {
+  let highestMatchPrice = 0;
+  let matchedCount = 0;
+  let nonMatchedCount = 0;
+
+  for (const address of addresses) {
+    const lat = parseFloat(address.addressDetails.lat);
+    const lng = parseFloat(address.addressDetails.long);
+    const userLocation = { lat, lng };
+
+    let matched = false;
+    for (const coordinate of fetchCoordinates) {
+      if (isPointInPolygon(userLocation, coordinate.coordinates)) {
+        matched = true;
+        matchedCount++;
+        highestMatchPrice = Math.max(highestMatchPrice, coordinate.price);
+        break;
+      }
+    }
+    if (!matched) {
+      nonMatchedCount++;
+    }
+  }
+
+  // Pricing logic
+  let totalMatchingPrice = 0;
+  if (matchedCount > 0) {
+    totalMatchingPrice += highestMatchPrice + basePrice;
+  }
+  if (nonMatchedCount > 0) {
+    totalMatchingPrice += nonMatchedCount * additionalPrice;
+  }
+
+  return totalMatchingPrice;
+};
+
 const createOrder = async (req, res) => {
   let { logger, userId, body } = req;
   try {
@@ -44,17 +87,10 @@ const createOrder = async (req, res) => {
 
     let checkUserReferenceExist = await Movement.aggregate([
       {
-        $match: {
-          userId: new ObjectId(userId),
-          userReference: userReference,
-        },
+        $match: { userId: new ObjectId(userId), userReference: userReference },
       },
-      {
-        $project: { _id: 1 },
-      },
-      {
-        $limit: 1,
-      },
+      { $project: { _id: 1 } },
+      { $limit: 1 },
     ]);
 
     if (checkUserReferenceExist.length > 0) {
@@ -65,6 +101,7 @@ const createOrder = async (req, res) => {
         msg: ERROR_MSGS.USER_REFERENCE_EXIST,
       });
     }
+
     if (!paymentDetail) {
       return Response.error({
         req,
@@ -75,7 +112,6 @@ const createOrder = async (req, res) => {
     }
 
     const countMovement = await Movement.countDocuments();
-
     body.userId = userId;
     body.movementId = generateMovementId(countMovement);
     if (body.programming === "Instant") {
@@ -83,85 +119,61 @@ const createOrder = async (req, res) => {
     }
 
     const saveData = await Movement.create(body);
-
     paymentDetail.paymentId = paymentDetail.id;
     paymentDetail.movementId = saveData._id;
     paymentDetail.userId = userId;
-
     await Payment.create(paymentDetail);
 
     let getData = await Movement.aggregate([
-      {
-        $match: {
-          _id: saveData._id,
-        },
-      },
+      { $match: { _id: saveData._id } },
       ...getTypeOfService_TypeOfTransportation_Pipeline(),
       ...userReference_Pipeline(),
       ...addresses_Pipeline(),
       ...port_BridgeOfCrossing_Pipeline(),
       ...specialrequirements_Pipeline(),
-      {
-        $project: {
-          __v: 0,
-        },
-      },
+      { $project: { __v: 0 } },
     ]);
 
     getData = getData[0];
 
-    // Fetch coordinates from the database
     const fetchCoordinates = await Coordinates.find();
+    const { coordinates } = await Setting.findOne();
+    const { basePrice, additionalPrice } = coordinates;
 
-    // Initialize total matching price
-    let totalMatchingPrice = 50;
+    // Calculate prices for pickup and drop addresses
+    const pickupTotal = calculatePrice(
+      getData.pickUpAddressData,
+      fetchCoordinates,
+      basePrice,
+      additionalPrice
+    );
+    const dropTotal = calculatePrice(
+      getData.dropAddressData,
+      fetchCoordinates,
+      basePrice,
+      additionalPrice
+    );
 
-    // Check prices for each pickup address
-    for (const pickUpAddress of getData.pickUpAddressData) {
-      const pickUpLat = parseFloat(pickUpAddress.addressDetails.lat);
-      const pickUpLong = parseFloat(pickUpAddress.addressDetails.long);
-      const userSelectedLocation = { lat: pickUpLat, lng: pickUpLong };
-
-      for (const coordinate of fetchCoordinates) {
-        if (isPointInPolygon(userSelectedLocation, coordinate.coordinates)) {
-          totalMatchingPrice += coordinate.price;
-          break;
-        }
-      }
-    }
-
-    // // Check prices for each drop address
-    // for (const dropAddress of getData.dropAddressData) {
-    //   const dropLat = parseFloat(dropAddress.addressDetails.lat);
-    //   const dropLong = parseFloat(dropAddress.addressDetails.long);
-    //   const userSelectedLocation = { lat: dropLat, lng: dropLong };
-
-    //   for (const coordinate of fetchCoordinates) {
-    //     if (isPointInPolygon(userSelectedLocation, coordinate.coordinates)) {
-    //       totalMatchingPrice += coordinate.price;
-    //       break;
-    //     }
-    //   }
-    // }
+    let totalMatchingPrice = pickupTotal + dropTotal;
 
     let { securingEquipment } = await TransitInfo.findOne();
     const { chains, tarps, straps } = securingEquipment;
 
-    const totalPrice =
+    const additionalPricing =
       (getData.typeOfService?.price || 0) +
       (getData.typeOfTransportation?.price || 0) +
       (getData.modeOfTransportation?.price || 0) +
       (getData.quantityForChains * chains || 0) +
       (getData.quantityForStraps * tarps || 0) +
       (getData.quantityForTarps * straps || 0) +
-      getData?.specialRequirements.reduce(
-        (total, requirement) => total + (requirement.price || 0),
+      getData.specialRequirements.reduce(
+        (total, req) => total + (req.price || 0),
         0
       );
 
-    totalMatchingPrice += totalPrice;
+    totalMatchingPrice += additionalPricing;
 
-    // Amount details
+    console.log("totalMatchingPrice :>> ", totalMatchingPrice);
     let amountDetails = {
       price: totalMatchingPrice,
       currency: "$",
@@ -174,12 +186,12 @@ const createOrder = async (req, res) => {
       { $set: { amountDetails } }
     );
 
-    const statusCode = saveData ? STATUS_CODE.CREATED : STATUS_CODE.CREATED;
+    const statusCode = saveData ? STATUS_CODE.CREATED : STATUS_CODE.BAD_REQUEST;
     const message = saveData
       ? INFO_MSGS.SEND_USER_TO_CARRIER_REQUEST
       : ERROR_MSGS.CREATE_ERR;
 
-    return Response[statusCode === STATUS_CODE.OK ? "success" : "error"]({
+    return Response[statusCode === STATUS_CODE.CREATED ? "success" : "error"]({
       req,
       res,
       status: statusCode,
