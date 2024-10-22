@@ -1,4 +1,5 @@
 const Address = require("../../../model/user/address");
+const Setting = require("../../../model/common/settings");
 const Coordinates = require("../../../model/common/coordinates");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
@@ -15,10 +16,10 @@ const isPointInPolygon = (point, polygon) => {
   const { lat, lng } = point;
 
   for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-    const xi = polygon[i][1],
-      yi = polygon[i][0]; // Lat, Long
-    const xj = polygon[j][1],
-      yj = polygon[j][0]; // Lat, Long
+    const xi = polygon[i][1], // Longitude
+      yi = polygon[i][0]; // Latitude
+    const xj = polygon[j][1], // Longitude
+      yj = polygon[j][0]; // Latitude
 
     const intersect =
       yi > lng !== yj > lng && lat < ((xj - xi) * (lng - yi)) / (yj - yi) + xi;
@@ -39,38 +40,77 @@ const coordinatesPrice = async (req, res) => {
     });
 
     const fetchCoordinates = await Coordinates.find();
+    const { coordinates } = await Setting.findOne();
+    const { basePrice, additionalPrice } = coordinates;
 
-    let totalMatchingPrice = 50;
+    let totalPrice = 0;
 
-    // Check prices for each pickup address
-    for (const pickUpAddress of pickUpAddressData) {
-      const pickUpLat = parseFloat(pickUpAddress.addressDetails.lat);
-      const pickUpLong = parseFloat(pickUpAddress.addressDetails.long);
-      const userSelectedLocation = { lat: pickUpLat, lng: pickUpLong };
+    // Helper function to calculate prices based on matching coordinates
+    const calculatePrice = (addresses) => {
+      let highestMatchPrice = 0;
+      let matchedCount = 0;
+      let nonMatchedCount = 0;
 
-      for (const coordinate of fetchCoordinates) {
-        if (isPointInPolygon(userSelectedLocation, coordinate.coordinates)) {
-          totalMatchingPrice += coordinate.price;
-          break;
+      // To store multiple matches for determining the highest price
+      const matchedPrices = [];
+
+      for (const address of addresses) {
+        const lat = parseFloat(address.addressDetails.lat);
+        const lng = parseFloat(address.addressDetails.long);
+        const userLocation = { lat, lng };
+
+        let matched = false;
+        let highestPriceForAddress = 0;
+
+        // Loop through coordinates to find matches and track the highest price
+        for (const coordinate of fetchCoordinates) {
+          if (isPointInPolygon(userLocation, coordinate.coordinates)) {
+            matched = true;
+            matchedCount++;
+            highestPriceForAddress = Math.max(
+              highestPriceForAddress,
+              coordinate.price
+            );
+          }
+        }
+
+        // If address matches, store the highest match price
+        if (matched) {
+          matchedPrices.push(highestPriceForAddress);
+        } else {
+          // Count addresses that did not match any coordinates
+          nonMatchedCount++;
         }
       }
-    }
 
-    // for (const dropAddress of dropAddressData) {
-    //   const dropLat = parseFloat(dropAddress.addressDetails.lat);
-    //   const dropLong = parseFloat(dropAddress.addressDetails.long);
-    //   const userSelectedLocation = { lat: dropLat, lng: dropLong };
+      // Apply pricing rules
+      let totalMatchingPrice = 0;
 
-    //   for (const coordinate of fetchCoordinates) {
-    //     if (isPointInPolygon(userSelectedLocation, coordinate.coordinates)) {
-    //       totalMatchingPrice += coordinate.price;
-    //       break;
-    //     }
-    //   }
-    // }
+      // Case 1: No matching coordinates, apply additionalPrice
+      if (matchedPrices.length === 0) {
+        totalMatchingPrice += nonMatchedCount * additionalPrice;
+      }
+
+      // Case 2: One or more matches, use the highest match + basePrice, and apply additional price for non-matched ones
+      if (matchedPrices.length > 0) {
+        highestMatchPrice = Math.max(...matchedPrices);
+        totalMatchingPrice += highestMatchPrice + basePrice;
+
+        if (nonMatchedCount > 0) {
+          totalMatchingPrice += nonMatchedCount * additionalPrice;
+        }
+      }
+
+      return totalMatchingPrice;
+    };
+
+    const pickupTotal = calculatePrice(pickUpAddressData);
+    const dropTotal = calculatePrice(dropAddressData);
+
+    totalPrice = pickupTotal + dropTotal;
 
     let amountDetails = {
-      price: totalMatchingPrice,
+      price: totalPrice,
     };
 
     const statusCode = amountDetails ? STATUS_CODE.OK : STATUS_CODE.BAD_REQUEST;
