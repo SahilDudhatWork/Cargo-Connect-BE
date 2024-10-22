@@ -9,7 +9,6 @@ const { generateMovementId } = require("../../../utils/generateUniqueId");
 const { ObjectId } = require("mongoose").Types;
 const {
   getTypeOfService_TypeOfTransportation_Pipeline,
-  userReference_Pipeline,
   addresses_Pipeline,
   port_BridgeOfCrossing_Pipeline,
   specialrequirements_Pipeline,
@@ -127,7 +126,6 @@ const createOrder = async (req, res) => {
     let getData = await Movement.aggregate([
       { $match: { _id: saveData._id } },
       ...getTypeOfService_TypeOfTransportation_Pipeline(),
-      ...userReference_Pipeline(),
       ...addresses_Pipeline(),
       ...port_BridgeOfCrossing_Pipeline(),
       ...specialrequirements_Pipeline(),
