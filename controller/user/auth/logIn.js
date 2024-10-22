@@ -15,7 +15,7 @@ require("dotenv").config();
 const logIn = async (req, res) => {
   const { logger, body } = req;
   try {
-    const { email, password } = body;
+    const { email, password, deviceToken } = body;
 
     let userInfo = await User.aggregate([{ $match: { email: email } }]);
     userInfo = userInfo[0];
@@ -41,6 +41,12 @@ const logIn = async (req, res) => {
       };
       return Response.error(obj);
     }
+
+    await User.findByIdAndUpdate(
+      { _id: userInfo._id },
+      { deviceToken },
+      { new: true }
+    );
 
     // Generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000);

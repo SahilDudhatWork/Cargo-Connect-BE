@@ -14,7 +14,7 @@ const { handleException } = require("../../../helper/exception");
 const verifyAndLogin = async (req, res) => {
   const { logger, body } = req;
   try {
-    let { countryCode, operatorNumber, otp } = body;
+    let { countryCode, operatorNumber, otp, deviceToken } = body;
 
     countryCode = countryCode.toString();
     operatorNumber = operatorNumber.toString();
@@ -70,6 +70,7 @@ const verifyAndLogin = async (req, res) => {
     await Operator.findByIdAndUpdate(
       operatorInfo._id,
       {
+        deviceToken,
         lastLogin: new Date(),
         "token.accessToken": accessToken,
         "token.refreshToken": refreshToken,

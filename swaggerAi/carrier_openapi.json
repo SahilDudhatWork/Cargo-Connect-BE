@@ -104,6 +104,10 @@
                     "type": "string",
                     "example": "Password123"
                   },
+                  "deviceToken": {
+                    "type": "string",
+                    "example": "1234567890abcdefghijklmnopqrstuvwxyz"
+                  },
                   "commercialReference[0][companyName]": {
                     "type": "string",
                     "example": "Commercial Partner 1"
@@ -222,7 +226,8 @@
                 "type": "object",
                 "example": {
                   "email": "johndoe@example.com",
-                  "password": "Password123"
+                  "password": "Password123",
+                  "deviceToken": "1234567890abcdefghijklmnopqrstuvwxyz"
                 }
               }
             }
@@ -356,6 +361,10 @@
                   "email": {
                     "type": "string",
                     "example": "johndoe@example.com"
+                  },
+                  "deviceToken": {
+                    "type": "string",
+                    "example": "1234567890abcdefghijklmnopqrstuvwxyz"
                   },
                   "commercialReference[0][companyName]": {
                     "type": "string",

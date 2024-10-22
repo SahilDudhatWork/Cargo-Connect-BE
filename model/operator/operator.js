@@ -92,6 +92,10 @@ const collectionSchema = new Schema(
         type: Date,
       },
     },
+    deviceToken: {
+      type: String,
+      default: null,
+    },
     lastLogin: {
       type: Date,
       default: null,
