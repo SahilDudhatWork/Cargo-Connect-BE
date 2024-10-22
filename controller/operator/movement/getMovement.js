@@ -4,8 +4,6 @@ const { paginationResponse } = require("../../../utils/paginationFormate");
 const {
   getTypeOfService_TypeOfTransportation_Pipeline,
   fetchVehicles_Pipeline,
-  userReference_Pipeline,
-  carrierReference_Pipeline,
   addresses_Pipeline,
   operators_Pipeline,
   port_BridgeOfCrossing_Pipeline,
@@ -41,8 +39,6 @@ const fetchMovement = async (req, res) => {
       { $sort: { createdAt: -1 } },
       ...getTypeOfService_TypeOfTransportation_Pipeline(),
       ...fetchVehicles_Pipeline(),
-      ...userReference_Pipeline(),
-      ...carrierReference_Pipeline(),
       ...addresses_Pipeline(),
       ...operators_Pipeline(),
       ...port_BridgeOfCrossing_Pipeline(),
