@@ -9,11 +9,15 @@ const {
 const {
   movementComplete,
 } = require("../../controller/carrier/movement/movementComplete");
+const {
+  referenceValidate,
+} = require("../../controller/carrier/movement/referenceValidate");
 
 const router = Router();
 
 router.get("/", fetchMovement);
 router.get("/:id", getDetails);
+router.post("/reference/validate", referenceValidate);
 router.put("/:id", hendleRequest);
 router.put("/complete/:id", movementComplete);
 

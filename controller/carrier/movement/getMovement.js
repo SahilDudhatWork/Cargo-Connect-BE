@@ -28,9 +28,7 @@ const fetchMovement = async (req, res) => {
 
     if (sortBy === "Requests") {
       qry = {
-        isAssign: false,
         status: { $in: ["Pending", "NewAssignments"] },
-        carrierId: null,
         isScheduleTriggered: true,
       };
     } else if (sortBy === "InProgress") {
