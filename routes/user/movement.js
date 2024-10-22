@@ -3,6 +3,9 @@ const { createOrder } = require("../../controller/user/movement/createOrder");
 const { fetchOrder } = require("../../controller/user/movement/fetchOrder");
 const { getDetails } = require("../../controller/user/movement/getDetails");
 const {
+  referenceValidate,
+} = require("../../controller/user/movement/referenceValidate");
+const {
   userPermission,
 } = require("../../middleware/permission/userPermission");
 const {
@@ -16,6 +19,7 @@ const router = Router();
 router.get("/reference", fetchReference);
 router.use(userPermission);
 router.post("/coordinatesPrice", coordinatesPrice);
+router.post("/reference/validate", referenceValidate);
 router.post("/", createOrder);
 router.get("/", fetchOrder);
 router.get("/:id", getDetails);
