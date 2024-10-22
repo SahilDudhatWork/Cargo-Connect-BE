@@ -420,7 +420,73 @@ const specialrequirements_Pipeline = () => [
     },
   },
 ];
-const _Pipeline = () => [];
+const users_Pipeline = () => [
+  {
+    $lookup: {
+      from: "users",
+      let: { userId: "$userId" },
+      pipeline: [
+        {
+          $match: {
+            $expr: { $eq: ["$_id", "$$userId"] },
+          },
+        },
+        {
+          $project: {
+            __v: 0,
+            token: 0,
+            createdAt: 0,
+            updatedAt: 0,
+            lastLogin: 0,
+            password: 0,
+            forgotPassword: 0,
+          },
+        },
+      ],
+      as: "userData",
+    },
+  },
+  {
+    $unwind: {
+      path: "$userData",
+      preserveNullAndEmptyArrays: true,
+    },
+  },
+];
+const carrier_Pipeline = () => [
+  {
+    $lookup: {
+      from: "carriers",
+      let: { carrierId: "$carrierId" },
+      pipeline: [
+        {
+          $match: {
+            $expr: { $eq: ["$_id", "$$carrierId"] },
+          },
+        },
+        {
+          $project: {
+            __v: 0,
+            token: 0,
+            createdAt: 0,
+            updatedAt: 0,
+            lastLogin: 0,
+            password: 0,
+            forgotPassword: 0,
+          },
+        },
+      ],
+      as: "carrierData",
+    },
+  },
+  {
+    $unwind: {
+      path: "$carrierData",
+      preserveNullAndEmptyArrays: true,
+    },
+  },
+];
+// const _Pipeline = () => [];
 
 module.exports = {
   getTypeOfService_TypeOfTransportation_Pipeline,
@@ -431,4 +497,6 @@ module.exports = {
   operators_Pipeline,
   port_BridgeOfCrossing_Pipeline,
   specialrequirements_Pipeline,
+  users_Pipeline,
+  carrier_Pipeline,
 };

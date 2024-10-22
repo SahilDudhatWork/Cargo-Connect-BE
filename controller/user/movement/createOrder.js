@@ -12,6 +12,7 @@ const {
   addresses_Pipeline,
   port_BridgeOfCrossing_Pipeline,
   specialrequirements_Pipeline,
+  users_Pipeline,
 } = require("../../../utils/lookups");
 const {
   STATUS_CODE,
@@ -129,6 +130,7 @@ const createOrder = async (req, res) => {
       ...addresses_Pipeline(),
       ...port_BridgeOfCrossing_Pipeline(),
       ...specialrequirements_Pipeline(),
+      ...users_Pipeline(),
       { $project: { __v: 0 } },
     ]);
 
@@ -171,7 +173,6 @@ const createOrder = async (req, res) => {
 
     totalMatchingPrice += additionalPricing;
 
-    console.log("totalMatchingPrice :>> ", totalMatchingPrice);
     let amountDetails = {
       price: totalMatchingPrice,
       currency: "$",
