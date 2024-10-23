@@ -501,7 +501,26 @@
                     "time": "14:00"
                   },
                   "pickUpAddressIds": ["66c873fd6adf34a5133ee001"],
-                  "dropAddressIds": ["66c876a665d2600619d2a2d4"]
+                  "dropAddressIds": ["66c876a665d2600619d2a2d4"],
+                  "paymentDetail": {
+                    "id": "779978774P051734E",
+                    "status": "COMPLETED",
+                    "payment_source": {
+                      "paypal": {
+                        "email_address": "mailto:wazid@gmail.com",
+                        "account_id": "BVE66D82VWYPA",
+                        "account_status": "VERIFIED",
+                        "name": {
+                          "given_name": "Wajid",
+                          "surname": "Ali"
+                        },
+                        "business_name": "Wajid Ali's Test Store",
+                        "address": {
+                          "country_code": "US"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
