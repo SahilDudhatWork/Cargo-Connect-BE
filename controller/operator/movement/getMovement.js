@@ -10,6 +10,7 @@ const {
   specialrequirements_Pipeline,
   users_Pipeline,
   carrier_Pipeline,
+  ratting_Pipeline,
 } = require("../../../utils/lookups");
 const { ObjectId } = require("mongoose").Types;
 const Response = require("../../../helper/response");
@@ -47,6 +48,7 @@ const fetchMovement = async (req, res) => {
       ...specialrequirements_Pipeline(),
       ...users_Pipeline(),
       ...carrier_Pipeline(),
+      ...ratting_Pipeline(),
       {
         $facet: {
           paginatedResult: [

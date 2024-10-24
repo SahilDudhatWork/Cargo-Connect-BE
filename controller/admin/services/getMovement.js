@@ -11,6 +11,7 @@ const {
   specialrequirements_Pipeline,
   users_Pipeline,
   carrier_Pipeline,
+  ratting_Pipeline,
 } = require("../../../utils/lookups");
 const {
   STATUS_CODE,
@@ -51,6 +52,7 @@ const fetchMovement = async (req, res) => {
       ...specialrequirements_Pipeline(),
       ...users_Pipeline(),
       ...carrier_Pipeline(),
+      ...ratting_Pipeline(),
       {
         $facet: {
           paginatedResult: [

@@ -28,7 +28,11 @@ const uploadData = async (req, res) => {
     const documents = extractFileLocations(files, "documents");
     const qrCode = files["qrCode"] ? files["qrCode"][0].location : null;
 
-    const payload = { qrCode, proofOfPhotography, documents };
+    const payload = {};
+    if (qrCode) payload.qrCode = qrCode;
+    if (proofOfPhotography.length > 0)
+      payload.proofOfPhotography = proofOfPhotography;
+    if (documents.length > 0) payload.documents = documents;
 
     const updateData = await Movement.findOneAndUpdate(
       { movementId: params.movementId },
@@ -36,7 +40,7 @@ const uploadData = async (req, res) => {
       { new: true }
     );
 
-    if (updateData.qrCode != null && updateData.documents != null) {
+    if (updateData.qrCode && updateData.documents?.length > 0) {
       await Movement.findOneAndUpdate(
         { movementId: params.movementId },
         { status: "InProgress" },

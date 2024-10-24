@@ -11,6 +11,7 @@ const {
   specialrequirements_Pipeline,
   users_Pipeline,
   carrier_Pipeline,
+  ratting_Pipeline,
 } = require("../../../utils/lookups");
 const Response = require("../../../helper/response");
 const {
@@ -51,6 +52,7 @@ const fetchOrder = async (req, res) => {
       ...specialrequirements_Pipeline(),
       ...users_Pipeline(),
       ...carrier_Pipeline(),
+      ...ratting_Pipeline(),
       {
         $facet: {
           paginatedResult: [
