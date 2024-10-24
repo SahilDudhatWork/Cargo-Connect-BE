@@ -36,7 +36,7 @@ const uploadData = async (req, res) => {
       { new: true }
     );
 
-    if (updateData.qrCode && updateData.documents) {
+    if (updateData.qrCode != null && updateData.documents != null) {
       await Movement.findOneAndUpdate(
         { movementId: params.movementId },
         { status: "InProgress" },
