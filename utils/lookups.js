@@ -486,6 +486,35 @@ const carrier_Pipeline = () => [
     },
   },
 ];
+const ratting_Pipeline = () => [
+  {
+    $lookup: {
+      from: "ratings",
+      let: { newId: "$_id" },
+      pipeline: [
+        {
+          $match: {
+            $expr: { $eq: ["$movementId", "$$newId"] },
+          },
+        },
+        {
+          $project: {
+            createdAt: 0,
+            updatedAt: 0,
+            __v: 0,
+          },
+        },
+      ],
+      as: "ratings",
+    },
+  },
+  {
+    $unwind: {
+      path: "$ratings",
+      preserveNullAndEmptyArrays: true,
+    },
+  },
+];
 // const _Pipeline = () => [];
 
 module.exports = {
@@ -499,4 +528,5 @@ module.exports = {
   specialrequirements_Pipeline,
   users_Pipeline,
   carrier_Pipeline,
+  ratting_Pipeline,
 };

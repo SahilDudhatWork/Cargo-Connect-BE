@@ -10,6 +10,7 @@ const {
   specialrequirements_Pipeline,
   users_Pipeline,
   carrier_Pipeline,
+  ratting_Pipeline,
 } = require("../../../utils/lookups");
 const {
   STATUS_CODE,
@@ -36,6 +37,7 @@ const getDetails = async (req, res) => {
       ...specialrequirements_Pipeline(),
       ...users_Pipeline(),
       ...carrier_Pipeline(),
+      ...ratting_Pipeline(),
       {
         $project: {
           __v: 0,
