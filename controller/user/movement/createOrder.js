@@ -6,6 +6,11 @@ const Setting = require("../../../model/common/settings");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { generateMovementId } = require("../../../utils/generateUniqueId");
+const {
+  sendNotificationInApp,
+} = require("../../../utils/sendNotificationInApp");
+const Notification = require("../../../model/common/notification");
+const Carrier = require("../../../model/carrier/carrier");
 const { ObjectId } = require("mongoose").Types;
 const {
   getTypeOfService_TypeOfTransportation_Pipeline,
@@ -185,6 +190,12 @@ const createOrder = async (req, res) => {
       { $set: { amountDetails } }
     );
 
+    const carriers = await Carrier.find({
+      deviceToken: { $exists: true, $ne: null },
+    });
+
+    await notifyCarriers(carriers, saveData._id);
+
     const statusCode = saveData ? STATUS_CODE.CREATED : STATUS_CODE.BAD_REQUEST;
     const message = saveData
       ? INFO_MSGS.SEND_USER_TO_CARRIER_REQUEST
@@ -205,4 +216,31 @@ const createOrder = async (req, res) => {
 
 module.exports = {
   createOrder,
+};
+
+const notifyCarriers = async (carriers, movementId) => {
+  const body = "Cargo Connect";
+  const image =
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9bgzaQfW3iEIc-gHGtCl7qw-Kk40ZTr2AV_buqpGOZ5nxJoucHbRV6_vzUJhEMwYTo7M&usqp=CAU";
+
+  await Promise.all(
+    carriers.map((carrier) => {
+      const title = `Hi ${carrier.contactName}, a new movement request has been created! Are you able to accept it?`;
+      return sendNotificationInApp(carrier.deviceToken, title, body, image);
+    })
+  );
+
+  await Notification.bulkWrite(
+    carriers.map((carrier) => ({
+      insertOne: {
+        document: {
+          movementId: movementId,
+          clientRelationId: carrier._id,
+          collection: "Carriers",
+          title: `Hi ${carrier.contactName}, a new movement request has been created! Are you able to accept it?`,
+          body,
+        },
+      },
+    }))
+  );
 };

@@ -1,7 +1,14 @@
 const Movement = require("../../../model/movement/movement");
+const User = require("../../../model/user/user");
+const Carrier = require("../../../model/carrier/carrier");
+const Operator = require("../../../model/operator/operator");
+const Notification = require("../../../model/common/notification");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { ObjectId } = require("mongoose").Types;
+const {
+  sendNotificationInApp,
+} = require("../../../utils/sendNotificationInApp");
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -18,15 +25,11 @@ const hendleRequest = async (req, res) => {
       {
         $match: {
           carrierId: new ObjectId(carrierId),
-          carrierReference: carrierReference,
+          carrierReference,
         },
       },
-      {
-        $project: { _id: 1 },
-      },
-      {
-        $limit: 1,
-      },
+      { $project: { _id: 1 } },
+      { $limit: 1 },
     ]);
 
     if (checkCarrierReferenceExist.length > 0) {
@@ -52,17 +55,38 @@ const hendleRequest = async (req, res) => {
       });
     }
 
-    // Convert IDs to ObjectId
-    body.carrierId = new ObjectId(carrierId);
-    body.operatorId = new ObjectId(operatorId);
-    body.vehicleId = new ObjectId(vehicleId);
-    body.status = "Pending";
-    body.isAssign = true;
+    const updatedData = {
+      ...body,
+      carrierId: new ObjectId(carrierId),
+      operatorId: new ObjectId(operatorId),
+      vehicleId: new ObjectId(vehicleId),
+      status: "Pending",
+      isAssign: true,
+    };
+    let updateData = await Movement.findOneAndUpdate(
+      { movementId: id },
+      updatedData,
+      {
+        new: true,
+      }
+    );
 
-    // Update the Movement document
-    let updateData = await Movement.findOneAndUpdate({ movementId: id }, body, {
-      new: true,
-    });
+    const [userData, carrierData, operatorData, notifications] =
+      await getNotificationData(
+        updateData.userId,
+        carrierId,
+        operatorId,
+        updateData._id
+      );
+
+    await updateNotifications(notifications, carrierId, id);
+    await sendUserNotification(userData, carrierData, updateData._id, id);
+    await sendOperatorNotification(
+      operatorData,
+      carrierData,
+      updateData._id,
+      id
+    );
 
     const statusCode = updateData
       ? STATUS_CODE.OK
@@ -86,4 +110,87 @@ const hendleRequest = async (req, res) => {
 
 module.exports = {
   hendleRequest,
+};
+
+const getNotificationData = async (
+  userId,
+  carrierId,
+  operatorId,
+  movementId
+) => {
+  return await Promise.all([
+    User.findById(userId),
+    Carrier.findById(carrierId),
+    Operator.findById(operatorId),
+    Notification.aggregate([
+      { $match: { movementId, collection: "Carriers" } },
+    ]),
+  ]);
+};
+
+const updateNotifications = async (notifications, carrierId) => {
+  const bulkOperations = notifications.map((notification) =>
+    notification.clientRelationId.equals(carrierId)
+      ? {
+          updateOne: {
+            filter: { _id: notification._id },
+            update: { isRead: true },
+          },
+        }
+      : { deleteOne: { filter: { _id: notification._id } } }
+  );
+
+  if (bulkOperations.length) {
+    await Notification.bulkWrite(bulkOperations);
+  }
+};
+
+const sendUserNotification = async (
+  userData,
+  carrierData,
+  movementId,
+  movementAccId
+) => {
+  if (userData.deviceToken) {
+    const body = "Cargo Connect";
+    const title = `Hi ${userData.contactName}, your movement request ${movementAccId} has been approved by ${carrierData.contactName}.`;
+    const image =
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9bgzaQfW3iEIc-gHGtCl7qw-Kk40ZTr2AV_buqpGOZ5nxJoucHbRV6_vzUJhEMwYTo7M&usqp=CAU";
+
+    await Promise.all([
+      sendNotificationInApp(userData.deviceToken, title, body, image),
+      Notification.create({
+        movementId,
+        clientRelationId: userData._id,
+        collection: "Users",
+        title,
+        body,
+      }),
+    ]);
+  }
+};
+
+const sendOperatorNotification = async (
+  operatorData,
+  carrierData,
+  movementId,
+  movementAccId
+) => {
+  if (operatorData.deviceToken) {
+    const body = "Cargo Connect";
+    const title = `Hi ${operatorData.operatorName}, movement ${movementAccId} has been assigned by ${carrierData.contactName}.`;
+    const image =
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9bgzaQfW3iEIc-gHGtCl7qw-Kk40ZTr2AV_buqpGOZ5nxJoucHbRV6_vzUJhEMwYTo7M&usqp=CAU";
+
+    await Promise.all([
+      sendNotificationInApp(operatorData.deviceToken, title, body, image),
+      Notification.create({
+        movementId,
+        clientRelationId: operatorData._id,
+        collection: "Operator",
+        title,
+        body,
+      }),
+    ]);
+  }
 };
