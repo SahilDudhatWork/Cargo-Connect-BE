@@ -1089,7 +1089,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                 "properties": {
+                "properties": {
                   "email": {
                     "type": "string",
                     "example": "carrier@gmail.com"
@@ -1100,7 +1100,6 @@
                     "example": "forgot"
                   }
                 }
-              }
               }
             }
           }
