@@ -12,9 +12,8 @@ const { hendleModel } = require("../../../utils/hendleModel");
 const sentOtp = async (req, res) => {
   const { logger, params, body } = req;
   try {
-    const { email } = body;
+    const { email, otp_type } = body;
     const { type } = params;
-
     const Model = await hendleModel(type);
 
     const checkEmailExists = await Model.exists({ email });
@@ -39,7 +38,7 @@ const sentOtp = async (req, res) => {
     const otpData = { email, otp };
 
     // Send OTP to email
-    await VerificationEmail(email, otp);
+    await VerificationEmail(email, otp, otp_type);
 
     await Otp.findOneAndDelete({ email });
     const saveData = await Otp.create(otpData);
@@ -53,12 +52,9 @@ const sentOtp = async (req, res) => {
     }
 
     // Schedule OTP expiration
-    setTimeout(
-      async () => {
-        await Otp.findOneAndDelete({ otp });
-      },
-      5 * 60 * 1000
-    ); // 5 minutes
+    setTimeout(async () => {
+      await Otp.findOneAndDelete({ otp });
+    }, 5 * 60 * 1000); // 5 minutes
 
     return Response.success({
       res,

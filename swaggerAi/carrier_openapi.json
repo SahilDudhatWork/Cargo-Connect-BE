@@ -1089,9 +1089,18 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "example": {
-                  "email": "carrier@gmail.com"
+                 "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "carrier@gmail.com"
+                  },
+                  "otp_type": {
+                    "type": "string",
+                    "description": "Type of OTP, either 'login' or 'forgot'",
+                    "example": "forgot"
+                  }
                 }
+              }
               }
             }
           }
