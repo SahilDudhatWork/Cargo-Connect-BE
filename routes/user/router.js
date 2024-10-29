@@ -6,6 +6,7 @@ const transitInfoRoute = require("./transitInfo");
 const orderRoute = require("./movement");
 const addressRoute = require("./address");
 const payPalRoute = require("./payPal");
+const ratingRoute = require("./rating");
 const specialRequirementsRoute = require("./specialRequirements");
 const { userAuth } = require("../../middleware/authToken/userAuth");
 const {
@@ -25,5 +26,6 @@ router.use(userPermission);
 router.use("/specialRequirements", specialRequirementsRoute);
 router.use("/address", addressRoute);
 router.use("/payPal", payPalRoute);
+router.use("/rating", ratingRoute);
 
 module.exports = router;

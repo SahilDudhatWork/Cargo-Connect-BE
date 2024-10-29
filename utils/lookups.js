@@ -494,7 +494,12 @@ const ratting_Pipeline = () => [
       pipeline: [
         {
           $match: {
-            $expr: { $eq: ["$movementId", "$$newId"] },
+            $expr: {
+              $and: [
+                { $eq: ["$movementId", "$$newId"] },
+                { $eq: ["$type", "User"] },
+              ],
+            },
           },
         },
         {
@@ -505,16 +510,58 @@ const ratting_Pipeline = () => [
           },
         },
       ],
-      as: "ratings",
+      as: "userToCarrier",
     },
   },
   {
     $unwind: {
-      path: "$ratings",
+      path: "$userToCarrier",
       preserveNullAndEmptyArrays: true,
     },
   },
+  {
+    $lookup: {
+      from: "ratings",
+      let: { newId: "$_id" },
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $and: [
+                { $eq: ["$movementId", "$$newId"] },
+                { $eq: ["$type", "Carrier"] },
+              ],
+            },
+          },
+        },
+        {
+          $project: {
+            createdAt: 0,
+            updatedAt: 0,
+            __v: 0,
+          },
+        },
+      ],
+      as: "carrierToUser",
+    },
+  },
+  {
+    $unwind: {
+      path: "$carrierToUser",
+      preserveNullAndEmptyArrays: true,
+    },
+  },
+  {
+    $addFields: {
+      "ratings.carrierToUser": "$carrierToUser",
+      "ratings.userToCarrier": "$userToCarrier",
+    },
+  },
+  {
+    $unset: ["userToCarrier", "carrierToUser"],
+  },
 ];
+
 // const _Pipeline = () => [];
 
 module.exports = {

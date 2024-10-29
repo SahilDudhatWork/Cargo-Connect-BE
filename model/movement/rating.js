@@ -15,6 +15,11 @@ const collectionSchema = new Schema(
       type: String,
       default: null,
     },
+    type: {
+      type: String,
+      default: null,
+      enum: ["User", "Carrier"],
+    },
   },
   {
     timestamps: true,
