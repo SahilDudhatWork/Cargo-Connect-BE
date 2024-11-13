@@ -717,7 +717,8 @@
                     "contactEmail": "johndoe@example.com",
                     "countryCode": "1",
                     "contactNumber": "9876543210"
-                  }
+                  },
+                  "addressType": "PickUp"
                 }
               }
             }
@@ -795,7 +796,8 @@
                     "contactEmail": "johndoe@example.com",
                     "countryCode": "1",
                     "contactNumber": "9876543210"
-                  }
+                  },
+                  "addressType": "PickUp"
                 }
               }
             }

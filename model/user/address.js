@@ -51,6 +51,11 @@ const collectionSchema = new Schema(
         default: null,
       },
     },
+    addressType: {
+      type: String,
+      required: true,
+      enum:["PickUp","Drop"]
+    },
   },
   {
     timestamps: true,
