@@ -12,6 +12,7 @@ const transitInfoRoute = require("./transitInfo");
 const coordinatesRoute = require("./coordinates");
 const settingsRoute = require("./settings");
 const specialRequirementsRoute = require("./specialRequirements");
+const guidelinePagesRoute = require("./guidelinePages");
 const { adminAuth } = require("../../middleware/authToken/adminAuth");
 
 router.get("/", (req, res) => {
@@ -31,5 +32,6 @@ router.use("/transitInfo", transitInfoRoute);
 router.use("/coordinates", coordinatesRoute);
 router.use("/specialRequirements", specialRequirementsRoute);
 router.use("/settings", settingsRoute);
+router.use("/guidelinePages", guidelinePagesRoute);
 
 module.exports = router;

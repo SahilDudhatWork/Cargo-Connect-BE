@@ -49,6 +49,9 @@
     },
     {
       "name": "LocatOperator"
+    },
+    {
+      "name": "GuidelinePages"
     }
   ],
   "paths": {
@@ -416,6 +419,20 @@
       "get": {
         "tags": ["LocatOperator"],
         "summary": "Fetch Operators",
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/common/guidelinePages/operator": {
+      "get": {
+        "tags": ["GuidelinePages"],
+        "summary": "Fetch guideline Pages",
         "responses": {
           "200": {
             "description": "The request was processed successfully.",

@@ -66,6 +66,9 @@
       "name": "Setting"
     },
     {
+      "name": "GuidelinePages"
+    },
+    {
       "name": "---- Common ----"
     },
     {
@@ -2421,6 +2424,128 @@
         "responses": {
           "200": {
             "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+
+    "/v1/admin/guidelinePages/": {
+      "post": {
+        "tags": ["GuidelinePages"],
+        "summary": "Create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "type": "About Us",
+                  "title": "Learn More About Our Company",
+                  "subTitle": "Who We Are and What We Do",
+                  "description": "Our company is dedicated to providing exceptional service and quality products. We prioritize customer satisfaction and innovation.",
+                  "role": "User"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The data was created successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["GuidelinePages"],
+        "summary": "Fetch Data",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/guidelinePages/{guidelineId}": {
+      "get": {
+        "tags": ["GuidelinePages"],
+        "summary": "Get Details",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["GuidelinePages"],
+        "summary": "Update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "type": "About Us",
+                  "title": "Learn More About Our Company",
+                  "subTitle": "Who We Are and What We Do",
+                  "description": "Our company is dedicated to providing exceptional service and quality products. We prioritize customer satisfaction and innovation.",
+                  "role": "User"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The data was updated successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["GuidelinePages"],
+        "summary": "Delete",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The data was deleted successfully.",
             "content": {
               "application/json": {}
             }
