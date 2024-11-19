@@ -1,6 +1,6 @@
 const Admin = require("../../../model/admin/admin");
 const { handleException } = require("../../../helper/exception");
-const { encrypt, decrypt } = require("../../../helper/encrypt-decrypt");
+const { encrypt } = require("../../../helper/encrypt-decrypt");
 const Response = require("../../../helper/response");
 const {
   STATUS_CODE,
@@ -12,7 +12,7 @@ const { generateAccountId } = require("../../../utils/generateUniqueId");
 /**
  * Register a new admin with email and password
  */
-const signUp = async (req, res) => {
+const createAdmin = async (req, res) => {
   const { logger, body } = req;
   try {
     const { email, password } = body;
@@ -37,7 +37,7 @@ const signUp = async (req, res) => {
     const obj = {
       res,
       status: STATUS_CODE.CREATED,
-      msg: INFO_MSGS.SUCCESSFUL_REGISTER,
+      msg: INFO_MSGS.CREATED_SUCCESSFULLY,
     };
     return Response.success(obj);
   } catch (error) {
@@ -47,5 +47,5 @@ const signUp = async (req, res) => {
 };
 
 module.exports = {
-  signUp,
+  createAdmin,
 };

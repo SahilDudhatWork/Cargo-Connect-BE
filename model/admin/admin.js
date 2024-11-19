@@ -44,6 +44,9 @@ const collectionSchema = new Schema(
       type: Date,
       default: null,
     },
+    roleByAdmin: {
+      type: ObjectId,
+    },
   },
   {
     timestamps: true,
