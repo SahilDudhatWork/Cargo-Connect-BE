@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FCM Token Fetch</title>
+    <script type="module">
+      // Import Firebase SDK
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+      import {
+        getMessaging,
+        getToken,
+      } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-messaging.js";
+
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyAISMT6efSSAAsEOW4BSoHe4luZEG0MlaU",
+        authDomain: "notification-92dce.firebaseapp.com",
+        projectId: "notification-92dce",
+        storageBucket: "notification-92dce.appspot.com",
+        messagingSenderId: "431799702508",
+        appId: "1:431799702508:web:92b3226cba7feb102de6c9",
+        measurementId: "G-QTSDLX2C42",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const messaging = getMessaging(app);
+
+      // Register service worker
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("/firebase-messaging-sw.js")
+          .then((registration) => {
+            console.log(
+              "Service Worker registered with scope:",
+              registration.scope
+            );
+          })
+          .catch((error) => {
+            console.error("Service Worker registration failed:", error);
+          });
+      }
+
+      // Request notification permission and get token
+      async function requestPermissionAndGetToken() {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          try {
+            const token = await getToken(messaging);
+            document.getElementById("token").innerText = `FCM Token: ${token}`;
+            console.log("FCM Token:", token);
+          } catch (error) {
+            console.error("Error getting FCM Token:", error);
+          }
+        } else {
+          console.log("Notification permission not granted.");
+        }
+      }
+
+      // Event listener for button click
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .getElementById("getTokenButton")
+          .addEventListener("click", () => {
+            requestPermissionAndGetToken();
+          });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Get FCM Token</h1>
+    <button id="getTokenButton">Get FCM Token</button>
+    <p id="token"></p>
+  </body>
+</html>
+  
