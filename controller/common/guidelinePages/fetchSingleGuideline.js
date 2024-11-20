@@ -10,10 +10,10 @@ const {
 const fetchSingleGuideline = async (req, res) => {
   let { logger, params } = req;
   try {
-    const { type, title } = params;
+    const { type, slug } = params;
     const role = type[0].toUpperCase() + type.slice(1).toLowerCase();
 
-    let getData = await GuidelinePages.findOne({ role ,title});
+    let getData = await GuidelinePages.findOne({ role ,slug});
 
     const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.OK;
     const message = getData ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;

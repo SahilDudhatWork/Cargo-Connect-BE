@@ -8,6 +8,6 @@ const {
 const router = Router();
 
 router.get("/:type", fetchGuidelinePages);
-router.get("/:type/:title", fetchSingleGuideline);
+router.get("/:type/:slug", fetchSingleGuideline);
 
 module.exports = router;

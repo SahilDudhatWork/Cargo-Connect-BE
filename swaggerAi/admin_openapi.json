@@ -2442,7 +2442,6 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "type": "About Us",
                   "title": "Learn More About Our Company",
                   "subTitle": "Who We Are and What We Do",
                   "description": "Our company is dedicated to providing exceptional service and quality products. We prioritize customer satisfaction and innovation.",
@@ -2511,7 +2510,6 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "type": "About Us",
                   "title": "Learn More About Our Company",
                   "subTitle": "Who We Are and What We Do",
                   "description": "Our company is dedicated to providing exceptional service and quality products. We prioritize customer satisfaction and innovation.",

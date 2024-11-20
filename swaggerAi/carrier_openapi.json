@@ -1320,7 +1320,7 @@
         }
       }
     },
-    "/v1/common/guidelinePages/carrier/{title}": {
+    "/v1/common/guidelinePages/carrier/{slug}": {
       "get": {
         "tags": ["GuidelinePages"],
         "summary": "Fetch Single guideline details",

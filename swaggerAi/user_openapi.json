@@ -1175,7 +1175,7 @@
         }
       }
     },
-    "/v1/common/guidelinePages/user/{title}": {
+    "/v1/common/guidelinePages/user/{slug}": {
       "get": {
         "tags": ["GuidelinePages"],
         "summary": "Fetch Single guideline details",

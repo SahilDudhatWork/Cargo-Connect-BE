@@ -443,7 +443,7 @@
         }
       }
     },
-    "/v1/common/guidelinePages/operator/{title}": {
+    "/v1/common/guidelinePages/operator/{slug}": {
       "get": {
         "tags": ["GuidelinePages"],
         "summary": "Fetch Single guideline details",

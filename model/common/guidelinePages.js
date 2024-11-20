@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const collectionSchema = new Schema(
   {
-    type: {
+    slug: {
       type: String,
     },
     title: {
