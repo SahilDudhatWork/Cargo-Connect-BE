@@ -1319,6 +1319,20 @@
           }
         }
       }
+    },
+    "/v1/common/guidelinePages/carrier/{title}": {
+      "get": {
+        "tags": ["GuidelinePages"],
+        "summary": "Fetch Single guideline details",
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
     }
   }
 }
