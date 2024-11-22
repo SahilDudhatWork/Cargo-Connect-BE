@@ -10,6 +10,9 @@ const {
   sendNotificationInApp,
 } = require("../../../utils/sendNotificationInApp");
 const {
+  sendNotificationInWeb,
+} = require("../../../utils/sendNotificationInWeb");
+const {
   STATUS_CODE,
   ERROR_MSGS,
   INFO_MSGS,
@@ -154,11 +157,24 @@ const sendUserNotification = async (
   if (userData.deviceToken) {
     const body = "Cargo Connect";
     const title = `Hi ${userData.contactName}, your movement request ${movementAccId} has been approved by ${carrierData.contactName}.`;
-    const image =
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9bgzaQfW3iEIc-gHGtCl7qw-Kk40ZTr2AV_buqpGOZ5nxJoucHbRV6_vzUJhEMwYTo7M&usqp=CAU";
 
     await Promise.all([
-      sendNotificationInApp(userData.deviceToken, title, body, image),
+      sendNotificationInApp(userData.deviceToken, title, body),
+      Notification.create({
+        movementId,
+        clientRelationId: userData._id,
+        collection: "Users",
+        title,
+        body,
+      }),
+    ]);
+  }
+  if (userData.webToken) {
+    const body = "Cargo Connect";
+    const title = `Hi ${userData.contactName}, your movement request ${movementAccId} has been approved by ${carrierData.contactName}.`;
+
+    await Promise.all([
+      sendNotificationInWeb(userData.webToken, title, body),
       Notification.create({
         movementId,
         clientRelationId: userData._id,
@@ -179,11 +195,24 @@ const sendOperatorNotification = async (
   if (operatorData.deviceToken) {
     const body = "Cargo Connect";
     const title = `Hi ${operatorData.operatorName}, movement ${movementAccId} has been assigned by ${carrierData.contactName}.`;
-    const image =
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9bgzaQfW3iEIc-gHGtCl7qw-Kk40ZTr2AV_buqpGOZ5nxJoucHbRV6_vzUJhEMwYTo7M&usqp=CAU";
 
     await Promise.all([
-      sendNotificationInApp(operatorData.deviceToken, title, body, image),
+      sendNotificationInApp(operatorData.deviceToken, title, body),
+      Notification.create({
+        movementId,
+        clientRelationId: operatorData._id,
+        collection: "Operator",
+        title,
+        body,
+      }),
+    ]);
+  }
+  if (operatorData.webToken) {
+    const body = "Cargo Connect";
+    const title = `Hi ${operatorData.operatorName}, movement ${movementAccId} has been assigned by ${carrierData.contactName}.`;
+
+    await Promise.all([
+      sendNotificationInWeb(operatorData.webToken, title, body),
       Notification.create({
         movementId,
         clientRelationId: operatorData._id,

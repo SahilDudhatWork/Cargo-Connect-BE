@@ -150,7 +150,8 @@
                   "countryCode": 91,
                   "operatorNumber": 8160098920,
                   "otp": 171829,
-                  "deviceToken": "1234567890abcdefghijklmnopqrstuvwxyz"
+                  "deviceToken": "1234567890abcdefghijklmnopqrstuvwxyz",
+                  "webToken": "1234567890abcdefghijklmnopqrstuvwxyz"
                 }
               }
             }

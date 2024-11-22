@@ -111,6 +111,10 @@
                     "type": "string",
                     "example": "1234567890abcdefghijklmnopqrstuvwxyz"
                   },
+                  "webToken": {
+                    "type": "string",
+                    "example": "1234567890abcdefghijklmnopqrstuvwxyz"
+                  },
                   "commercialReference[0][companyName]": {
                     "type": "string",
                     "example": "Commercial Partner 1"
@@ -230,7 +234,8 @@
                 "example": {
                   "email": "johndoe@example.com",
                   "password": "Password123",
-                  "deviceToken": "1234567890abcdefghijklmnopqrstuvwxyz"
+                  "deviceToken": "1234567890abcdefghijklmnopqrstuvwxyz",
+                  "webToken": "1234567890abcdefghijklmnopqrstuvwxyz"
                 }
               }
             }
@@ -366,6 +371,10 @@
                     "example": "johndoe@example.com"
                   },
                   "deviceToken": {
+                    "type": "string",
+                    "example": "1234567890abcdefghijklmnopqrstuvwxyz"
+                  },
+                  "webToken": {
                     "type": "string",
                     "example": "1234567890abcdefghijklmnopqrstuvwxyz"
                   },

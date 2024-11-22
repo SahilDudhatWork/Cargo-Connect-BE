@@ -15,7 +15,7 @@ require("dotenv").config();
 const logIn = async (req, res) => {
   const { logger, body } = req;
   try {
-    const { email, password, deviceToken } = body;
+    const { email, password, deviceToken, webToken } = body;
 
     let userInfo = await User.aggregate([{ $match: { email: email } }]);
     userInfo = userInfo[0];
@@ -44,7 +44,7 @@ const logIn = async (req, res) => {
 
     await User.findByIdAndUpdate(
       { _id: userInfo._id },
-      { deviceToken },
+      { deviceToken, webToken },
       { new: true }
     );
 
