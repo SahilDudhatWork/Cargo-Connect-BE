@@ -26,7 +26,6 @@ const update = async (req, res) => {
       res,
       status: statusCode,
       msg: message,
-      data: result,
     });
   } catch (error) {
     console.error("error:", error);
