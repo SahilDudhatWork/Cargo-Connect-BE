@@ -193,12 +193,15 @@ const createOrder = async (req, res) => {
       { $set: { amountDetails } }
     );
 
-    const carriers = await Carrier.find({
+    const carriersDeviceToken = await Carrier.find({
       deviceToken: { $exists: true, $ne: null },
+    });
+    const carriersWebToken = await Carrier.find({
       webToken: { $exists: true, $ne: null },
     });
 
-    await notifyCarriers(carriers, saveData._id);
+    await appNotifyCarriers(carriersDeviceToken, saveData._id);
+    await webNotifyCarriers(carriersWebToken, saveData._id);
 
     const statusCode = saveData ? STATUS_CODE.CREATED : STATUS_CODE.BAD_REQUEST;
     const message = saveData
@@ -222,20 +225,45 @@ module.exports = {
   createOrder,
 };
 
-const notifyCarriers = async (carriers, movementId) => {
+const appNotifyCarriers = async (carriers, movementId) => {
   const body = "Cargo Connect";
 
   await Promise.all(
     carriers.map(async (carrier) => {
       try {
         const title = `Hi ${carrier.contactName}, a new movement request has been created! Are you able to accept it?`;
+        await sendNotificationInApp(carrier.deviceToken, title, body);
+      } catch (error) {
+        console.error(
+          `Failed to notify carrier ${carrier.contactName}:`,
+          error.message
+        );
+      }
+    })
+  );
 
-        if (carrier.deviceToken) {
-          await sendNotificationInApp(carrier.deviceToken, title, body);
-        }
-        if (carrier.webToken) {
-          await sendNotificationInWeb(carrier.webToken, title, body);
-        }
+  await Notification.bulkWrite(
+    carriers.map((carrier) => ({
+      insertOne: {
+        document: {
+          movementId: movementId,
+          clientRelationId: carrier._id,
+          collection: "Carriers",
+          title: `Hi ${carrier.contactName}, a new movement request has been created! Are you able to accept it?`,
+          body,
+        },
+      },
+    }))
+  );
+};
+const webNotifyCarriers = async (carriers, movementId) => {
+  const body = "Cargo Connect";
+
+  await Promise.all(
+    carriers.map(async (carrier) => {
+      try {
+        const title = `Hi ${carrier.contactName}, a new movement request has been created! Are you able to accept it?`;
+        await sendNotificationInWeb(carrier.webToken, title, body);
       } catch (error) {
         console.error(
           `Failed to notify carrier ${carrier.contactName}:`,
