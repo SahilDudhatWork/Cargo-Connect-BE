@@ -45,6 +45,9 @@
       "name": "Rating"
     },
     {
+      "name": "Notification"
+    },
+    {
       "name": "---- Common ----"
     },
     {
@@ -108,6 +111,10 @@
                     "example": "Password123"
                   },
                   "deviceToken": {
+                    "type": "string",
+                    "example": "1234567890abcdefghijklmnopqrstuvwxyz"
+                  },
+                  "webToken": {
                     "type": "string",
                     "example": "1234567890abcdefghijklmnopqrstuvwxyz"
                   },
@@ -230,7 +237,8 @@
                 "example": {
                   "email": "johndoe@example.com",
                   "password": "Password123",
-                  "deviceToken": "1234567890abcdefghijklmnopqrstuvwxyz"
+                  "deviceToken": "1234567890abcdefghijklmnopqrstuvwxyz",
+                  "webToken": "1234567890abcdefghijklmnopqrstuvwxyz"
                 }
               }
             }
@@ -366,6 +374,10 @@
                     "example": "johndoe@example.com"
                   },
                   "deviceToken": {
+                    "type": "string",
+                    "example": "1234567890abcdefghijklmnopqrstuvwxyz"
+                  },
+                  "webToken": {
                     "type": "string",
                     "example": "1234567890abcdefghijklmnopqrstuvwxyz"
                   },
@@ -1082,6 +1094,38 @@
         }
       }
     },
+    "/v1/carrier/notification/token": {
+      "put": {
+        "tags": ["Notification"],
+        "summary": "Notification Token Update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "deviceToken": "string",
+                  "webToken": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The data was updated successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
 
     "/v1/common/otp/sent/carrier": {
       "post": {
@@ -1310,6 +1354,20 @@
       "get": {
         "tags": ["GuidelinePages"],
         "summary": "Fetch guideline Pages",
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/common/guidelinePages/carrier/{slug}": {
+      "get": {
+        "tags": ["GuidelinePages"],
+        "summary": "Fetch Single guideline details",
         "responses": {
           "200": {
             "description": "The request was processed successfully.",

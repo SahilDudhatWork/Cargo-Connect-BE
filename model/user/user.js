@@ -112,6 +112,10 @@ const collectionSchema = new Schema(
       type: String,
       default: null,
     },
+    webToken: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,

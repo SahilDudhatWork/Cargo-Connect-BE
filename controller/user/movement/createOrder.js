@@ -9,6 +9,9 @@ const { generateMovementId } = require("../../../utils/generateUniqueId");
 const {
   sendNotificationInApp,
 } = require("../../../utils/sendNotificationInApp");
+const {
+  sendNotificationInWeb,
+} = require("../../../utils/sendNotificationInWeb");
 const Notification = require("../../../model/common/notification");
 const Carrier = require("../../../model/carrier/carrier");
 const { ObjectId } = require("mongoose").Types;
@@ -190,11 +193,15 @@ const createOrder = async (req, res) => {
       { $set: { amountDetails } }
     );
 
-    const carriers = await Carrier.find({
+    const carriersDeviceToken = await Carrier.find({
       deviceToken: { $exists: true, $ne: null },
     });
+    const carriersWebToken = await Carrier.find({
+      webToken: { $exists: true, $ne: null },
+    });
 
-    await notifyCarriers(carriers, saveData._id);
+    await appNotifyCarriers(carriersDeviceToken, saveData._id);
+    await webNotifyCarriers(carriersWebToken, saveData._id);
 
     const statusCode = saveData ? STATUS_CODE.CREATED : STATUS_CODE.BAD_REQUEST;
     const message = saveData
@@ -218,15 +225,51 @@ module.exports = {
   createOrder,
 };
 
-const notifyCarriers = async (carriers, movementId) => {
+const appNotifyCarriers = async (carriers, movementId) => {
   const body = "Cargo Connect";
-  const image =
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9bgzaQfW3iEIc-gHGtCl7qw-Kk40ZTr2AV_buqpGOZ5nxJoucHbRV6_vzUJhEMwYTo7M&usqp=CAU";
 
   await Promise.all(
-    carriers.map((carrier) => {
-      const title = `Hi ${carrier.contactName}, a new movement request has been created! Are you able to accept it?`;
-      return sendNotificationInApp(carrier.deviceToken, title, body, image);
+    carriers.map(async (carrier) => {
+      try {
+        const title = `Hi ${carrier.contactName}, a new movement request has been created! Are you able to accept it?`;
+        await sendNotificationInApp(carrier.deviceToken, title, body);
+      } catch (error) {
+        console.error(
+          `Failed to notify carrier ${carrier.contactName}:`,
+          error.message
+        );
+      }
+    })
+  );
+
+  await Notification.bulkWrite(
+    carriers.map((carrier) => ({
+      insertOne: {
+        document: {
+          movementId: movementId,
+          clientRelationId: carrier._id,
+          collection: "Carriers",
+          title: `Hi ${carrier.contactName}, a new movement request has been created! Are you able to accept it?`,
+          body,
+        },
+      },
+    }))
+  );
+};
+const webNotifyCarriers = async (carriers, movementId) => {
+  const body = "Cargo Connect";
+
+  await Promise.all(
+    carriers.map(async (carrier) => {
+      try {
+        const title = `Hi ${carrier.contactName}, a new movement request has been created! Are you able to accept it?`;
+        await sendNotificationInWeb(carrier.webToken, title, body);
+      } catch (error) {
+        console.error(
+          `Failed to notify carrier ${carrier.contactName}:`,
+          error.message
+        );
+      }
     })
   );
 

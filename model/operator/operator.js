@@ -96,6 +96,10 @@ const collectionSchema = new Schema(
       type: String,
       default: null,
     },
+    webToken: {
+      type: String,
+      default: null,
+    },
     lastLogin: {
       type: Date,
       default: null,

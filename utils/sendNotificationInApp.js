@@ -5,7 +5,7 @@ const axios = require("axios");
 // Define the required scopes
 const SCOPES = ["https://www.googleapis.com/auth/firebase.messaging"];
 
-const sendNotificationInApp = async (deviceToken, title, body, image) => {
+const sendNotificationInApp = async (deviceToken, title, body) => {
   const accessToken = await getAccessToken();
   const FCM_URL =
     "https://fcm.googleapis.com/v1/projects/notification-92dce/messages:send";
@@ -16,7 +16,6 @@ const sendNotificationInApp = async (deviceToken, title, body, image) => {
       notification: {
         title: title,
         body: body,
-        // image: image,
       },
       android: {
         notification: {

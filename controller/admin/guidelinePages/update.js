@@ -7,10 +7,30 @@ const {
   INFO_MSGS,
 } = require("../../../helper/constant");
 
+const convertToSlug = (title) => {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+};
+
 const update = async (req, res) => {
   const { logger, params, body } = req;
   try {
     const { id } = params;
+    body.slug = convertToSlug(body.title);
+
+    const existingRecord = await GuidelinePages.findOne({ slug: body.slug });
+    if (existingRecord) {
+      return Response.error({
+        req,
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: `Title ${ERROR_MSGS.DATA_EXISTS}`,
+      });
+    }
 
     const updatedData = await GuidelinePages.findByIdAndUpdate(id, body, {
       new: true,
