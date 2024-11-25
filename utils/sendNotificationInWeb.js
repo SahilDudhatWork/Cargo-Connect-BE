@@ -2,9 +2,6 @@ const admin = require("../helper/firebaseAdmin");
 
 const sendNotificationInWeb = async (webToken, title, body, image) => {
   try {
-    webToken =
-      "eGeeyFbvw_IGX8Zlr5Olai:APA91bFo-oRBZmN3xYtHJ-yZBpGLkN5TA4LB0fwzQiC1MB8jdCDZkiRSA-Dq7KSnnU_CTwNwAIUkfN46mHvinJ4UO7QeUeet0FtFJP9egCWv6ZeZj5fDTLk";
-
     const message = {
       notification: {
         title,
