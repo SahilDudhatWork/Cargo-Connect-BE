@@ -6,7 +6,10 @@ const movementRoute = require("./movement");
 const operatorRoute = require("./operator");
 const vehicleRoute = require("./vehicle");
 const ratingRoute = require("./rating");
+const subCarrierRoute = require("./subCarrier");
 const notificationRoute = require("./notification");
+const rolesRoute = require("./roles");
+const menuAccessRoute = require("./menuAccess");
 const { carrierAuth } = require("../../middleware/authToken/carrierAuth");
 const {
   carrierPermission,
@@ -26,5 +29,8 @@ router.use("/operator", operatorRoute);
 router.use("/vehicle", vehicleRoute);
 router.use("/rating", ratingRoute);
 router.use("/notification", notificationRoute);
+router.use("/sub/carrier", subCarrierRoute);
+router.use("/roles", rolesRoute);
+router.use("/menu/access", menuAccessRoute);
 
 module.exports = router;

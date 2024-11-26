@@ -1,4 +1,5 @@
 const Vehicle = require("../../../model/vehicle/vehicle");
+const Carrier = require("../../../model/carrier/carrier");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { ObjectId } = require("mongoose").Types;
@@ -14,7 +15,16 @@ const fetchData = async (req, res) => {
   try {
     let { page, limit, sortBy, keyWord } = query;
 
-    let qry = { carrierId: new ObjectId(carrierId) };
+    let getCarrier = await Carrier.findById(carrierId);
+
+    let qry = {
+      carrierId:
+        getCarrier.parentId !== undefined && getCarrier.parentId !== null
+          ? {
+              $in: [new ObjectId(carrierId), getCarrier.parentId],
+            }
+          : new ObjectId(carrierId),
+    };
 
     if (keyWord) {
       qry.$or = [{ vehicleName: { $regex: keyWord, $options: "i" } }];

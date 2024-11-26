@@ -8,6 +8,7 @@ const addressRoute = require("./address");
 const payPalRoute = require("./payPal");
 const ratingRoute = require("./rating");
 const notificationRoute = require("./notification");
+const subUserRoute = require("./subUser");
 const specialRequirementsRoute = require("./specialRequirements");
 const { userAuth } = require("../../middleware/authToken/userAuth");
 const {
@@ -29,5 +30,6 @@ router.use("/address", addressRoute);
 router.use("/payPal", payPalRoute);
 router.use("/rating", ratingRoute);
 router.use("/notification", notificationRoute);
+router.use("/sub/user", subUserRoute);
 
 module.exports = router;

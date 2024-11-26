@@ -1,23 +1,28 @@
-const User = require("../../../model/user/user");
-const Reference = require("../../../model/common/reference");
+const Carrier = require("../../../model/carrier/carrier");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
-const { ObjectId } = require("mongoose").Types;
 const {
   STATUS_CODE,
-  ERROR_MSGS,
   INFO_MSGS,
+  ERROR_MSGS,
 } = require("../../../helper/constant");
 
-const fetchReference = async (req, res) => {
-  const { logger, userId } = req;
+const getDetails = async (req, res) => {
+  let { logger, params } = req;
   try {
-    const getUser = await User.findById(userId);
-    let newUserId = getUser.parentId ? getUser.parentId : new ObjectId(userId);
+    const { id } = params;
+    const actId = parseInt(id);
 
-    let getData = await Reference.find({
-      clientRelationId: newUserId,
-    });
+    const [getData] = await Carrier.aggregate([
+      { $match: { accountId: actId } },
+      {
+        $project: {
+          __v: 0,
+          forgotPassword: 0,
+          token: 0,
+        },
+      },
+    ]);
 
     const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.OK;
     const message = getData ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;
@@ -30,11 +35,11 @@ const fetchReference = async (req, res) => {
       data: getData || null,
     });
   } catch (error) {
-    console.error("error:", error);
+    console.error("error-->", error);
     return handleException(logger, res, error);
   }
 };
 
 module.exports = {
-  fetchReference,
+  getDetails,
 };
