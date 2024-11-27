@@ -13,6 +13,10 @@ const collectionSchema = new Schema(
           type: ObjectId,
           required: true,
         },
+        add: {
+          type: Boolean,
+          default: false,
+        },
         read: {
           type: Boolean,
           default: false,

@@ -1426,12 +1426,14 @@
                   "access": [
                     {
                       "menuId": "673c6fb15e41dc4a5591b95b",
+                      "add": true,
                       "read": true,
                       "edit": false,
                       "delete": false
                     },
                     {
                       "menuId": "673c6fa25e41dc4a5591b956",
+                      "add": true,
                       "read": true,
                       "edit": true,
                       "delete": false
@@ -1505,12 +1507,14 @@
                   "access": [
                     {
                       "menuId": "673c6fb15e41dc4a5591b95b",
+                      "add": true,
                       "read": true,
                       "edit": false,
                       "delete": false
                     },
                     {
                       "menuId": "673c6fa25e41dc4a5591b956",
+                      "add": true,
                       "read": true,
                       "edit": true,
                       "delete": false

@@ -47,6 +47,7 @@ const getDetails = async (req, res) => {
             $push: {
               menuId: "$access.menuId",
               menuDetails: "$menuDetails",
+              add: "$access.add",
               read: "$access.read",
               edit: "$access.edit",
               delete: "$access.delete",

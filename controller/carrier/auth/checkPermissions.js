@@ -18,6 +18,7 @@ const checkPermissions = async (req, res) => {
             // ).then((menus) =>
             //   menus.map((menu) => ({
             //     ...menu.toObject(),
+            //     add: true,
             //     read: true,
             //     edit: true,
             //     delete: true,
@@ -64,6 +65,7 @@ const checkPermissions = async (req, res) => {
                     menuId: "$carrierRoles.access.menuId",
                     menuTitle: "$menuDetails.menuTitle",
                     to: "$menuDetails.to",
+                    add: "$carrierRoles.access.add",
                     read: "$carrierRoles.access.read",
                     edit: "$carrierRoles.access.edit",
                     delete: "$carrierRoles.access.delete",

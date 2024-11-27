@@ -48,6 +48,7 @@ const checkPermissions = async (req, res) => {
               menuId: "$adminRoles.access.menuId",
               menuTitle: "$menuDetails.menuTitle",
               to: "$menuDetails.to",
+              add: "$adminRoles.access.add",
               read: "$adminRoles.access.read",
               edit: "$adminRoles.access.edit",
               delete: "$adminRoles.access.delete",
