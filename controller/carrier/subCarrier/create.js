@@ -21,6 +21,7 @@ const createSubCarrier = async (req, res) => {
       password,
       deviceToken,
       webToken,
+      roleByCarrier,
     } = body;
 
     const carrierEmailExist = await Carrier.findOne({ email });
@@ -67,6 +68,7 @@ const createSubCarrier = async (req, res) => {
       email,
       deviceToken,
       webToken,
+      roleByCarrier,
       password: passwordHash,
       profilePicture: getCarrier.profilePicture,
       scac: getCarrier.scac,
