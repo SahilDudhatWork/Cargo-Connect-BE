@@ -1,4 +1,5 @@
 const Admin = require("../../../model/admin/admin");
+const { decrypt } = require("../../../helper/encrypt-decrypt");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { ObjectId } = require("mongoose").Types;
@@ -13,7 +14,7 @@ const getDetails = async (req, res) => {
   try {
     const { id } = params;
 
-    let getData = await Admin.aggregate([
+    let [getData] = await Admin.aggregate([
       {
         $match: {
           _id: new ObjectId(id),
@@ -35,20 +36,16 @@ const getDetails = async (req, res) => {
       },
       {
         $project: {
-          _id: 1,
-          contactName: 1,
-          email: 1,
-          lastLogin: 1,
-          roleByAdmin: 1,
-          createdAt: 1,
-          updatedAt: 1,
-          forgotPassword: 1,
-          role: { $ifNull: ["$adminRoles.roleTitle", null] },
+          __v: 0,
+          token: 0,
         },
       },
     ]);
 
-    getData = getData[0];
+    getData.password = decrypt(
+      getData.password,
+      process.env.PASSWORD_ENCRYPTION_KEY
+    );
 
     const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.OK;
     const message = getData ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;

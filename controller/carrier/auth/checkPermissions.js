@@ -1,5 +1,5 @@
 const Carrier = require("../../../model/carrier/carrier");
-// const MenuAccess = require("../../../model/carrier/menuAccess");
+const MenuAccess = require("../../../model/carrier/menuAccess");
 const { ObjectId } = require("mongoose").Types;
 const Response = require("../../../helper/response");
 const { STATUS_CODE, INFO_MSGS } = require("../../../helper/constant");
@@ -12,18 +12,18 @@ const checkPermissions = async (req, res) => {
     let result =
       getData.carrierType === "Carrier"
         ? {
-            // menuDetails: await MenuAccess.find(
-            //   {},
-            //   { createdAt: 0, updatedAt: 0, __v: 0 }
-            // ).then((menus) =>
-            //   menus.map((menu) => ({
-            //     ...menu.toObject(),
-            //     add: true,
-            //     read: true,
-            //     edit: true,
-            //     delete: true,
-            //   }))
-            // ),
+            menuDetails: await MenuAccess.find(
+              {},
+              { createdAt: 0, updatedAt: 0, __v: 0 }
+            ).then((menus) =>
+              menus.map((menu) => ({
+                ...menu.toObject(),
+                add: true,
+                read: true,
+                edit: true,
+                delete: true,
+              }))
+            ),
             roleTitle: "Full Permission",
           }
         : await Carrier.aggregate([

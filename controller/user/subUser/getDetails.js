@@ -1,4 +1,5 @@
 const User = require("../../../model/user/user");
+const { decrypt } = require("../../../helper/encrypt-decrypt");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const {
@@ -23,6 +24,11 @@ const getDetails = async (req, res) => {
         },
       },
     ]);
+    
+    getData.password = decrypt(
+      getData.password,
+      process.env.PASSWORD_ENCRYPTION_KEY
+    );
 
     const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.OK;
     const message = getData ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;
