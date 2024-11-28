@@ -24,7 +24,12 @@ const getDetails = async (req, res) => {
           as: "carrierRole",
         },
       },
-      { $unwind: "$carrierRole" },
+      {
+        $unwind: {
+          path: "$carrierRole",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       {
         $project: {
           __v: 0,
@@ -34,6 +39,7 @@ const getDetails = async (req, res) => {
       },
     ]);
 
+    console.log(getData, "getData");
     getData.password = decrypt(
       getData.password,
       process.env.PASSWORD_ENCRYPTION_KEY
