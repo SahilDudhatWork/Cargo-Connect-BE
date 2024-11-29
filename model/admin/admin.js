@@ -46,6 +46,7 @@ const collectionSchema = new Schema(
     },
     roleByAdmin: {
       type: ObjectId,
+      default: null,
     },
   },
   {

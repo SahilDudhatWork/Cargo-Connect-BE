@@ -12,6 +12,11 @@ const getAdmins = async (req, res) => {
   let { logger } = req;
   try {
     let getData = await Admin.aggregate([
+      {
+        $match: {
+          roleByAdmin: { $ne: null },
+        },
+      },
       { $sort: { createdAt: -1 } },
       {
         $lookup: {
@@ -24,7 +29,7 @@ const getAdmins = async (req, res) => {
       {
         $unwind: {
           path: "$adminRoles",
-          preserveNullAndEmptyArrays: true, 
+          preserveNullAndEmptyArrays: true,
         },
       },
       {
