@@ -12,11 +12,11 @@ const update = async (req, res) => {
   try {
     const { id } = params;
     const { roleTitle } = body;
-    
+
     if (roleTitle) {
       const checkDuplicate = await CarrierRole.findOne({ roleTitle });
 
-      if (checkDuplicate) {
+      if (checkDuplicate && checkDuplicate._id.toString() !== id) {
         const obj = {
           res,
           status: STATUS_CODE.BAD_REQUEST,
