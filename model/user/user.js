@@ -7,6 +7,15 @@ const collectionSchema = new Schema(
       default: null,
       unique: true,
     },
+    parentId: {
+      type: Types.ObjectId,
+      default: null,
+    },
+    userType: {
+      type: String,
+      enum: ["User", "SubUser"],
+      default: "User",
+    },
     profilePicture: {
       type: String,
       default: null,

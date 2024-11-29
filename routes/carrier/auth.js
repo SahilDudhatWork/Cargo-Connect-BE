@@ -13,6 +13,9 @@ const {
 } = require("../../controller/carrier/auth/verifyLoginOtp");
 const { refreshToken } = require("../../controller/carrier/auth/refreshToken");
 const {
+  checkPermissions,
+} = require("../../controller/carrier/auth/checkPermissions");
+const {
   validateEmailAndPassword,
 } = require("../../middleware/validateEmailAndPass");
 
@@ -23,5 +26,6 @@ router.post("/verifyOtp", verifyLoginOtp);
 
 router.use(carrierAuth);
 router.post("/logOut", logOut);
+router.get("/checkPermissions", checkPermissions);
 
 module.exports = router;

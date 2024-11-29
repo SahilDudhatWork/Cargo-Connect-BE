@@ -48,6 +48,15 @@
       "name": "Notification"
     },
     {
+      "name": "SubCarrier"
+    },
+    {
+      "name": "Menu Access"
+    },
+    {
+      "name": "Roles"
+    },
+    {
       "name": "---- Common ----"
     },
     {
@@ -323,6 +332,25 @@
         "responses": {
           "200": {
             "description": "You have logged in successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/auth/checkPermissions": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Check Permissions",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
             "content": {
               "application/json": {}
             }
@@ -1119,6 +1147,409 @@
         "responses": {
           "200": {
             "description": "The data was updated successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/sub/carrier/": {
+      "post": {
+        "tags": ["SubCarrier"],
+        "summary": "Create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "contactName": "string",
+                  "contactNumber": "string",
+                  "countryCode": "number",
+                  "email": "string",
+                  "password": "string",
+                  "deviceToken": "string",
+                  "webToken": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The data was created successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["SubCarrier"],
+        "summary": "Fetch Data",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "10"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/sub/carrier/{subCarrierId}": {
+      "get": {
+        "tags": ["SubCarrier"],
+        "summary": "Get Details",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["SubCarrier"],
+        "summary": "Update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "contactName": "string",
+                  "contactNumber": "string",
+                  "countryCode": "number",
+                  "email": "string",
+                  "password": "string",
+                  "deviceToken": "string",
+                  "webToken": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The data was updated successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["SubCarrier"],
+        "summary": "Delete",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The data was deleted successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/menu/access": {
+      "post": {
+        "tags": ["Menu Access"],
+        "summary": "Create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "menuTitle": "Carrier",
+                  "to": "/carrier"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The data was created successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Menu Access"],
+        "summary": "Fetch Data",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/menu/access/{menuId}": {
+      "get": {
+        "tags": ["Menu Access"],
+        "summary": "Get Details",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Menu Access"],
+        "summary": "Update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "menuTitle": "Carrier",
+                  "to": "/carrier"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The data was updated successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Menu Access"],
+        "summary": "Delete",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The data was deleted successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/roles": {
+      "post": {
+        "tags": ["Roles"],
+        "summary": "Create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "roleTitle": "Manager",
+                  "access": [
+                    {
+                      "menuId": "673c6fb15e41dc4a5591b95b",
+                      "add": true,
+                      "read": true,
+                      "edit": false,
+                      "delete": false
+                    },
+                    {
+                      "menuId": "673c6fa25e41dc4a5591b956",
+                      "add": true,
+                      "read": true,
+                      "edit": true,
+                      "delete": false
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The data was created successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Roles"],
+        "summary": "Fetch Data",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/carrier/roles/{roleId}": {
+      "get": {
+        "tags": ["Roles"],
+        "summary": "Get Details",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Roles"],
+        "summary": "Update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "roleTitle": "Manager",
+                  "access": [
+                    {
+                      "menuId": "673c6fb15e41dc4a5591b95b",
+                      "add": true,
+                      "read": true,
+                      "edit": false,
+                      "delete": false
+                    },
+                    {
+                      "menuId": "673c6fa25e41dc4a5591b956",
+                      "add": true,
+                      "read": true,
+                      "edit": true,
+                      "delete": false
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The data was updated successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Roles"],
+        "summary": "Delete",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The data was deleted successfully.",
             "content": {
               "application/json": {}
             }

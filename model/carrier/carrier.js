@@ -8,6 +8,18 @@ const collectionSchema = new Schema(
       default: null,
       unique: true,
     },
+    parentId: {
+      type: Types.ObjectId,
+      default: null,
+    },
+    carrierType: {
+      type: String,
+      enum: ["Carrier", "SubCarrier"],
+      default: "Carrier",
+    },
+    roleByCarrier: {
+      type: ObjectId,
+    },
     profilePicture: {
       type: String,
       default: null,

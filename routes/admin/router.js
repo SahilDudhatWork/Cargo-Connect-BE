@@ -13,6 +13,9 @@ const coordinatesRoute = require("./coordinates");
 const settingsRoute = require("./settings");
 const specialRequirementsRoute = require("./specialRequirements");
 const guidelinePagesRoute = require("./guidelinePages");
+const subAdminRoute = require("./subAdmin");
+const menuAccessRoute = require("./menuAccess");
+const rolesRoute = require("./roles");
 const { adminAuth } = require("../../middleware/authToken/adminAuth");
 
 router.get("/", (req, res) => {
@@ -21,6 +24,9 @@ router.get("/", (req, res) => {
 
 router.use("/auth", authRoute);
 router.use(adminAuth);
+router.use("/sub/admin", subAdminRoute);
+router.use("/menu/access", menuAccessRoute);
+router.use("/roles", rolesRoute);
 router.use("/profile", profileRoute);
 router.use("/module", userAndCarrierRoute);
 router.use("/operator", operatorRoute);

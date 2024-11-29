@@ -1,4 +1,5 @@
 const Movement = require("../../../model/movement/movement");
+const Carrier = require("../../../model/carrier/carrier");
 const { handleException } = require("../../../helper/exception");
 const { paginationResponse } = require("../../../utils/paginationFormate");
 const {
@@ -25,6 +26,7 @@ const fetchMovement = async (req, res) => {
   try {
     let { page, limit, sortBy, keyWord } = query;
 
+    let getCarrier = await Carrier.findById(carrierId);
     let qry = {};
 
     if (sortBy === "Requests") {
@@ -36,14 +38,24 @@ const fetchMovement = async (req, res) => {
       qry = {
         isAssign: true,
         status: "InProgress",
-        carrierId: new ObjectId(carrierId),
+        carrierId:
+          getCarrier.parentId !== undefined && getCarrier.parentId !== null
+            ? {
+                $in: [new ObjectId(carrierId), getCarrier.parentId],
+              }
+            : new ObjectId(carrierId),
         isScheduleTriggered: true,
       };
     } else if (sortBy === "Completed") {
       qry = {
         isAssign: true,
         status: "Completed",
-        carrierId: new ObjectId(carrierId),
+        carrierId:
+          getCarrier.parentId !== undefined && getCarrier.parentId !== null
+            ? {
+                $in: [new ObjectId(carrierId), getCarrier.parentId],
+              }
+            : new ObjectId(carrierId),
         isScheduleTriggered: true,
       };
     }

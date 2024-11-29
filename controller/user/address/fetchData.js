@@ -1,4 +1,5 @@
 const Address = require("../../../model/user/address");
+const User = require("../../../model/user/user");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { ObjectId } = require("mongoose").Types;
@@ -11,9 +12,21 @@ const {
 const fetchData = async (req, res) => {
   let { logger, userId, query } = req;
   try {
-    const getData = await Address.aggregate([
-      { $match: { userId: new ObjectId(userId) } },
-    ]);
+    const getUser = await User.findById(userId);
+
+    let matchCriteria;
+    if (getUser.parentId) {
+      matchCriteria = {
+        userId: {
+          $in: [new ObjectId(userId), new ObjectId(getUser.parentId)],
+        },
+      };
+    } else {
+      matchCriteria = {
+        userId: new ObjectId(userId),
+      };
+    }
+    const getData = await Address.aggregate([{ $match: matchCriteria }]);
 
     const statusCode = getData.length > 0 ? STATUS_CODE.OK : STATUS_CODE.OK;
     const message =

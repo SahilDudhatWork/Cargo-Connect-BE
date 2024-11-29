@@ -1,4 +1,5 @@
 const Movement = require("../../../model/movement/movement");
+const User = require("../../../model/user/user");
 const { handleException } = require("../../../helper/exception");
 const { paginationResponse } = require("../../../utils/paginationFormate");
 const { ObjectId } = require("mongoose").Types;
@@ -29,9 +30,20 @@ const fetchOrder = async (req, res) => {
     limit = limit || 10;
     const skip = limit * (offset - 1);
 
-    let matchCriteria = {
-      userId: new ObjectId(userId),
-    };
+    const getUser = await User.findById(userId);
+
+    let matchCriteria;
+    if (getUser.parentId) {
+      matchCriteria = {
+        userId: {
+          $in: [new ObjectId(userId), new ObjectId(getUser.parentId)],
+        },
+      };
+    } else {
+      matchCriteria = {
+        userId: new ObjectId(userId),
+      };
+    }
 
     if (status === "Pending") {
       matchCriteria.status = { $in: ["Pending", "NewAssignments"] };
