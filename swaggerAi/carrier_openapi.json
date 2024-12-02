@@ -578,6 +578,16 @@
       "get": {
         "tags": ["Movement"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -595,6 +605,16 @@
       "put": {
         "tags": ["Movement"],
         "summary": "Hendle Request",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -628,6 +648,16 @@
       "put": {
         "tags": ["Movement"],
         "summary": "Movement complete",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -769,6 +799,16 @@
       "get": {
         "tags": ["Operator"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "operatorAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -786,6 +826,16 @@
       "put": {
         "tags": ["Operator"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "operatorAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -824,6 +874,16 @@
       "delete": {
         "tags": ["Operator"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "operatorAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -944,6 +1004,16 @@
       "get": {
         "tags": ["Vehicle"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -961,6 +1031,16 @@
       "put": {
         "tags": ["Vehicle"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1008,6 +1088,16 @@
       "delete": {
         "tags": ["Vehicle"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1046,6 +1136,16 @@
       "put": {
         "tags": ["Vehicle"],
         "summary": "Update Status",
+        "parameters": [
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1077,6 +1177,16 @@
       "post": {
         "tags": ["Rating"],
         "summary": "Add Ratting",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1107,6 +1217,16 @@
       "get": {
         "tags": ["Rating"],
         "summary": "Get Ratting",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1230,6 +1350,16 @@
       "get": {
         "tags": ["SubCarrier"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "subCarrierId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1247,6 +1377,16 @@
       "put": {
         "tags": ["SubCarrier"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "subCarrierId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1282,6 +1422,16 @@
       "delete": {
         "tags": ["SubCarrier"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "subCarrierId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1350,6 +1500,16 @@
       "get": {
         "tags": ["Menu Access"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1367,6 +1527,16 @@
       "put": {
         "tags": ["Menu Access"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1397,6 +1567,16 @@
       "delete": {
         "tags": ["Menu Access"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1480,6 +1660,16 @@
       "get": {
         "tags": ["Roles"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1497,6 +1687,16 @@
       "put": {
         "tags": ["Roles"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1542,6 +1742,16 @@
       "delete": {
         "tags": ["Roles"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1722,6 +1932,16 @@
       "post": {
         "tags": ["Qr & Proof & Doc"],
         "summary": "Upload",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -1757,6 +1977,16 @@
       "get": {
         "tags": ["Qr & Proof & Doc"],
         "summary": "FetchData",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "The request was processed successfully.",
@@ -1771,6 +2001,16 @@
       "get": {
         "tags": ["LocatOperator"],
         "summary": "Fetch Operators",
+        "parameters": [
+          {
+            "name": "operatorAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "The request was processed successfully.",
@@ -1799,6 +2039,16 @@
       "get": {
         "tags": ["GuidelinePages"],
         "summary": "Fetch Single guideline details",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "The request was processed successfully.",

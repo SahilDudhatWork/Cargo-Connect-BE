@@ -677,6 +677,16 @@
       "get": {
         "tags": ["Movement"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -777,6 +787,16 @@
       "get": {
         "tags": ["Address"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "addressId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -794,6 +814,16 @@
       "put": {
         "tags": ["Address"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "addressId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -837,6 +867,16 @@
       "delete": {
         "tags": ["Address"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "addressId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -856,6 +896,16 @@
       "get": {
         "tags": ["Special Requirements"],
         "summary": "Get Special Requirements",
+        "parameters": [
+          {
+            "name": "post_bridgeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -906,6 +956,16 @@
       "post": {
         "tags": ["Rating"],
         "summary": "Add Ratting",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -936,6 +996,16 @@
       "get": {
         "tags": ["Rating"],
         "summary": "Get Ratting",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1059,6 +1129,16 @@
       "get": {
         "tags": ["SubUser"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "subUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1076,6 +1156,16 @@
       "put": {
         "tags": ["SubUser"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "subUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1111,6 +1201,16 @@
       "delete": {
         "tags": ["SubUser"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "subUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1291,6 +1391,16 @@
       "post": {
         "tags": ["Qr & Proof & Doc"],
         "summary": "Upload",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -1326,6 +1436,16 @@
       "get": {
         "tags": ["Qr & Proof & Doc"],
         "summary": "FetchData",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "The request was processed successfully.",
@@ -1340,6 +1460,16 @@
       "get": {
         "tags": ["LocatOperator"],
         "summary": "Fetch Operators",
+        "parameters": [
+          {
+            "name": "operatorAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "The request was processed successfully.",
@@ -1367,6 +1497,16 @@
     "/v1/common/guidelinePages/user/{slug}": {
       "get": {
         "tags": ["GuidelinePages"],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "summary": "Fetch Single guideline details",
         "responses": {
           "200": {

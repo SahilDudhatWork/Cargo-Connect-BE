@@ -239,6 +239,16 @@
       "get": {
         "tags": ["Movement"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -407,6 +417,16 @@
       "post": {
         "tags": ["Qr & Proof & Doc"],
         "summary": "Upload",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -456,6 +476,16 @@
       "get": {
         "tags": ["LocatOperator"],
         "summary": "Fetch Operators",
+        "parameters": [
+          {
+            "name": "operatorAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "The request was processed successfully.",
@@ -484,6 +514,16 @@
       "get": {
         "tags": ["GuidelinePages"],
         "summary": "Fetch Single guideline details",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "The request was processed successfully.",

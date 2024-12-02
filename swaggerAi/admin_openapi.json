@@ -373,6 +373,16 @@
       "get": {
         "tags": ["Manage User"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "userAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -390,6 +400,16 @@
       "put": {
         "tags": ["Manage User"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "userAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -522,6 +542,16 @@
       "delete": {
         "tags": ["Manage User"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "userAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -541,6 +571,16 @@
       "post": {
         "tags": ["Manage User"],
         "summary": "Verify",
+        "parameters": [
+          {
+            "name": "userAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -570,6 +610,16 @@
       "delete": {
         "tags": ["Manage User"],
         "summary": "Unverify",
+        "parameters": [
+          {
+            "name": "userAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -589,11 +639,6 @@
       "get": {
         "tags": ["Manage User"],
         "summary": "References",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "name": "userAccountId",
@@ -602,6 +647,11 @@
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
           }
         ],
         "responses": {
@@ -815,6 +865,16 @@
       "get": {
         "tags": ["Manage Carrier"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "carrierAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -832,6 +892,16 @@
       "put": {
         "tags": ["Manage Carrier"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "carrierAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -964,16 +1034,6 @@
             "bearerAuth": []
           }
         ],
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiVTJGc2RHVmtYMTgrWHQxL05iUDRoVGprWlFiVVlsOHBvM2Z6U1BjajV4N09HdzFkQUdHZXlJRVZUTXdLMGNYeSIsInR5cGUiOiJBY2Nlc3MiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MjQ5MzU0MTQsImV4cCI6MTcyNTAyMTgxNH0.BpphBKiGwrY-_f4rmi-r31B-axEDpK-78DB9j9sagg4"
-          }
-        ],
         "responses": {
           "200": {
             "description": "The data was updated successfully.",
@@ -986,6 +1046,16 @@
       "delete": {
         "tags": ["Manage Carrier"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "carrierAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1005,6 +1075,16 @@
       "post": {
         "tags": ["Manage Carrier"],
         "summary": "Verify",
+        "parameters": [
+          {
+            "name": "carrierAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1034,6 +1114,16 @@
       "delete": {
         "tags": ["Manage Carrier"],
         "summary": "Unverify",
+        "parameters": [
+          {
+            "name": "carrierAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1053,11 +1143,6 @@
       "get": {
         "tags": ["Manage Carrier"],
         "summary": "References",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "parameters": [
           {
             "name": "carrierAccountId",
@@ -1066,6 +1151,11 @@
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
           }
         ],
         "responses": {
@@ -1175,6 +1265,16 @@
       "get": {
         "tags": ["Service"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1192,6 +1292,16 @@
       "put": {
         "tags": ["Service"],
         "summary": "Hendle Request",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1275,6 +1385,14 @@
         ],
         "parameters": [
           {
+            "name": "carrierAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "keyWord",
             "in": "query",
             "schema": {
@@ -1320,6 +1438,16 @@
       "get": {
         "tags": ["Operator"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "operatorAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1337,6 +1465,16 @@
       "put": {
         "tags": ["Operator"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "operatorAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1375,6 +1513,16 @@
       "delete": {
         "tags": ["Operator"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "operatorAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1451,6 +1599,14 @@
         ],
         "parameters": [
           {
+            "name": "carrierAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "keyWord",
             "in": "query",
             "schema": {
@@ -1496,6 +1652,16 @@
       "get": {
         "tags": ["Vehicle"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1513,6 +1679,16 @@
       "put": {
         "tags": ["Vehicle"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1560,6 +1736,16 @@
       "delete": {
         "tags": ["Vehicle"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -1579,6 +1765,16 @@
       "put": {
         "tags": ["Vehicle"],
         "summary": "Update Status",
+        "parameters": [
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1786,6 +1982,16 @@
       "get": {
         "tags": ["Banners"],
         "summary": "Fetch Banners Details",
+        "parameters": [
+          {
+            "name": "bannersId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -2189,6 +2395,16 @@
       "put": {
         "tags": ["Special Requirements"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "post_bridgeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2236,6 +2452,16 @@
       "get": {
         "tags": ["Special Requirements"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "post_bridgeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -2253,6 +2479,16 @@
       "delete": {
         "tags": ["Special Requirements"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "post_bridgeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -2343,6 +2579,16 @@
       "get": {
         "tags": ["Coordinates"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "coordinatesId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -2360,6 +2606,16 @@
       "put": {
         "tags": ["Coordinates"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "coordinatesId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2393,6 +2649,16 @@
       "delete": {
         "tags": ["Coordinates"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "coordinatesId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -2515,6 +2781,16 @@
       "get": {
         "tags": ["GuidelinePages"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "guidelineId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -2532,6 +2808,16 @@
       "put": {
         "tags": ["GuidelinePages"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "guidelineId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2564,6 +2850,16 @@
       "delete": {
         "tags": ["GuidelinePages"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "guidelineId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -2635,6 +2931,16 @@
       "get": {
         "tags": ["Sub Admin"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -2652,6 +2958,16 @@
       "put": {
         "tags": ["Sub Admin"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2683,6 +2999,16 @@
       "delete": {
         "tags": ["Sub Admin"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "adminId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -2752,6 +3078,16 @@
       "get": {
         "tags": ["Menu Access"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -2769,6 +3105,16 @@
       "put": {
         "tags": ["Menu Access"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2799,6 +3145,16 @@
       "delete": {
         "tags": ["Menu Access"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -2883,6 +3239,16 @@
       "get": {
         "tags": ["Roles"],
         "summary": "Get Details",
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -2900,6 +3266,16 @@
       "put": {
         "tags": ["Roles"],
         "summary": "Update",
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2945,6 +3321,16 @@
       "delete": {
         "tags": ["Roles"],
         "summary": "Delete",
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -3084,6 +3470,16 @@
       "post": {
         "tags": ["Qr & Proof & Doc"],
         "summary": "Upload",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -3119,6 +3515,16 @@
       "get": {
         "tags": ["Qr & Proof & Doc"],
         "summary": "FetchData",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "The request was processed successfully.",
@@ -3133,6 +3539,16 @@
       "get": {
         "tags": ["LocatOperator"],
         "summary": "Fetch Operators",
+        "parameters": [
+          {
+            "name": "operatorAccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "The request was processed successfully.",
