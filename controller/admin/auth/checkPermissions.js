@@ -39,6 +39,12 @@ const checkPermissions = async (req, res) => {
           },
           { $unwind: "$adminRoles" },
           {
+            $unwind: {
+              path: "$adminRoles.access",
+              preserveNullAndEmptyArrays: true,
+            },
+          },
+          {
             $lookup: {
               from: "menuaccesses",
               localField: "adminRoles.access.menuId",
