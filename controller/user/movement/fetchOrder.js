@@ -30,20 +30,43 @@ const fetchOrder = async (req, res) => {
     limit = limit || 10;
     const skip = limit * (offset - 1);
 
-    const getUser = await User.findById(userId);
+    const fetchSubUser = await User.findById(userId);
+    const matchConditions = [
+      { _id: new ObjectId(userId) },
+      { parentId: new ObjectId(userId) },
+      ...(fetchSubUser?.parentId
+        ? [{ parentId: new ObjectId(fetchSubUser.parentId) }]
+        : []),
+    ];
 
-    let matchCriteria;
-    if (getUser.parentId) {
-      matchCriteria = {
-        userId: {
-          $in: [new ObjectId(userId), new ObjectId(getUser.parentId)],
+    const getUser = await User.aggregate([
+      {
+        $match: {
+          $or: matchConditions,
         },
-      };
-    } else {
-      matchCriteria = {
-        userId: new ObjectId(userId),
-      };
-    }
+      },
+      {
+        $project: {
+          _id: 1,
+          parentId: 1,
+        },
+      },
+    ]);
+    const userIds = Array.from(
+      getUser.reduce((acc, user) => {
+        acc.add(user._id.toString());
+        if (user.parentId) {
+          acc.add(user.parentId.toString());
+        }
+        return acc;
+      }, new Set())
+    ).map((id) => new ObjectId(id));
+
+    let matchCriteria = {
+      userId: {
+        $in: userIds,
+      },
+    };
 
     if (status === "Pending") {
       matchCriteria.status = { $in: ["Pending", "NewAssignments"] };

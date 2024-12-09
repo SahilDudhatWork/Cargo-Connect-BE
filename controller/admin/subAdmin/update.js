@@ -11,15 +11,6 @@ const update = async (req, res) => {
   const { logger, params, body } = req;
   try {
     const { id } = params;
-    const { password } = body;
-
-    if (password) {
-      return Response.error({
-        res,
-        status: STATUS_CODE.BAD_REQUEST,
-        msg: `Password ${ERROR_MSGS.NOT_EDITABLE}`,
-      });
-    }
 
     const updatedData = await Admin.findByIdAndUpdate(id, body, {
       new: true,
