@@ -30,13 +30,19 @@ const fetchOrder = async (req, res) => {
     limit = limit || 10;
     const skip = limit * (offset - 1);
 
+    const fetchSubUser = await User.findById(userId);
+    const matchConditions = [
+      { _id: new ObjectId(userId) },
+      { parentId: new ObjectId(userId) },
+      ...(fetchSubUser?.parentId
+        ? [{ parentId: new ObjectId(fetchSubUser.parentId) }]
+        : []),
+    ];
+
     const getUser = await User.aggregate([
       {
         $match: {
-          $or: [
-            { _id: new ObjectId(userId) },
-            { parentId: new ObjectId(userId) },
-          ],
+          $or: matchConditions,
         },
       },
       {
@@ -46,13 +52,15 @@ const fetchOrder = async (req, res) => {
         },
       },
     ]);
-    const userIds = getUser.reduce((acc, user) => {
-      acc.push(user._id);
-      if (user.parentId) {
-        acc.push(user.parentId);
-      }
-      return acc;
-    }, []);
+    const userIds = Array.from(
+      getUser.reduce((acc, user) => {
+        acc.add(user._id.toString());
+        if (user.parentId) {
+          acc.add(user.parentId.toString());
+        }
+        return acc;
+      }, new Set())
+    ).map((id) => new ObjectId(id));
 
     let matchCriteria = {
       userId: {
