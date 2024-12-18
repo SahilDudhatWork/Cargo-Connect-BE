@@ -1,4 +1,5 @@
 const Carrier = require("../../../model/carrier/carrier");
+const MenuAccess = require("../../../model/carrier/menuAccess");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { ObjectId } = require("mongoose").Types;
@@ -11,7 +12,7 @@ const {
 const fetchProfile = async (req, res) => {
   let { logger, carrierId } = req;
   try {
-    let getData = await Carrier.aggregate([
+    let [getData] = await Carrier.aggregate([
       {
         $match: {
           _id: new ObjectId(carrierId),
@@ -98,7 +99,73 @@ const fetchProfile = async (req, res) => {
       },
     ]);
 
-    getData = getData[0];
+    let result =
+      getData.carrierType === "Carrier"
+        ? {
+            menuDetails: await MenuAccess.find(
+              {},
+              { createdAt: 0, updatedAt: 0, __v: 0 }
+            ).then((menus) =>
+              menus.map((menu) => ({
+                ...menu.toObject(),
+                add: true,
+                read: true,
+                edit: true,
+                delete: true,
+              }))
+            ),
+            roleTitle: "Full Permission",
+          }
+        : await Carrier.aggregate([
+            { $match: { _id: new ObjectId(carrierId) } },
+            {
+              $lookup: {
+                from: "carrierroles",
+                localField: "roleByCarrier",
+                foreignField: "_id",
+                as: "carrierRoles",
+              },
+            },
+            { $unwind: "$carrierRoles" },
+            {
+              $unwind: {
+                path: "$carrierRoles.access",
+                preserveNullAndEmptyArrays: true,
+              },
+            },
+            {
+              $lookup: {
+                from: "carreirmenuaccesses",
+                localField: "carrierRoles.access.menuId",
+                foreignField: "_id",
+                as: "menuDetails",
+              },
+            },
+            {
+              $unwind: {
+                path: "$menuDetails",
+                preserveNullAndEmptyArrays: true,
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                menuDetails: {
+                  $addToSet: {
+                    menuId: "$carrierRoles.access.menuId",
+                    menuTitle: "$menuDetails.menuTitle",
+                    to: "$menuDetails.to",
+                    add: "$carrierRoles.access.add",
+                    read: "$carrierRoles.access.read",
+                    edit: "$carrierRoles.access.edit",
+                    delete: "$carrierRoles.access.delete",
+                  },
+                },
+                roleTitle: { $first: "$carrierRoles.roleTitle" },
+              },
+            },
+            { $project: { _id: 0, menuDetails: 1, roleTitle: 1 } },
+          ]).then(([result]) => result);
 
     let operators = {
       total: getData.totalOperators,
@@ -128,7 +195,7 @@ const fetchProfile = async (req, res) => {
       res,
       status: statusCode,
       msg: message,
-      data: getData,
+      data: { ...getData, ...result },
     });
   } catch (error) {
     console.error("error-->", error);
