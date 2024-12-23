@@ -30,20 +30,19 @@ const {
 
 // Function to check if a point is inside the polygon
 const isPointInPolygon = (point, polygon) => {
-  let inside = false;
   const { lat, lng } = point;
+  let isInside = false;
 
   for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
-    const xi = polygon[i][1],
-      yi = polygon[i][0]; // Lat, Long
-    const xj = polygon[j][1],
-      yj = polygon[j][0]; // Lat, Long
+    const [ix, iy] = polygon[i];
+    const [jx, jy] = polygon[j];
 
     const intersect =
-      yi > lng !== yj > lng && lat < ((xj - xi) * (lng - yi)) / (yj - yi) + xi;
-    if (intersect) inside = !inside;
+      iy > lng !== jy > lng && lat < ((jx - ix) * (lng - iy)) / (jy - iy) + ix;
+    if (intersect) isInside = !isInside;
   }
-  return inside;
+
+  return isInside;
 };
 
 // Helper function to calculate price for pickup/drop addresses

@@ -151,7 +151,18 @@ const signUp = async (req, res) => {
         },
       ];
 
-      for (const { field, label } of requiredFields) {
+      for (let { field, label } of requiredFields) {
+        if (label === "companyFormation.maxico.copia_Rfc_Form")
+          label = "COPIA RCF Form";
+        else if (
+          label === "companyFormation.maxico.constance_Of_Fiscal_Situation"
+        )
+          label = "Constance Of Fiscal Situation";
+        else if (label === "companyFormation.maxico.proof_of_Favorable")
+          label = "Proof of Favorable";
+        else if (label === "companyFormation.maxico.proof_Of_Address")
+          label = "Proof of Address";
+
         if (!body.companyFormation.maxico[field]) {
           const message = `${label} ${ERROR_MSGS.KEY_REQUIRED}`;
           return Response.error({
@@ -187,7 +198,11 @@ const signUp = async (req, res) => {
         { field: "utility_Bill", label: "companyFormation.usa.utility_Bill" },
       ];
 
-      for (const { field, label } of requiredFields) {
+      for (let { field, label } of requiredFields) {
+        if (label === "companyFormation.usa.w9_Form") label = "W9 Form";
+        else if (label === "companyFormation.usa.utility_Bill")
+          label = "Utility Bill";
+
         if (!body.companyFormation.usa[field]) {
           const message = `${label} ${ERROR_MSGS.KEY_REQUIRED}`;
           return Response.error({
