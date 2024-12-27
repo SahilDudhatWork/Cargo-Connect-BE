@@ -26,7 +26,7 @@ const create = async (req, res) => {
       data: saveData || null,
     });
   } catch (error) {
-    console.error("error:", error);
+    console.log('error.message :>> ', error.message);
     return handleException(logger, res, error);
   }
 };
