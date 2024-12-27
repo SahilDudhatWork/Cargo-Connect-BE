@@ -15,6 +15,12 @@ const collectionSchema = new Schema(
       postalCode: {
         type: Number,
         default: null,
+        validate: {
+          validator: function (value) {
+            return Number.isInteger(value);
+          },
+          message: "Postal code must be a valid integer", // Custom message
+        },
       },
       laneNumber: {
         type: Number,
@@ -54,7 +60,7 @@ const collectionSchema = new Schema(
     addressType: {
       type: String,
       required: true,
-      enum:["PickUp","Drop"]
+      enum: ["PickUp", "Drop"],
     },
   },
   {
