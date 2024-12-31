@@ -90,7 +90,33 @@ const calculatePrice = (
 const createOrder = async (req, res) => {
   let { logger, userId, body } = req;
   try {
-    let { paymentDetail, userReference } = body;
+    let { paymentDetail, userReference, programming, schedule } = body;
+    if (!programming) {
+      return Response.error({
+        req,
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: `Programming ${ERROR_MSGS.KEY_REQUIRED} Please select either 'Schedule' or 'Instant'.`,
+      });
+    }
+    if (programming === "Schedule") {
+      if (!schedule.time) {
+        return Response.error({
+          req,
+          res,
+          status: STATUS_CODE.BAD_REQUEST,
+          msg: `Schedule time ${ERROR_MSGS.KEY_REQUIRED}`,
+        });
+      }
+      if (!schedule.date) {
+        return Response.error({
+          req,
+          res,
+          status: STATUS_CODE.BAD_REQUEST,
+          msg: `Schedule date ${ERROR_MSGS.KEY_REQUIRED}`,
+        });
+      }
+    }
 
     let checkUserReferenceExist = await Movement.aggregate([
       {
