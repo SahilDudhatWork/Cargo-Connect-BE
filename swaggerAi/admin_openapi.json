@@ -1802,6 +1802,43 @@
         }
       }
     },
+    "/v1/admin/activity/dashboard": {
+      "get": {
+        "tags": ["Activity"],
+        "summary": "Dashboard",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2024-09-01"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2024-09-03"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
     "/v1/admin/activity/user": {
       "get": {
         "tags": ["Activity"],

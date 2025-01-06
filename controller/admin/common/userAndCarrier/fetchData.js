@@ -56,9 +56,72 @@ const fetchData = async (req, res) => {
     const now = new Date();
     const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
+    const capitalType = type.charAt(0).toUpperCase() + type.slice(1);
+
     const getData = await Model.aggregate([
       { $match: qry },
       { $sort: sortCriteria },
+      {
+        $lookup: {
+          from: "movements",
+          let: { newId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [{ $eq: [`$${type}Id`, "$$newId"] }],
+                },
+              },
+            },
+            {
+              $lookup: {
+                from: "ratings",
+                let: { ids: "$_id" },
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: {
+                        $and: [
+                          { $eq: ["$movementId", "$$ids"] },
+                          { $eq: ["$type", capitalType] },
+                        ],
+                      },
+                    },
+                  },
+                  {
+                    $project: {
+                      rating: 1,
+                      movementId: 1,
+                      type: 1,
+                    },
+                  },
+                ],
+                as: "rating",
+              },
+            },
+            {
+              $unwind: "$rating",
+            },
+            {
+              $group: {
+                _id: null,
+                averageRating: { $avg: "$rating.rating" },
+                totalCount: { $sum: 1 },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                averageRating: 1,
+              },
+            },
+          ],
+          as: "movements",
+        },
+      },
+      {
+        $unwind: "$movements",
+      },
       {
         $addFields: {
           newRequest: {
@@ -68,6 +131,7 @@ const fetchData = async (req, res) => {
               else: false,
             },
           },
+          averageRating: "$movements.averageRating",
         },
       },
       {
@@ -78,9 +142,10 @@ const fetchData = async (req, res) => {
             {
               $project: {
                 __v: 0,
-                password: 0,
-                forgotPassword: 0,
                 token: 0,
+                password: 0,
+                movements: 0,
+                forgotPassword: 0,
               },
             },
           ],
