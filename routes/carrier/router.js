@@ -10,6 +10,7 @@ const subCarrierRoute = require("./subCarrier");
 const notificationRoute = require("./notification");
 const rolesRoute = require("./roles");
 const menuAccessRoute = require("./menuAccess");
+const activityRoute = require("./activity");
 const { carrierAuth } = require("../../middleware/authToken/carrierAuth");
 const {
   carrierPermission,
@@ -32,5 +33,7 @@ router.use("/notification", notificationRoute);
 router.use("/sub/carrier", subCarrierRoute);
 router.use("/roles", rolesRoute);
 router.use("/menu/access", menuAccessRoute);
+router.use("/activity", activityRoute);
+
 
 module.exports = router;
