@@ -100,7 +100,10 @@ const fetchData = async (req, res) => {
               },
             },
             {
-              $unwind: "$rating",
+              $unwind: {
+                path: "$rating",
+                preserveNullAndEmptyArrays: true,
+              },
             },
             {
               $group: {
@@ -120,10 +123,16 @@ const fetchData = async (req, res) => {
         },
       },
       {
-        $unwind: "$movements",
+        $unwind: {
+          path: "$movements",
+          preserveNullAndEmptyArrays: true,
+        },
       },
       {
         $addFields: {
+          averageRating: {
+            $ifNull: ["$movements.averageRating", 0],
+          },
           newRequest: {
             $cond: {
               if: { $gte: ["$createdAt", twentyFourHoursAgo] },
@@ -131,7 +140,6 @@ const fetchData = async (req, res) => {
               else: false,
             },
           },
-          averageRating: "$movements.averageRating",
         },
       },
       {
