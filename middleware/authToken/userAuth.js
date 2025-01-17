@@ -58,23 +58,23 @@ const userAuth = async (req, res, next) => {
         return Response.error(obj);
       }
 
-      if (checkUser.token.accessToken !== token) {
-        const obj = {
-          res,
-          status: STATUS_CODE.UN_AUTHORIZED,
-          msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
-        };
-        return Response.error(obj);
-      }
+      // if (checkUser.token.accessToken !== token) {
+      //   const obj = {
+      //     res,
+      //     status: STATUS_CODE.UN_AUTHORIZED,
+      //     msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
+      //   };
+      //   return Response.error(obj);
+      // }
 
-      if (checkUser && decoded.type !== checkUser.token.type) {
-        const obj = {
-          res,
-          status: STATUS_CODE.UN_AUTHORIZED,
-          msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
-        };
-        return Response.error(obj);
-      }
+      // if (checkUser && decoded.type !== checkUser.token.type) {
+      //   const obj = {
+      //     res,
+      //     status: STATUS_CODE.UN_AUTHORIZED,
+      //     msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
+      //   };
+      //   return Response.error(obj);
+      // }
       next();
     });
   } catch (error) {

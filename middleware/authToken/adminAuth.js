@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const Admin = require("../../model/admin/admin");
 const Response = require("../../helper/response");
-const { STATUS_CODE, ERROR_MSGS, INFO_MSGS } = require("../../helper/constant");
+const { STATUS_CODE, ERROR_MSGS } = require("../../helper/constant");
 const { handleException } = require("../../helper/exception");
 const { decrypt } = require("../../helper/encrypt-decrypt");
 
@@ -55,8 +55,8 @@ const adminAuth = async (req, res, next) => {
         };
         return Response.error(obj);
       }
-      let checkAdmin = await Admin.findById({ _id: req.adminId });
 
+      let checkAdmin = await Admin.findById({ _id: req.adminId });
       if (!checkAdmin) {
         const obj = {
           res,
@@ -66,23 +66,23 @@ const adminAuth = async (req, res, next) => {
         return Response.error(obj);
       }
 
-      if (checkAdmin.token.accessToken !== token) {
-        const obj = {
-          res,
-          status: STATUS_CODE.UN_AUTHORIZED,
-          msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
-        };
-        return Response.error(obj);
-      }
+      // if (checkAdmin.token.accessToken !== token) {
+      //   const obj = {
+      //     res,
+      //     status: STATUS_CODE.UN_AUTHORIZED,
+      //     msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
+      //   };
+      //   return Response.error(obj);
+      // }
 
-      if (decoded.type !== checkAdmin.token.type) {
-        const obj = {
-          res,
-          status: STATUS_CODE.UN_AUTHORIZED,
-          msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
-        };
-        return Response.error(obj);
-      }
+      // if (decoded.type !== checkAdmin.token.type) {
+      //   const obj = {
+      //     res,
+      //     status: STATUS_CODE.UN_AUTHORIZED,
+      //     msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
+      //   };
+      //   return Response.error(obj);
+      // }
       next();
     });
   } catch (error) {
@@ -92,6 +92,5 @@ const adminAuth = async (req, res, next) => {
 };
 
 module.exports = {
-  adminAuth,
   adminAuth,
 };

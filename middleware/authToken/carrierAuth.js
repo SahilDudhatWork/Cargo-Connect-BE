@@ -64,23 +64,23 @@ const carrierAuth = async (req, res, next) => {
           return Response.error(obj);
         }
 
-        if (checkCarrier.token.accessToken !== token) {
-          const obj = {
-            res,
-            status: STATUS_CODE.UN_AUTHORIZED,
-            msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
-          };
-          return Response.error(obj);
-        }
+        // if (checkCarrier.token.accessToken !== token) {
+        //   const obj = {
+        //     res,
+        //     status: STATUS_CODE.UN_AUTHORIZED,
+        //     msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
+        //   };
+        //   return Response.error(obj);
+        // }
 
-        if (checkCarrier && decoded.type !== checkCarrier.token.type) {
-          const obj = {
-            res,
-            status: STATUS_CODE.UN_AUTHORIZED,
-            msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
-          };
-          return Response.error(obj);
-        }
+        // if (checkCarrier && decoded.type !== checkCarrier.token.type) {
+        //   const obj = {
+        //     res,
+        //     status: STATUS_CODE.UN_AUTHORIZED,
+        //     msg: ERROR_MSGS.TOKEN_SESSION_EXPIRED,
+        //   };
+        //   return Response.error(obj);
+        // }
         next();
       }
     );

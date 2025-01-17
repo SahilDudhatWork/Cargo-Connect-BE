@@ -135,15 +135,6 @@ const createOrder = async (req, res) => {
       });
     }
 
-    if (!paymentDetail) {
-      return Response.error({
-        req,
-        res,
-        status: STATUS_CODE.BAD_REQUEST,
-        msg: `paymentDetail ${ERROR_MSGS.KEY_REQUIRED}`,
-      });
-    }
-
     const countMovement = await Movement.countDocuments();
     body.userId = userId;
     body.movementId = generateMovementId(countMovement);
@@ -152,10 +143,13 @@ const createOrder = async (req, res) => {
     }
 
     const saveData = await Movement.create(body);
-    paymentDetail.paymentId = paymentDetail.id;
-    paymentDetail.movementId = saveData._id;
-    paymentDetail.userId = userId;
-    await Payment.create(paymentDetail);
+
+    if (paymentDetail || paymentDetail?.id) {
+      paymentDetail.paymentId = paymentDetail.id;
+      paymentDetail.movementId = saveData._id;
+      paymentDetail.userId = userId;
+      await Payment.create(paymentDetail);
+    }
 
     let getData = await Movement.aggregate([
       { $match: { _id: saveData._id } },
