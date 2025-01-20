@@ -250,7 +250,7 @@ const appNotifyCarriers = async (carriers, movementId) => {
   await Promise.all(
     carriers.map(async (carrier) => {
       try {
-        const title = `Hi ${carrier.contactName}, a new movement request has been created! Are you able to accept it?`;
+        const title = `Hi ${carrier.contactName}, a new movement request has been created! Are you interested in accepting it?`;
         await sendNotificationInApp(carrier.deviceToken, title, body);
       } catch (error) {
         console.error(
@@ -268,7 +268,7 @@ const appNotifyCarriers = async (carriers, movementId) => {
           movementId: movementId,
           clientRelationId: carrier._id,
           collection: "Carriers",
-          title: `Hi ${carrier.contactName}, a new movement request has been created! Are you able to accept it?`,
+          title: `Hi ${carrier.contactName}, a new movement request has been created! Are you interested in accepting it?`,
           body,
         },
       },
@@ -281,7 +281,7 @@ const webNotifyCarriers = async (carriers, movementId) => {
   await Promise.all(
     carriers.map(async (carrier) => {
       try {
-        const title = `Hi ${carrier.contactName}, a new movement request has been created! Are you able to accept it?`;
+        const title = `Hi ${carrier.contactName}, a new movement request has been created! Are you interested in accepting it?`;
         await sendNotificationInWeb(carrier.webToken, title, body);
       } catch (error) {
         console.error(
@@ -299,7 +299,7 @@ const webNotifyCarriers = async (carriers, movementId) => {
           movementId: movementId,
           clientRelationId: carrier._id,
           collection: "Carriers",
-          title: `Hi ${carrier.contactName}, a new movement request has been created! Are you able to accept it?`,
+          title: `Hi ${carrier.contactName}, a new movement request has been created! Are you interested in accepting it?`,
           body,
         },
       },

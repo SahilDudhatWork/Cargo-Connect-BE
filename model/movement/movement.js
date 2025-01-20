@@ -90,16 +90,16 @@ const collectionSchema = new Schema(
       },
     },
     qrCode: {
-      type: String,
-      default: null,
+      type: Array,
+      default: [],
     },
     proofOfPhotography: {
       type: Array,
-      default: null,
+      default: [],
     },
     documents: {
       type: Array,
-      default: null,
+      default: [],
     },
     pickUpAddressIds: [{ type: ObjectId }],
     dropAddressIds: [{ type: ObjectId }],

@@ -9,7 +9,7 @@ const {
 const { handleException } = require("../../../helper/exception");
 
 const uploadMiddleware = upload.fields([
-  { name: "qrCode", maxCount: 1 },
+  { name: "qrCode", maxCount: 10 },
   { name: "proofOfPhotography", maxCount: 10 },
   { name: "documents", maxCount: 10 },
 ]);
@@ -21,15 +21,15 @@ const extractFileLocations = (files, fieldName) => {
 const uploadData = async (req, res) => {
   const { logger, params, files } = req;
   try {
+    const qrCode = extractFileLocations(files, "qrCode");
     const proofOfPhotography = extractFileLocations(
       files,
       "proofOfPhotography"
     );
     const documents = extractFileLocations(files, "documents");
-    const qrCode = files["qrCode"] ? files["qrCode"][0].location : null;
 
     const payload = {};
-    if (qrCode) payload.qrCode = qrCode;
+    if (qrCode.length > 0) payload.qrCode = qrCode;
     if (proofOfPhotography.length > 0)
       payload.proofOfPhotography = proofOfPhotography;
     if (documents.length > 0) payload.documents = documents;
@@ -40,7 +40,7 @@ const uploadData = async (req, res) => {
       { new: true }
     );
 
-    if (updateData.qrCode && updateData.documents?.length > 0) {
+    if (updateData.qrCode?.length > 0 && updateData.documents?.length > 0) {
       await Movement.findOneAndUpdate(
         { movementId: params.movementId },
         { status: "InProgress" },
