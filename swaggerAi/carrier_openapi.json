@@ -412,6 +412,10 @@
                     "type": "string",
                     "example": "1234567890abcdefghijklmnopqrstuvwxyz"
                   },
+                  "commercialReference[0][_id]": {
+                    "type": "string",
+                    "example": "reference _id 1"
+                  },
                   "commercialReference[0][companyName]": {
                     "type": "string",
                     "example": "Commercial Partner 1"
@@ -626,7 +630,7 @@
                 "example": {
                   "operatorId": "66d2e8d1c52af4bbc6be59esa",
                   "vehicleId": "66d2e8d1c52af4bbc6be59ef",
-                  "carrierReference": "NUSDJXQLKS8448448812"
+                  "carrierReference": "MSUBHRQF55"
                 }
               }
             }
@@ -686,7 +690,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "carrierReference": "MSUPUBHRQF5527977606"
+                  "carrierReference": "MSUBHRQF55"
                 }
               }
             }

@@ -91,6 +91,16 @@ const createOrder = async (req, res) => {
   let { logger, userId, body } = req;
   try {
     let { paymentDetail, userReference, programming, schedule } = body;
+
+    if (userReference.length > 10) {
+      return Response.error({
+        req,
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: ERROR_MSGS.USER_REFERENCE_LIMIT,
+      });
+    }
+
     if (!programming) {
       return Response.error({
         req,

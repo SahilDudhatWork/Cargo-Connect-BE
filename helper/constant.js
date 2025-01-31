@@ -81,8 +81,12 @@ module.exports = {
       "The orderId is missing. Please ensure the user has completed the approval process.",
     USER_REFERENCE_EXIST:
       "The user reference has already been used. Please provide a unique reference.",
+    USER_REFERENCE_LIMIT:
+      "The user reference must be exactly 10 characters long.",
     CARRIER_REFERENCE_EXIST:
       "The carrier reference has already been used. Please provide a unique reference.",
+    CARRIER_REFERENCE_LIMIT:
+      "The carrier reference must be exactly 10 characters long.",
   },
 
   INFO_MSGS: {

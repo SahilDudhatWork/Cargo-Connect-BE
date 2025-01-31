@@ -1179,7 +1179,7 @@
                 "type": "object",
                 "example": {
                   "carrierId": "66d7d7376c5866350b395ef9",
-                  "carrierReference": "MSUPUBHRQF5527977606"
+                  "carrierReference": "MSUBHRQF55"
                 }
               }
             }
@@ -1311,7 +1311,7 @@
                   "carrierId": "66c5aa038c1687ae1adc0c22",
                   "operatorId": "66c49148789b754e236b13ac",
                   "vehicleId": "66c7187e839c733bfb28ace2",
-                  "carrierReference": "NUSDJXQLKS8448448812"
+                  "carrierReference": "MSUBHRQF55"
                 }
               }
             }

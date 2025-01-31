@@ -46,6 +46,9 @@ const update = async (req, res) => {
 
     if (Array.isArray(commercialReference) && commercialReference.length > 0) {
       for (const reference of commercialReference) {
+        if (reference._id === "") {
+          delete reference._id;
+        }
         if (reference._id) {
           await Reference.findByIdAndUpdate(reference._id, reference, {
             new: true,

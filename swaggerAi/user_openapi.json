@@ -368,6 +368,10 @@
                     "type": "string",
                     "example": "1234567890abcdefghijklmnopqrstuvwxyz"
                   },
+                  "commercialReference[0][_id]": {
+                    "type": "string",
+                    "example": "reference _id 1"
+                  },
                   "commercialReference[0][companyName]": {
                     "type": "string",
                     "example": "reference company 1"
@@ -507,7 +511,7 @@
                   "typeOfTransportation": "66da9f1bf2cc8577ceb921a8",
                   "modeOfTransportation": "66da9f1bf2cc8577ceb921aa",
                   "port_BridgeOfCrossing": "66c873fd6adf34a5133ee001",
-                  "userReference": "MSUPUBHRQF5527977606",
+                  "userReference": "MSUBHRQF55",
                   "specialRequirements": [
                     "66c873fd6adf34a5133ee001",
                     "66c876a665d2600619d2a2d4"
@@ -620,7 +624,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "userReference": "MSUPUBHRQF5527977606"
+                  "userReference": "MSUBHRQF55"
                 }
               }
             }

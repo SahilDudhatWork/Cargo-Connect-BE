@@ -11,8 +11,17 @@ const {
 const referenceValidate = async (req, res) => {
   let { logger, userId, body } = req;
   try {
-    console.log("userId :>> ", userId);
     let { userReference } = body;
+
+    if (userReference.length > 10) {
+      return Response.error({
+        req,
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: ERROR_MSGS.USER_REFERENCE_LIMIT,
+      });
+    }
+
     let checkUserReferenceExist = await Movement.aggregate([
       {
         $match: { userId: new ObjectId(userId), userReference: userReference },

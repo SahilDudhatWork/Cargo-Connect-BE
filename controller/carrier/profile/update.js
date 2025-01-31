@@ -53,6 +53,9 @@ const update = async (req, res) => {
 
     if (Array.isArray(commercialReference) && commercialReference.length > 0) {
       for (const reference of commercialReference) {
+        if (reference._id === "") {
+          delete reference._id;
+        }
         if (reference._id) {
           await Reference.findByIdAndUpdate(reference._id, reference, {
             new: true,
@@ -119,7 +122,9 @@ const update = async (req, res) => {
       ? files["insurancePolicy"][0].location
       : fetchCarrier?.insurancePolicy;
     body.oea = files?.oea ? files["oea"][0].location : fetchCarrier?.oea;
-    body.ctpat = files?.ctpat ? files["ctpat"][0].location : fetchCarrier?.ctpat;
+    body.ctpat = files?.ctpat
+      ? files["ctpat"][0].location
+      : fetchCarrier?.ctpat;
 
     if (companyFormationType === "USA") {
       const hasMaxicoFields = maxicoFields.some((field) => field !== undefined);

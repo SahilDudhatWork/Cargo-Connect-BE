@@ -14,6 +14,15 @@ const hendleRequest = async (req, res) => {
     const { id } = params;
     const { carrierId, operatorId, vehicleId, carrierReference } = body;
 
+    if (carrierReference.length > 10) {
+      return Response.error({
+        req,
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: ERROR_MSGS.CARRIER_REFERENCE_LIMIT,
+      });
+    }
+
     let checkCarrierReferenceExist = await Movement.aggregate([
       {
         $match: {

@@ -27,7 +27,11 @@ const create = async (req, res) => {
       };
       return Response.error(obj);
     }
-    const checkMobileExist = await Operator.findOne({ operatorNumber });
+    const checkMobileExist = await Operator.findOne({
+      operatorNumber,
+      status: "Active",
+    });
+
     if (checkMobileExist) {
       const obj = {
         res,

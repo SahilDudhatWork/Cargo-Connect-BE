@@ -66,7 +66,7 @@ const collectionSchema = new Schema(
     },
     status: {
       type: String,
-      default: "Deactive",
+      default: "Active",
       enum: ["Active", "Deactive"],
     },
     lat: {
