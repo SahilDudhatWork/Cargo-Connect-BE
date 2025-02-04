@@ -122,6 +122,10 @@ const collectionSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    trailer: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,
