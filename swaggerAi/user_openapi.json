@@ -512,6 +512,7 @@
                   "modeOfTransportation": "66da9f1bf2cc8577ceb921aa",
                   "port_BridgeOfCrossing": "66c873fd6adf34a5133ee001",
                   "userReference": "MSUBHRQF55",
+                  "trailer": "String",
                   "specialRequirements": [
                     "66c873fd6adf34a5133ee001",
                     "66c876a665d2600619d2a2d4"
