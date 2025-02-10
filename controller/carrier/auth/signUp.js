@@ -167,7 +167,7 @@ const signUp = async (req, res) => {
         },
       ];
 
-      for (const { field, label } of requiredFields) {
+      for (let { field, label } of requiredFields) {
         if (label === "companyFormation.maxico.copia_Rfc_Form")
           label = "COPIA RCF Form";
         else if (
@@ -214,7 +214,7 @@ const signUp = async (req, res) => {
         { field: "utility_Bill", label: "companyFormation.usa.utility_Bill" },
       ];
 
-      for (const { field, label } of requiredFields) {
+      for (let { field, label } of requiredFields) {
         if (label === "companyFormation.usa.w9_Form") label = "W9 Form";
         else if (label === "companyFormation.usa.utility_Bill")
           label = "Utility Bill";
