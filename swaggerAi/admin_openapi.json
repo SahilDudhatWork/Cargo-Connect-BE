@@ -3503,7 +3503,7 @@
         }
       }
     },
-    "/v1/common/qr&proof&doc/{movementId}": {
+    "/v1/common/qr&proof/{movementId}": {
       "post": {
         "tags": ["Qr & Proof & Doc"],
         "summary": "Upload",
@@ -3528,10 +3528,6 @@
                     "format": "binary"
                   },
                   "proofOfPhotography": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "documents": {
                     "type": "string",
                     "format": "binary"
                   }

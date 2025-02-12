@@ -1,9 +1,7 @@
 const { S3Client } = require("@aws-sdk/client-s3");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
-const path = require("path");
 
-// AWS S3 Configuration using AWS SDK v3
 const s3 = new S3Client({
   region: process.env.AWS_S3_REGION,
   credentials: {
@@ -12,12 +10,31 @@ const s3 = new S3Client({
   },
 });
 
-// File filter for validation
+const allowedFormats = [
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "text/plain",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "application/pdf",
+];
+
 const fileFilter = (req, file, cb) => {
-  cb(null, true);
+  if (allowedFormats.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(
+      new Error(
+        "Invalid file type. Only .XLS, .XLSX, .TXT, .DOC, .DOCX, .JPG, .PNG, .PDF are allowed."
+      ),
+      false
+    );
+  }
 };
 
-// Multer S3 Storage Configuration
 const upload = multer({
   storage: multerS3({
     s3: s3,

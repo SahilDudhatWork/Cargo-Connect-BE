@@ -413,7 +413,7 @@
         }
       }
     },
-    "/v1/common/qr&proof&doc/{movementId}": {
+    "/v1/common/qr&proof/{movementId}": {
       "post": {
         "tags": ["Qr & Proof & Doc"],
         "summary": "Upload",
@@ -440,10 +440,6 @@
                   "proofOfPhotography": {
                     "type": "string",
                     "format": "binary"
-                  },
-                  "documents": {
-                    "type": "string",
-                    "format": "binary"
                   }
                 }
               }
@@ -465,6 +461,97 @@
         "responses": {
           "200": {
             "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/common/qr&proof/doc/operator/{movementId}": {
+      "post": {
+        "tags": ["Qr & Proof & Doc"],
+        "summary": "Upload Documents",
+        "parameters": [
+          {
+            "name": "movementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cartaPorte": { "type": "string", "format": "binary" },
+                  "cartaPorteFolio": { "type": "string", "format": "binary" },
+                  "doda": { "type": "string", "format": "binary" },
+                  "entryPrefileInbond": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "aceEManifest": { "type": "string", "format": "binary" },
+                  "itnInbondNoItnNeeded": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "letterWithInstructionsMemo": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "oversizeNotificationUser": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "oversizePermitCarrier": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "overweightPermit": { "type": "string", "format": "binary" },
+                  "temperatureControlIn": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "temperatureControlOut": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "hazmatBol": { "type": "string", "format": "binary" },
+                  "hazmatSdsSafetyDataSheet": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "sagarpaPackageAgriculture": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "profepaPackageEnvironmental": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "intercambioTrailerRelease": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "sedenaPackage": { "type": "string", "format": "binary" },
+                  "proofOfDelivery": { "type": "string", "format": "binary" },
+                  "damagesDiscrepancies": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The data was uploaded successfully.",
             "content": {
               "application/json": {}
             }

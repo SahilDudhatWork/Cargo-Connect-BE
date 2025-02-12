@@ -6,7 +6,7 @@ const tokenVerifyRoute = require("./tokenVerify");
 const bennersRoute = require("./benners");
 const imgDeleteRoute = require("./imgDelete");
 const locatOperatorRoute = require("./locatOperator");
-const qr_Proof_Doc_Route = require("./qr&proof&doc");
+const qr_Proof_Route = require("./qr&proof&doc");
 const fetchGuidelinePagesRoute = require("./guidelinePages");
 
 router.get("/", (req, res) => {
@@ -16,7 +16,7 @@ router.get("/", (req, res) => {
 router.use("/tokenVerify", tokenVerifyRoute);
 router.use("/otp", otpRoute);
 router.use("/resetPassword", resetPasswordRoute);
-router.use("/qr&proof&doc", qr_Proof_Doc_Route);
+router.use("/qr&proof", qr_Proof_Route);
 router.use("/benners", bennersRoute);
 router.use("/imgDelete", imgDeleteRoute);
 router.use("/locat/operator", locatOperatorRoute);
