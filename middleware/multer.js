@@ -24,6 +24,7 @@ const allowedFormats = [
 ];
 
 const fileFilter = (req, file, cb) => {
+  console.log("file.mimetype", file.mimetype);
   if (allowedFormats.includes(file.mimetype)) {
     cb(null, true);
   } else {
