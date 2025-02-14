@@ -12,15 +12,31 @@ const s3 = new S3Client({
 });
 
 const allowedFormats = [
-  "application/vnd.ms-excel",
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  "text/plain",
-  "application/msword",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "application/pdf",
+  // Excel
+  "application/vnd.ms-excel", // .xls
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
+  "application/xls", // .xls (alternative)
+  "application/xlsx", // .xlsx (alternative)
+
+  // Text
+  "text/plain", // .txt
+
+  // Word Documents
+  "application/msword", // .doc
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
+
+  // Images
+  "image/jpeg", // .jpg, .jpeg
+  "image/jpg", // .jpg (alternative)
+  "image/png", // .png
+
+  // PDFs
+  "application/pdf", // .pdf
+  "application/x-pdf", // .pdf (alternative)
+  "application/acrobat", // .pdf (alternative)
+  "applications/vnd.pdf", // .pdf (alternative)
+  "text/pdf", // .pdf (alternative)
+  "text/x-pdf", // .pdf (alternative)
 ];
 
 const fileFilter = (req, file, cb) => {
