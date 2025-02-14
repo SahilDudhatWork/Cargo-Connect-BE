@@ -37,6 +37,7 @@ const allowedFormats = [
   "applications/vnd.pdf", // .pdf (alternative)
   "text/pdf", // .pdf (alternative)
   "text/x-pdf", // .pdf (alternative)
+  "application/octet-stream",
 ];
 
 const fileFilter = (req, file, cb) => {
