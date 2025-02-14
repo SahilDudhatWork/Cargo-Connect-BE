@@ -1,3 +1,4 @@
+const { handleException } = require("../helper/exception");
 const { S3Client } = require("@aws-sdk/client-s3");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
@@ -26,12 +27,11 @@ const fileFilter = (req, file, cb) => {
   if (allowedFormats.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(
-      new Error(
-        "Invalid file type. Only .XLS, .XLSX, .TXT, .DOC, .DOCX, .JPG, .PNG, .PDF are allowed."
-      ),
-      false
+    const error = new Error(
+      "Invalid file type. Only .XLS, .XLSX, .TXT, .DOC, .DOCX, .JPG, .PNG, .PDF are allowed."
     );
+    handleException(req.logger, req.res, error);
+    cb(error, false);
   }
 };
 
