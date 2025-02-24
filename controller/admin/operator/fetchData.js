@@ -15,7 +15,7 @@ const fetchData = async (req, res) => {
   try {
     const { carrierId } = params;
     const actId = parseInt(carrierId);
-    let { page, limit, keyWord } = query;
+    let { page, limit, sortBy, keyWord } = query;
 
     const fetchCarrier = await findOne(actId, Carrier);
     if (!fetchCarrier) {
@@ -41,6 +41,12 @@ const fetchData = async (req, res) => {
           },
         },
       ];
+    }
+
+    if (sortBy === "active") {
+      qry.status = "Active";
+    } else if (sortBy === "deactive") {
+      qry.status = "Deactive";
     }
 
     offset = page || 1;

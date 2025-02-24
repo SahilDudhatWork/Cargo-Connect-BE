@@ -14,7 +14,7 @@ const fetchData = async (req, res) => {
   const { logger, params, query } = req;
   try {
     const { carrierId } = params;
-    let { page, limit, keyWord } = query;
+    let { page, limit, sortBy, keyWord } = query;
     const actId = parseInt(carrierId);
 
     const fetchCarrier = await findOne(actId, Carrier);
@@ -31,6 +31,12 @@ const fetchData = async (req, res) => {
 
     if (keyWord) {
       qry.$or = [{ vehicleName: { $regex: keyWord, $options: "i" } }];
+    }
+
+    if (sortBy === "active") {
+      qry.status = "Active";
+    } else if (sortBy === "deactive") {
+      qry.status = "Deactive";
     }
 
     offset = page || 1;

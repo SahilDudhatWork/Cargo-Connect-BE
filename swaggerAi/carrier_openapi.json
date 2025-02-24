@@ -784,6 +784,14 @@
               "type": "integer"
             },
             "example": "10"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["Active", "Deactive"]
+            }
           }
         ],
         "responses": {
@@ -983,6 +991,14 @@
               "type": "integer"
             },
             "example": "10"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["Active", "Deactive"]
+            }
           }
         ],
         "responses": {

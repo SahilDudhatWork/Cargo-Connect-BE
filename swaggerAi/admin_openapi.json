@@ -1416,6 +1416,14 @@
               "type": "integer"
             },
             "example": "10"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "recent"
           }
         ],
         "responses": {
@@ -1624,6 +1632,14 @@
               "type": "integer"
             },
             "example": "10"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "recent"
           }
         ],
         "responses": {
