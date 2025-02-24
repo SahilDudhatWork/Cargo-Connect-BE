@@ -731,7 +731,9 @@
                   "mxDriversLicense": "MXDL98765",
                   "mxDriversLicenseExpirationDate": "2027-10-15",
                   "usDriversLicense": "USDL54321",
-                  "usDriversLicenseExpirationDate": "2028-03-22"
+                  "usDriversLicenseExpirationDate": "2028-03-22",
+                  "visaExpirationDate": "2028-03-22",
+                  "customsBadgeExpirationDate": "2028-03-22"
                 }
               }
             }
@@ -782,14 +784,6 @@
               "type": "integer"
             },
             "example": "10"
-          },
-          {
-            "name": "sortBy",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": ["Active", "Deactive"]
-            }
           }
         ],
         "responses": {
@@ -858,7 +852,9 @@
                   "mxDriversLicense": "MXDL98765",
                   "mxDriversLicenseExpirationDate": "2027-10-15",
                   "usDriversLicense": "USDL54321",
-                  "usDriversLicenseExpirationDate": "2028-03-22"
+                  "usDriversLicenseExpirationDate": "2028-03-22",
+                  "visaExpirationDate": "2028-03-22",
+                  "customsBadgeExpirationDate": "2028-03-22"
                 }
               }
             }
@@ -987,14 +983,6 @@
               "type": "integer"
             },
             "example": "10"
-          },
-          {
-            "name": "sortBy",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": ["Active", "Deactive"]
-            }
           }
         ],
         "responses": {

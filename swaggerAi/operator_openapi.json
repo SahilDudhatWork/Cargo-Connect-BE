@@ -123,6 +123,8 @@
                   "mxDriversLicenseExpirationDate": "2027-10-15T00:00:00.000Z",
                   "usDriversLicense": "USDL54321",
                   "usDriversLicenseExpirationDate": "2028-03-22T00:00:00.000Z",
+                  "visaExpirationDate": "2028-03-22",
+                  "customsBadgeExpirationDate": "2028-03-22",
                   "isAssigned": false,
                   "status": "Deactive"
                 }

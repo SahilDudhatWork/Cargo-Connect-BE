@@ -60,6 +60,14 @@ const collectionSchema = new Schema(
       type: Date,
       default: null,
     },
+    visaExpirationDate: {
+      type: Date,
+      default: null,
+    },
+    customsBadgeExpirationDate: {
+      type: Date,
+      default: null,
+    },
     isAssigned: {
       type: Boolean,
       default: false,

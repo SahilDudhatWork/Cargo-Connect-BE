@@ -15,24 +15,28 @@ const email = (value, helper) => {
   return value;
 };
 
-const passwordSchema = Joi.string()
-  .empty()
-  .required()
-  .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/, {
-    name: "required",
-  })
-  .message(
-    `Enter a password with minimum one upper case, lower case and number, ranging from 8-15 characters`
-  )
-  .min(8)
-  .max(15)
-  .messages({
-    "string.base": `Enter a password with minimum one upper case, lower case and number, ranging from 8-15 characters`,
-    "string.empty": `Password is required`,
-    "string.min": `Password must have a minimum of {#limit} characters`,
-    "string.max": `Password can have a maximum of {#limit} characters`,
-    "any.required": `Password is required`,
-  });
+// const passwordSchema = Joi.string()
+//   .empty()
+//   .required()
+//   .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/, {
+//     name: "required",
+//   })
+//   .message(
+//     `Enter a password with minimum one upper case, lower case and number, ranging from 8-15 characters`
+//   )
+//   .min(8)
+//   .max(15)
+//   .messages({
+//     "string.base": `Enter a password with minimum one upper case, lower case and number, ranging from 8-15 characters`,
+//     "string.empty": `Password is required`,
+//     "string.min": `Password must have a minimum of {#limit} characters`,
+//     "string.max": `Password can have a maximum of {#limit} characters`,
+//     "any.required": `Password is required`,
+//   });
+const passwordSchema = Joi.string().empty().required().messages({
+  "string.empty": `Password is required`,
+  "any.required": `Password is required`,
+});
 
 // const mobileSchema = Joi.number()
 //   .integer()

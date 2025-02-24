@@ -13,7 +13,7 @@ const {
 const fetchData = async (req, res) => {
   const { logger, carrierId, query } = req;
   try {
-    let { page, limit, sortBy, keyWord } = query;
+    let { page, limit, keyWord } = query;
 
     let getCarrier = await Carrier.findById(carrierId);
 
@@ -30,19 +30,20 @@ const fetchData = async (req, res) => {
       qry.$or = [{ vehicleName: { $regex: keyWord, $options: "i" } }];
     }
 
-    if (sortBy === "active") {
-      qry.status = "Active";
-    } else if (sortBy === "deactive") {
-      qry.status = "Deactive";
-    }
-
     offset = page || 1;
     limit = limit || 10;
     const skip = limit * (offset - 1);
 
     const getData = await Vehicle.aggregate([
       { $match: qry },
-      { $sort: { createdAt: -1 } },
+      {
+        $addFields: {
+          statusOrder: {
+            $cond: { if: { $eq: ["$status", "Active"] }, then: 0, else: 1 },
+          },
+        },
+      },
+      { $sort: { statusOrder: 1, createdAt: -1 } },
       {
         $facet: {
           paginatedResult: [
@@ -54,6 +55,7 @@ const fetchData = async (req, res) => {
                 password: 0,
                 forgotPassword: 0,
                 token: 0,
+                statusOrder: 0,
               },
             },
           ],
@@ -65,18 +67,14 @@ const fetchData = async (req, res) => {
     const result = getData[0];
     let response = await paginationResponse(req, res, offset, limit, result);
 
-    const statusCode =
-      response.response.length > 0 ? STATUS_CODE.OK : STATUS_CODE.OK;
-    const message =
-      response.response.length > 0
-        ? INFO_MSGS.SUCCESS
-        : ERROR_MSGS.DATA_NOT_FOUND;
-
-    return Response[statusCode === STATUS_CODE.OK ? "success" : "error"]({
+    return Response.success({
       req,
       res,
-      status: statusCode,
-      msg: message,
+      status: response.response.length > 0 ? STATUS_CODE.OK : STATUS_CODE.OK,
+      msg:
+        response.response.length > 0
+          ? INFO_MSGS.SUCCESS
+          : ERROR_MSGS.DATA_NOT_FOUND,
       data: response,
     });
   } catch (error) {
