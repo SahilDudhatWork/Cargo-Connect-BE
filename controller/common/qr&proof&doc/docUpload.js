@@ -125,45 +125,45 @@ const docUpload = async (req, res) => {
       });
     }
 
-    const transitInfo = await TransitInfo.findOne({
-      "typeOfService._id": fetchData.typeOfService,
-    });
+    // const transitInfo = await TransitInfo.findOne({
+    //   "typeOfService._id": fetchData.typeOfService,
+    // });
 
-    if (!transitInfo) {
-      return Response.error({
-        res,
-        status: STATUS_CODE.NOT_FOUND,
-        msg: "Transit info not found",
-      });
-    }
+    // if (!transitInfo) {
+    //   return Response.error({
+    //     res,
+    //     status: STATUS_CODE.NOT_FOUND,
+    //     msg: "Transit info not found",
+    //   });
+    // }
 
-    const [typeOfService] = transitInfo.typeOfService.filter(
-      (item) => item._id.toString() === fetchData.typeOfService.toString()
-    );
+    // const [typeOfService] = transitInfo.typeOfService.filter(
+    //   (item) => item._id.toString() === fetchData.typeOfService.toString()
+    // );
 
-    if (!typeOfService) {
-      return Response.error({
-        res,
-        status: STATUS_CODE.NOT_FOUND,
-        msg: "Matching typeOfService not found",
-      });
-    }
+    // if (!typeOfService) {
+    //   return Response.error({
+    //     res,
+    //     status: STATUS_CODE.NOT_FOUND,
+    //     msg: "Matching typeOfService not found",
+    //   });
+    // }
 
-    const validationErrors = await validateRoleFields(
-      role,
-      files,
-      typeOfService.title
-    );
+    // const validationErrors = await validateRoleFields(
+    //   role,
+    //   files,
+    //   typeOfService.title
+    // );
 
-    if (validationErrors.length > 0) {
-      return Response.error({
-        res,
-        status: STATUS_CODE.BAD_REQUEST,
-        msg: `The following field(s) are not valid for ${role} with typeOfService '${
-          typeOfService.title
-        }': ${validationErrors.join(", ")}`,
-      });
-    }
+    // if (validationErrors.length > 0) {
+    //   return Response.error({
+    //     res,
+    //     status: STATUS_CODE.BAD_REQUEST,
+    //     msg: `The following field(s) are not valid for ${role} with typeOfService '${
+    //       typeOfService.title
+    //     }': ${validationErrors.join(", ")}`,
+    //   });
+    // }
 
     const documents = extractFileLocations(files);
 
