@@ -23,7 +23,7 @@ const collectionSchema = new Schema(
         },
       },
       laneNumber: {
-        type: Number,
+        type: String,
         default: null,
       },
       additionalDetails: {

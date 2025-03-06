@@ -33,13 +33,13 @@ const uploadData = async (req, res) => {
       { new: true }
     );
 
-    if (updateData.qrCode?.length > 0) {
-      await Movement.findOneAndUpdate(
-        { movementId: params.movementId },
-        { status: "InProgress" },
-        { new: true }
-      );
-    }
+    // if (updateData.qrCode?.length > 0) {
+      // await Movement.findOneAndUpdate(
+      //   { movementId: params.movementId },
+      //   { status: "InProgress" },
+      //   { new: true }
+      // );
+    // }
 
     return Response.success({
       res,
