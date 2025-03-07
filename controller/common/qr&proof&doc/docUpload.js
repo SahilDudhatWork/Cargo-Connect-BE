@@ -1,14 +1,166 @@
 const Movement = require("../../../model/movement/movement");
-const TransitInfo = require("../../../model/admin/transitInfo");
 const Response = require("../../../helper/response");
 const upload = require("../../../middleware/multer");
 const { handleException } = require("../../../helper/exception");
+const {
+  getTypeOfService_TypeOfTransportation_Pipeline,
+  fetchVehicles_Pipeline,
+  addresses_Pipeline,
+  operators_Pipeline,
+  port_BridgeOfCrossing_Pipeline,
+  specialrequirements_Pipeline,
+  users_Pipeline,
+  carrier_Pipeline,
+  ratting_Pipeline,
+} = require("../../../utils/lookups");
 const {
   STATUS_CODE,
   ERROR_MSGS,
   INFO_MSGS,
 } = require("../../../helper/constant");
 
+const requiredConditions = {
+  cartaPorte: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "",
+  },
+  cartaPorteFolio: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "MEXICO",
+    speReq: "",
+    modeOfTrans: "",
+  },
+  doda: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "",
+  },
+  entryPrefileInbond: {
+    typeOfService: ["Northbound Service"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "",
+  },
+  aceEManifest: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "",
+  },
+  itnInbondNoItnNeeded: {
+    typeOfService: ["Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "",
+  },
+  letterWithInstructionsMemo: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "",
+  },
+  oversizeNotificationUser: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "Over Size",
+    modeOfTrans: "",
+  },
+  oversizePermitCarrier: {
+    typeOfService: "",
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "Over Size",
+    modeOfTrans: "",
+  },
+  overweightPermit: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "Over Weight",
+    modeOfTrans: "",
+  },
+  temperatureControlIn: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "",
+  },
+  temperatureControlOut: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "Reefer",
+  },
+  hazmatBol: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "Hazmat",
+    modeOfTrans: "",
+  },
+  hazmatSdsSafetyDataSheet: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "Hazmat",
+    modeOfTrans: "",
+  },
+  sagarpaPackageAgriculture: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "Sagarpa Inspection MX",
+    modeOfTrans: "",
+  },
+  profepaPackageEnvironmental: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "Profepa Inspection MX",
+    modeOfTrans: "",
+  },
+  intercambioTrailerRelease: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "FTL",
+  },
+  sedenaPackage: {
+    typeOfService: ["Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "Sedena Inspection MX",
+    modeOfTrans: "",
+  },
+  proofOfDelivery: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "",
+  },
+  damagesDiscrepancies: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "",
+  },
+};
 const rolePermissions = {
   User: [
     "cartaPorte",
@@ -44,59 +196,155 @@ const rolePermissions = {
     "damagesDiscrepancies",
   ],
 };
-
-const fieldTypeRestrictions = {
-  cartaPorte: ["Northbound Service", "Southbound"],
-  cartaPorteFolio: ["Northbound Service", "Southbound"],
-  doda: ["Northbound Service", "Southbound"],
-  entryPrefileInbond: ["Northbound Service"],
-  aceEManifest: ["Northbound Service", "Southbound"],
-  itnInbondNoItnNeeded: ["Southbound"],
-  letterWithInstructionsMemo: ["Northbound Service", "Southbound"],
-  oversizeNotificationUser: ["Northbound Service", "Southbound"],
-  oversizePermitCarrier: ["Other"],
-  overweightPermit: ["Northbound Service", "Southbound"],
-  temperatureControlIn: ["Northbound Service", "Southbound"],
-  temperatureControlOut: ["Northbound Service", "Southbound"],
-  hazmatBol: ["Northbound Service", "Southbound"],
-  hazmatSdsSafetyDataSheet: ["Northbound Service", "Southbound"],
-  sagarpaPackageAgriculture: ["Northbound Service", "Southbound"],
-  profepaPackageEnvironmental: ["Northbound Service", "Southbound"],
-  intercambioTrailerRelease: ["Northbound Service", "Southbound"],
-  sedenaPackage: ["Southbound"],
-  proofOfDelivery: ["Northbound Service", "Southbound"],
-  damagesDiscrepancies: ["Northbound Service", "Southbound"],
+const servicePermissions = {
+  NorthboundService: [
+    "cartaPorte",
+    "cartaPorteFolio",
+    "doda",
+    "entryPrefileInbond",
+    "aceEManifest",
+    "letterWithInstructionsMemo",
+    "oversizeNotificationUser",
+    "overweightPermit",
+    "temperatureControlOut",
+    "hazmatBol",
+    "hazmatSdsSafetyDataSheet",
+    "sagarpaPackageAgriculture",
+    "profepaPackageEnvironmental",
+    "intercambioTrailerRelease",
+    "proofOfDelivery",
+    "damagesDiscrepancies",
+    "oversizePermitCarrier",
+  ],
+  Southbound: [
+    "cartaPorte",
+    "cartaPorteFolio",
+    "doda",
+    "aceEManifest",
+    "itnInbondNoItnNeeded",
+    "letterWithInstructionsMemo",
+    "oversizeNotificationUser",
+    "overweightPermit",
+    "temperatureControlOut",
+    "hazmatBol",
+    "hazmatSdsSafetyDataSheet",
+    "sagarpaPackageAgriculture",
+    "profepaPackageEnvironmental",
+    "intercambioTrailerRelease",
+    "sedenaPackage",
+    "proofOfDelivery",
+    "damagesDiscrepancies",
+    "oversizePermitCarrier",
+  ],
+  Other: ["oversizePermitCarrier"],
 };
 
-const validateRoleFields = (role, files, typeOfServiceTitle) => {
-  const allowedFields = rolePermissions[role] || [];
-  const invalidKeys = [];
+//   return Object.keys(docObj).every((key) => {
+//     const allowedTypes = requiredConditions[key];
 
-  Object.keys(files).forEach((key) => {
-    if (!allowedFields.includes(key)) {
-      invalidKeys.push(key);
-    } else {
-      const allowedTypes = fieldTypeRestrictions[key];
-      if (allowedTypes) {
-        if (
-          (allowedTypes.includes("Other") &&
-            ["Northbound Service", "Southbound"].includes(
-              typeOfServiceTitle
-            )) ||
-          (!allowedTypes.includes(typeOfServiceTitle) &&
-            !allowedTypes.includes("Other"))
-        ) {
-          invalidKeys.push(key);
+//     if (!allowedTypes) return false;
+//     console.log('key :>> ', key);
+//     console.log('allowedTypes :>> ', allowedTypes);
+//     console.log('obj :>> ', obj);
+
+//     console.log('typeOfService :>> ', allowedTypes.typeOfService.includes(obj.typeOfService));
+//     console.log('userComForType :>> ', !allowedTypes.userComForType || allowedTypes.userComForType.includes(obj.userComForType));
+//     console.log('carrierComForType :>> ', !allowedTypes.carrierComForType || allowedTypes.carrierComForType.includes(obj.carrierComForType));
+//     console.log('speReq :>> ', !allowedTypes.speReq || allowedTypes.speReq.includes(obj.speReq));
+//     console.log('modeOfTrans :>> ', !allowedTypes.modeOfTrans || allowedTypes.modeOfTrans.includes(obj.modeOfTrans));
+
+//     console.log('------------------------------------------------------------------ :>> ');
+
+//     return true
+
+//   });
+// };
+// const validateRoleFields = (docObj, obj) => {
+//   return Object.keys(docObj).every((key) => {
+//     const allowedTypes = requiredConditions[key];
+//     console.log('key :>> ', key);
+//     console.log('docObj[key] :>> ', docObj[key].length);
+//     console.log('allowedTypes :>> ', allowedTypes);
+
+//   });
+// };
+const validateRoleFields = (role, docObj, obj) => {
+  const reqFields = rolePermissions[role];
+  const reqSer = servicePermissions[obj.typeOfService.replace(" ", "")];
+  const matchingKeys = reqFields.filter((key) => reqSer.includes(key));
+  const resultObj = {};
+
+  matchingKeys.map((key) => {
+    const filDoc = docObj[key];
+    const filReqCond = requiredConditions[key];
+    const cleanedFilReqCond = Object.fromEntries(
+      Object.entries(filReqCond).filter(([_, value]) => {
+        return Array.isArray(value) ? value.length > 0 : value !== "";
+      })
+    );
+
+    console.log(
+      "------------------------------ ",
+      key,
+      "------------------------------:>> "
+    );
+    // console.log("filDoc :>> ", filDoc.length >= 1);
+    // console.log("cleanedFilReqCond :>> ", cleanedFilReqCond);
+    // console.log("obj :>> ", obj);
+    const finalObj = {};
+    Object.keys(cleanedFilReqCond).every((k) => {
+      // console.log("------------ :>> ");
+      // console.log("k :>> ", k);
+      // console.log(
+      //   "------------------------------------------------------------ :>> "
+      // );
+      let includesCheck = false;
+
+      if (filDoc.length >= 1) {
+        if (Array.isArray(cleanedFilReqCond[k])) {
+          if (Array.isArray(obj[k])) {
+            includesCheck = obj[k].some((val) =>
+              cleanedFilReqCond[k].includes(val)
+            );
+          } else {
+            includesCheck = cleanedFilReqCond[k].includes(obj[k]);
+          }
+        } else {
+          if (Array.isArray(obj[k])) {
+            includesCheck = obj[k].includes(cleanedFilReqCond[k]);
+          } else {
+            includesCheck = cleanedFilReqCond[k] === obj[k];
+          }
         }
+      } else {
+        includesCheck = false;
       }
-    }
-  });
+      console.log(
+        "Req:>> ",
+        cleanedFilReqCond[k],
+        "====",
+        obj[k],
+        "==> : ",
+        includesCheck
+      );
+      finalObj[k] = includesCheck;
+      return true;
+    });
+    const result = Object.values(finalObj).every((val) => val);
 
-  return invalidKeys;
+    console.log("finalObj:", finalObj);
+    console.log("Final Result:", result);
+    resultObj[key] = result;
+
+  });
+  console.log("resultObj :>> ", resultObj);
+  const Finalresult = Object.values(resultObj).every((val) => val);
+  console.log('Finalresult :>> ', Finalresult);
+
 };
 
 const uploadDocsMiddleware = upload.fields(
-  Object.keys(fieldTypeRestrictions).map((field) => ({
+  Object.keys(requiredConditions).map((field) => ({
     name: field,
     maxCount: 10,
   }))
@@ -115,7 +363,7 @@ const extractFileLocations = (files) => {
 const docUpload = async (req, res) => {
   const { logger, params, files, role } = req;
   try {
-    const fetchData = await Movement.findOne({ movementId: params.movementId });
+    const fetchData = await fetchMovement(params.movementId);
 
     if (!fetchData) {
       return Response.error({
@@ -125,122 +373,78 @@ const docUpload = async (req, res) => {
       });
     }
 
-    // const transitInfo = await TransitInfo.findOne({
-    //   "typeOfService._id": fetchData.typeOfService,
-    // });
-
-    // if (!transitInfo) {
-    //   return Response.error({
-    //     res,
-    //     status: STATUS_CODE.NOT_FOUND,
-    //     msg: "Transit info not found",
-    //   });
-    // }
-
-    // const [typeOfService] = transitInfo.typeOfService.filter(
-    //   (item) => item._id.toString() === fetchData.typeOfService.toString()
-    // );
-
-    // if (!typeOfService) {
-    //   return Response.error({
-    //     res,
-    //     status: STATUS_CODE.NOT_FOUND,
-    //     msg: "Matching typeOfService not found",
-    //   });
-    // }
-
-    // const validationErrors = await validateRoleFields(
-    //   role,
-    //   files,
-    //   typeOfService.title
-    // );
-
-    // if (validationErrors.length > 0) {
-    //   return Response.error({
-    //     res,
-    //     status: STATUS_CODE.BAD_REQUEST,
-    //     msg: `The following field(s) are not valid for ${role} with typeOfService '${
-    //       typeOfService.title
-    //     }': ${validationErrors.join(", ")}`,
-    //   });
-    // }
-
     const documents = extractFileLocations(files);
 
     const docObj = {
       cartaPorte:
-        documents?.cartaPorte ??
-        fetchData?.documents.get("cartaPorteFolio") ??
-        [],
+        documents?.cartaPorte ?? fetchData?.documents["cartaPorteFolio"] ?? "",
       cartaPorteFolio:
         documents?.cartaPorteFolio ??
-        fetchData?.documents.get("cartaPorteFolio") ??
-        [],
-      doda: documents?.doda ?? fetchData?.documents.get("doda") ?? [],
+        fetchData?.documents["cartaPorteFolio"] ??
+        "",
+      doda: documents?.doda ?? fetchData?.documents["doda"] ?? "",
       entryPrefileInbond:
         documents?.entryPrefileInbond ??
-        fetchData?.documents.get("entryPrefileInbond") ??
-        [],
+        fetchData?.documents["entryPrefileInbond"] ??
+        "",
       aceEManifest:
-        documents?.aceEManifest ?? fetchData?.documents.get("aceEManifest") ?? [],
+        documents?.aceEManifest ?? fetchData?.documents["aceEManifest"] ?? "",
       itnInbondNoItnNeeded:
         documents?.itnInbondNoItnNeeded ??
-        fetchData?.documents.get("itnInbondNoItnNeeded") ??
-        [],
+        fetchData?.documents["itnInbondNoItnNeeded"] ??
+        "",
       letterWithInstructionsMemo:
         documents?.letterWithInstructionsMemo ??
-        fetchData?.documents.get("letterWithInstructionsMemo") ??
-        [],
+        fetchData?.documents["letterWithInstructionsMemo"] ??
+        "",
       oversizeNotificationUser:
         documents?.oversizeNotificationUser ??
-        fetchData?.documents.get("oversizeNotificationUser") ??
-        [],
+        fetchData?.documents["oversizeNotificationUser"] ??
+        "",
       oversizePermitCarrier:
         documents?.oversizePermitCarrier ??
-        fetchData?.documents.get("oversizePermitCarrier") ??
-        [],
+        fetchData?.documents["oversizePermitCarrier"] ??
+        "",
       overweightPermit:
         documents?.overweightPermit ??
-        fetchData?.documents.get("overweightPermit") ??
-        [],
+        fetchData?.documents["overweightPermit"] ??
+        "",
       temperatureControlIn:
         documents?.temperatureControlIn ??
-        fetchData?.documents.get("temperatureControlIn") ??
-        [],
+        fetchData?.documents["temperatureControlIn"] ??
+        "",
       temperatureControlOut:
         documents?.temperatureControlOut ??
-        fetchData?.documents.get("temperatureControlOut") ??
-        [],
+        fetchData?.documents["temperatureControlOut"] ??
+        "",
       hazmatBol:
-        documents?.hazmatBol ?? fetchData?.documents.get("hazmatBol") ?? [],
+        documents?.hazmatBol ?? fetchData?.documents["hazmatBol"] ?? "",
       hazmatSdsSafetyDataSheet:
         documents?.hazmatSdsSafetyDataSheet ??
-        fetchData?.documents.get("hazmatSdsSafetyDataSheet") ??
-        [],
+        fetchData?.documents["hazmatSdsSafetyDataSheet"] ??
+        "",
       sagarpaPackageAgriculture:
         documents?.sagarpaPackageAgriculture ??
-        fetchData?.documents.get("sagarpaPackageAgriculture") ??
-        [],
+        fetchData?.documents["sagarpaPackageAgriculture"] ??
+        "",
       profepaPackageEnvironmental:
         documents?.profepaPackageEnvironmental ??
-        fetchData?.documents.get("profepaPackageEnvironmental") ??
-        [],
+        fetchData?.documents["profepaPackageEnvironmental"] ??
+        "",
       intercambioTrailerRelease:
         documents?.intercambioTrailerRelease ??
-        fetchData?.documents.get("intercambioTrailerRelease") ??
-        [],
+        fetchData?.documents["intercambioTrailerRelease"] ??
+        "",
       sedenaPackage:
-        documents?.sedenaPackage ??
-        fetchData?.documents.get("sedenaPackage") ??
-        [],
+        documents?.sedenaPackage ?? fetchData?.documents["sedenaPackage"] ?? "",
       proofOfDelivery:
         documents?.proofOfDelivery ??
-        fetchData?.documents.get("proofOfDelivery") ??
-        [],
+        fetchData?.documents["proofOfDelivery"] ??
+        "",
       damagesDiscrepancies:
         documents?.damagesDiscrepancies ??
-        fetchData?.documents.get("damagesDiscrepancies") ??
-        [],
+        fetchData?.documents["damagesDiscrepancies"] ??
+        "",
     };
 
     await Movement.findOneAndUpdate(
@@ -248,7 +452,27 @@ const docUpload = async (req, res) => {
       { documents: docObj },
       { new: true }
     );
-    0;
+
+    const obj = {
+      typeOfService: fetchData?.typeOfService?.title,
+      userComForType: fetchData?.userData?.companyFormationType,
+      carrierComForType: fetchData?.carrierData?.companyFormationType,
+      speReq: fetchData?.specialRequirements.map((req) => req.type),
+      modeOfTrans: [
+        fetchData?.modeOfTransportation?.title,
+        fetchData?.typeOfTransportation?.title,
+      ],
+    };
+    const validationErrors = await validateRoleFields(role, docObj, obj);
+    // console.log("validationErrors :>> ", validationErrors);
+
+    if (validationErrors) {
+      await Movement.findOneAndUpdate(
+        { movementId: params.movementId },
+        { status: "InProgress" },
+        { new: true }
+      );
+    }
 
     return Response.success({
       res,
@@ -260,6 +484,31 @@ const docUpload = async (req, res) => {
     console.log("error :>> ", error);
     return handleException(logger, res, error);
   }
+};
+
+const fetchMovement = async (id) => {
+  let [getData] = await Movement.aggregate([
+    {
+      $match: {
+        movementId: id,
+      },
+    },
+    ...getTypeOfService_TypeOfTransportation_Pipeline(),
+    ...fetchVehicles_Pipeline(),
+    ...addresses_Pipeline(),
+    ...operators_Pipeline(),
+    ...port_BridgeOfCrossing_Pipeline(),
+    ...specialrequirements_Pipeline(),
+    ...users_Pipeline(),
+    ...carrier_Pipeline(),
+    ...ratting_Pipeline(),
+    {
+      $project: {
+        __v: 0,
+      },
+    },
+  ]);
+  return getData;
 };
 
 module.exports = {
