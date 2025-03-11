@@ -739,7 +739,7 @@
                   "addressDetails": {
                     "buildinName": "Sunrise Apartments",
                     "postalCode": 123456,
-                    "laneNumber": 5,
+                    "laneNumber": "5",
                     "additionalDetails": "Near Central Park",
                     "lat": "40.7128",
                     "long": "-74.0060"
@@ -838,7 +838,7 @@
                   "addressDetails": {
                     "buildinName": "Sunrise Apartments",
                     "postalCode": 123456,
-                    "laneNumber": 5,
+                    "laneNumber": "5",
                     "additionalDetails": "Near Central Park",
                     "lat": "40.7128",
                     "long": "-74.0060"
