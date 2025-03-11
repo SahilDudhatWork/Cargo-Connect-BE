@@ -3,19 +3,32 @@ const Carrier = require("../../../model/carrier/carrier");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { paginationResponse } = require("../../../utils/paginationFormate");
-const { carrier_Pipeline } = require("../../../utils/lookups");
+const { findOne } = require("../../../utils/helper");
 const {
   STATUS_CODE,
   ERROR_MSGS,
   INFO_MSGS,
 } = require("../../../helper/constant");
 
-const fetchData = async (req, res) => {
+const fetchDataByCarrier = async (req, res) => {
   const { logger, params, query } = req;
   try {
+    const { carrierId } = params;
+    const actId = parseInt(carrierId);
     let { page, limit, sortBy, keyWord } = query;
 
-    let qry = {};
+    const fetchCarrier = await findOne(actId, Carrier);
+    if (!fetchCarrier) {
+      return Response.success({
+        req,
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: ERROR_MSGS.DATA_NOT_AVAILABLE,
+      });
+    }
+
+    let qry = { carrierId: fetchCarrier._id };
+
     if (keyWord) {
       qry.$or = [
         { operatorName: { $regex: keyWord, $options: "i" } },
@@ -49,7 +62,6 @@ const fetchData = async (req, res) => {
           },
         },
       },
-      ...carrier_Pipeline(),
       { $sort: { statusOrder: 1, createdAt: -1 } },
       {
         $facet: {
@@ -90,5 +102,5 @@ const fetchData = async (req, res) => {
 };
 
 module.exports = {
-  fetchData,
+  fetchDataByCarrier,
 };

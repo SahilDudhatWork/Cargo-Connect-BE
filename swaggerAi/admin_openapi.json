@@ -1376,10 +1376,62 @@
         }
       }
     },
-    "/v1/admin/operator/fetch/{carrierAccountId}": {
+    "/v1/admin/operator/": {
       "get": {
         "tags": ["Operator"],
         "summary": "Fetch Data",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "keyWord",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "10"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "recent"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/operator/fetch/{carrierAccountId}": {
+      "get": {
+        "tags": ["Operator"],
+        "summary": "Fetch Data By Carrier Id",
         "security": [
           {
             "bearerAuth": []

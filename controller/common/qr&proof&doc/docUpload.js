@@ -377,74 +377,74 @@ const docUpload = async (req, res) => {
 
     const docObj = {
       cartaPorte:
-        documents?.cartaPorte ?? fetchData?.documents["cartaPorteFolio"] ?? "",
+        documents?.cartaPorte ?? fetchData?.documents["cartaPorteFolio"] ?? [],
       cartaPorteFolio:
         documents?.cartaPorteFolio ??
         fetchData?.documents["cartaPorteFolio"] ??
-        "",
-      doda: documents?.doda ?? fetchData?.documents["doda"] ?? "",
+        [],
+      doda: documents?.doda ?? fetchData?.documents["doda"] ?? [],
       entryPrefileInbond:
         documents?.entryPrefileInbond ??
         fetchData?.documents["entryPrefileInbond"] ??
-        "",
+        [],
       aceEManifest:
-        documents?.aceEManifest ?? fetchData?.documents["aceEManifest"] ?? "",
+        documents?.aceEManifest ?? fetchData?.documents["aceEManifest"] ?? [],
       itnInbondNoItnNeeded:
         documents?.itnInbondNoItnNeeded ??
         fetchData?.documents["itnInbondNoItnNeeded"] ??
-        "",
+        [],
       letterWithInstructionsMemo:
         documents?.letterWithInstructionsMemo ??
         fetchData?.documents["letterWithInstructionsMemo"] ??
-        "",
+        [],
       oversizeNotificationUser:
         documents?.oversizeNotificationUser ??
         fetchData?.documents["oversizeNotificationUser"] ??
-        "",
+        [],
       oversizePermitCarrier:
         documents?.oversizePermitCarrier ??
         fetchData?.documents["oversizePermitCarrier"] ??
-        "",
+        [],
       overweightPermit:
         documents?.overweightPermit ??
         fetchData?.documents["overweightPermit"] ??
-        "",
+        [],
       temperatureControlIn:
         documents?.temperatureControlIn ??
         fetchData?.documents["temperatureControlIn"] ??
-        "",
+        [],
       temperatureControlOut:
         documents?.temperatureControlOut ??
         fetchData?.documents["temperatureControlOut"] ??
-        "",
+        [],
       hazmatBol:
         documents?.hazmatBol ?? fetchData?.documents["hazmatBol"] ?? "",
       hazmatSdsSafetyDataSheet:
         documents?.hazmatSdsSafetyDataSheet ??
         fetchData?.documents["hazmatSdsSafetyDataSheet"] ??
-        "",
+        [],
       sagarpaPackageAgriculture:
         documents?.sagarpaPackageAgriculture ??
         fetchData?.documents["sagarpaPackageAgriculture"] ??
-        "",
+        [],
       profepaPackageEnvironmental:
         documents?.profepaPackageEnvironmental ??
         fetchData?.documents["profepaPackageEnvironmental"] ??
-        "",
+        [],
       intercambioTrailerRelease:
         documents?.intercambioTrailerRelease ??
         fetchData?.documents["intercambioTrailerRelease"] ??
-        "",
+        [],
       sedenaPackage:
-        documents?.sedenaPackage ?? fetchData?.documents["sedenaPackage"] ?? "",
+        documents?.sedenaPackage ?? fetchData?.documents["sedenaPackage"] ?? [],
       proofOfDelivery:
         documents?.proofOfDelivery ??
         fetchData?.documents["proofOfDelivery"] ??
-        "",
+        [],
       damagesDiscrepancies:
         documents?.damagesDiscrepancies ??
         fetchData?.documents["damagesDiscrepancies"] ??
-        "",
+        [],
     };
 
     await Movement.findOneAndUpdate(
