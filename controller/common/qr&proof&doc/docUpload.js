@@ -418,7 +418,7 @@ const docUpload = async (req, res) => {
         fetchData?.documents["temperatureControlOut"] ??
         [],
       hazmatBol:
-        documents?.hazmatBol ?? fetchData?.documents["hazmatBol"] ?? "",
+        documents?.hazmatBol ?? fetchData?.documents["hazmatBol"] ?? [],
       hazmatSdsSafetyDataSheet:
         documents?.hazmatSdsSafetyDataSheet ??
         fetchData?.documents["hazmatSdsSafetyDataSheet"] ??
