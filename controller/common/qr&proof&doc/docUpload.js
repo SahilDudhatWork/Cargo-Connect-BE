@@ -377,7 +377,7 @@ const docUpload = async (req, res) => {
 
     const docObj = {
       cartaPorte:
-        documents?.cartaPorte ?? fetchData?.documents["cartaPorteFolio"] ?? [],
+        documents?.cartaPorte ?? fetchData?.documents["cartaPorte"] ?? [],
       cartaPorteFolio:
         documents?.cartaPorteFolio ??
         fetchData?.documents["cartaPorteFolio"] ??
