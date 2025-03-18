@@ -1,4 +1,5 @@
 const Movement = require("../../../model/movement/movement");
+const Carrier = require("../../../model/carrier/carrier");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { ObjectId } = require("mongoose").Types;
@@ -67,6 +68,17 @@ const hendleRequest = async (req, res) => {
     body.vehicleId = new ObjectId(vehicleId);
     body.status = "Pending";
     body.isAssign = true;
+
+    body.reqDocFields = getData.reqDocFields || {};
+    const { companyFormationType } = await Carrier.findById(carrierId);
+    if (companyFormationType === "MEXICO") {
+      body.reqDocFields.Carrier = {
+        ...(getData.reqDocFields?.Carrier instanceof Map
+          ? Object.fromEntries(getData.reqDocFields.Carrier)
+          : getData.reqDocFields?.Carrier || {}),
+        cartaPorteFolio: false,
+      };
+    }
 
     // Update the Movement document
     let updateData = await Movement.findOneAndUpdate({ movementId: id }, body, {

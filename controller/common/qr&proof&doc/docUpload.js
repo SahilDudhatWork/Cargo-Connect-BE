@@ -239,43 +239,24 @@ const servicePermissions = {
   Other: ["oversizePermitCarrier"],
 };
 
-//   return Object.keys(docObj).every((key) => {
-//     const allowedTypes = requiredConditions[key];
-
-//     if (!allowedTypes) return false;
-//     console.log('key :>> ', key);
-//     console.log('allowedTypes :>> ', allowedTypes);
-//     console.log('obj :>> ', obj);
-
-//     console.log('typeOfService :>> ', allowedTypes.typeOfService.includes(obj.typeOfService));
-//     console.log('userComForType :>> ', !allowedTypes.userComForType || allowedTypes.userComForType.includes(obj.userComForType));
-//     console.log('carrierComForType :>> ', !allowedTypes.carrierComForType || allowedTypes.carrierComForType.includes(obj.carrierComForType));
-//     console.log('speReq :>> ', !allowedTypes.speReq || allowedTypes.speReq.includes(obj.speReq));
-//     console.log('modeOfTrans :>> ', !allowedTypes.modeOfTrans || allowedTypes.modeOfTrans.includes(obj.modeOfTrans));
-
-//     console.log('------------------------------------------------------------------ :>> ');
-
-//     return true
-
-//   });
-// };
-// const validateRoleFields = (docObj, obj) => {
-//   return Object.keys(docObj).every((key) => {
-//     const allowedTypes = requiredConditions[key];
-//     console.log('key :>> ', key);
-//     console.log('docObj[key] :>> ', docObj[key].length);
-//     console.log('allowedTypes :>> ', allowedTypes);
-
-//   });
-// };
 const validateRoleFields = (role, docObj, obj) => {
   const reqFields = rolePermissions[role];
   const reqSer = servicePermissions[obj.typeOfService.replace(" ", "")];
   const matchingKeys = reqFields.filter((key) => reqSer.includes(key));
   const resultObj = {};
 
-  matchingKeys.map((key) => {
-    const filDoc = docObj[key];
+  const filteredKeys = matchingKeys.filter(
+    (key) => Array.isArray(docObj[key]) && docObj[key].length > 0
+  );
+
+  const filteredDocObj = Object.fromEntries(
+    Object.entries(docObj).filter(
+      ([key, value]) => Array.isArray(value) && value.length > 0
+    )
+  );
+
+  filteredKeys.map((key) => {
+    const filDoc = filteredDocObj[key];
     const filReqCond = requiredConditions[key];
     const cleanedFilReqCond = Object.fromEntries(
       Object.entries(filReqCond).filter(([_, value]) => {
@@ -288,16 +269,8 @@ const validateRoleFields = (role, docObj, obj) => {
       key,
       "------------------------------:>> "
     );
-    // console.log("filDoc :>> ", filDoc.length >= 1);
-    // console.log("cleanedFilReqCond :>> ", cleanedFilReqCond);
-    // console.log("obj :>> ", obj);
     const finalObj = {};
     Object.keys(cleanedFilReqCond).every((k) => {
-      // console.log("------------ :>> ");
-      // console.log("k :>> ", k);
-      // console.log(
-      //   "------------------------------------------------------------ :>> "
-      // );
       let includesCheck = false;
 
       if (filDoc.length >= 1) {
@@ -335,12 +308,10 @@ const validateRoleFields = (role, docObj, obj) => {
     console.log("finalObj:", finalObj);
     console.log("Final Result:", result);
     resultObj[key] = result;
-
   });
   console.log("resultObj :>> ", resultObj);
   const Finalresult = Object.values(resultObj).every((val) => val);
-  console.log('Finalresult :>> ', Finalresult);
-
+  console.log("Finalresult :>> ", Finalresult);
 };
 
 const uploadDocsMiddleware = upload.fields(
@@ -453,20 +424,42 @@ const docUpload = async (req, res) => {
       { new: true }
     );
 
-    const obj = {
-      typeOfService: fetchData?.typeOfService?.title,
-      userComForType: fetchData?.userData?.companyFormationType,
-      carrierComForType: fetchData?.carrierData?.companyFormationType,
-      speReq: fetchData?.specialRequirements.map((req) => req.type),
-      modeOfTrans: [
-        fetchData?.modeOfTransportation?.title,
-        fetchData?.typeOfTransportation?.title,
-      ],
-    };
-    const validationErrors = await validateRoleFields(role, docObj, obj);
-    // console.log("validationErrors :>> ", validationErrors);
+    // const obj = {
+    //   typeOfService: fetchData?.typeOfService?.title,
+    //   userComForType: fetchData?.userData?.companyFormationType,
+    //   carrierComForType: fetchData?.carrierData?.companyFormationType,
+    //   speReq: fetchData?.specialRequirements.map((req) => req.type),
+    //   modeOfTrans: [
+    //     fetchData?.modeOfTransportation?.title,
+    //     fetchData?.typeOfTransportation?.title,
+    //   ],
+    // };
 
-    if (validationErrors) {
+    if (fetchData.reqDocFields[role]) {
+      Object.keys(fetchData.reqDocFields[role]).forEach((key) => {
+        if (docObj.hasOwnProperty(key)) {
+          fetchData.reqDocFields[role][key] = docObj[key].length > 0;
+        }
+      });
+
+      await Movement.findOneAndUpdate(
+        { movementId: params.movementId },
+        { $set: { [`reqDocFields.${role}`]: fetchData.reqDocFields[role] } },
+        { new: true }
+      );
+    }
+    const isAllUserTrue = Object.values(
+      fetchData.reqDocFields.User || {}
+    ).every(Boolean);
+    const isAllCarrierTrue = Object.values(
+      fetchData.reqDocFields.Carrier || {}
+    ).every(Boolean);
+
+    const finalResult = isAllUserTrue && isAllCarrierTrue;
+
+    // const validationErrors = await validateRoleFields(role, docObj, obj);
+
+    if (finalResult) {
       await Movement.findOneAndUpdate(
         { movementId: params.movementId },
         { status: "InProgress" },
