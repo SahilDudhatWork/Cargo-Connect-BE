@@ -23,7 +23,7 @@ const getDetails = async (req, res) => {
   try {
     const { id } = params;
 
-    let getData = await Movement.aggregate([
+    let [getData] = await Movement.aggregate([
       {
         $match: {
           movementId: id,
@@ -44,8 +44,6 @@ const getDetails = async (req, res) => {
         },
       },
     ]);
-
-    getData = getData[0];
 
     const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.OK;
     const message = getData ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;

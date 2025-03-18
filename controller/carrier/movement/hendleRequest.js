@@ -75,6 +75,17 @@ const hendleRequest = async (req, res) => {
       status: "Pending",
       isAssign: true,
     };
+
+    updatedData.reqDocFields = getData.reqDocFields || {};
+    const { companyFormationType } = await Carrier.findById(carrierId);
+    if (companyFormationType === "MEXICO") {
+      updatedData.reqDocFields.Carrier = {
+        ...(getData.reqDocFields?.Carrier instanceof Map
+          ? Object.fromEntries(getData.reqDocFields.Carrier)
+          : getData.reqDocFields?.Carrier || {}),
+        cartaPorteFolio: false,
+      };
+    }
     let updateData = await Movement.findOneAndUpdate(
       { movementId: id },
       updatedData,

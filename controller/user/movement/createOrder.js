@@ -217,9 +217,110 @@ const createOrder = async (req, res) => {
     };
 
     getData.amountDetails = amountDetails;
+
+    let reqDocFields = { User: {}, Carrier: {} };
+    const {
+      typeOfService,
+      specialRequirements = [],
+      typeOfTransportation,
+      modeOfTransportation,
+    } = getData;
+
+    const serviceTitle = typeOfService?.title;
+    const isNorthOrSouth = ["Northbound Service", "Southbound"].includes(
+      serviceTitle
+    );
+    const isSouthbound = serviceTitle === "Southbound";
+    const isNorthbound = serviceTitle === "Northbound Service";
+
+    const userConditions = [
+      {
+        fields: ["cartaPorte", "doda", "letterWithInstructionsMemo"],
+        condition: isNorthOrSouth,
+      },
+      { fields: ["entryPrefileInbond"], condition: isNorthbound },
+      { fields: ["itnInbondNoItnNeeded"], condition: isSouthbound },
+      {
+        fields: ["intercambioTrailerRelease"],
+        condition: typeOfTransportation?.title === "FTL",
+      },
+      {
+        fields: ["oversizeNotificationUser"],
+        condition: isNorthOrSouth,
+        special: "Over Size",
+      },
+      {
+        fields: ["overweightPermit"],
+        condition: isNorthOrSouth,
+        special: "Over Weight",
+      },
+      {
+        fields: ["hazmatBol", "hazmatSdsSafetyDataSheet"],
+        condition: isNorthOrSouth,
+        special: "Hazmat (USD405)",
+      },
+      {
+        fields: ["sagarpaPackageAgriculture"],
+        condition: isNorthOrSouth,
+        special: "Profepa Inspection MX (USD 45)",
+      },
+      {
+        fields: ["profepaPackageEnvironmental"],
+        condition: isNorthOrSouth,
+        special: "Sagarpa Inspection MX (USD 45)",
+      },
+      {
+        fields: ["sedenaPackage"],
+        condition: isSouthbound,
+        special: "Sedena Inspection MX (USD 0)",
+      },
+    ];
+    const carrierConditions = [
+      { fields: ["aceEManifest"], condition: isNorthOrSouth },
+      {
+        fields: ["oversizePermitCarrier"],
+        condition: true,
+        special: "Over Size",
+      },
+      {
+        fields: ["overweightPermit"],
+        condition: isNorthOrSouth,
+        special: "Over Weight",
+      },
+      {
+        fields: ["temperatureControlIn", "temperatureControlOut"],
+        condition: modeOfTransportation?.title === "Reefer",
+      },
+    ];
+
+    userConditions.forEach(({ fields, condition, special }) => {
+      if (
+        condition &&
+        (!special ||
+          specialRequirements.some((req) => req.type.includes(special)))
+      ) {
+        fields.forEach((field) => (reqDocFields.User[field] = false));
+      }
+    });
+    carrierConditions.forEach(({ fields, condition, special }) => {
+      if (
+        condition &&
+        (!special ||
+          specialRequirements.some((req) => req.type.includes(special)))
+      ) {
+        fields.forEach((field) => (reqDocFields.Carrier[field] = false));
+      }
+    });
+
     await Movement.updateOne(
       { _id: saveData._id },
-      { $set: { amountDetails } }
+      {
+        $set: {
+          amountDetails,
+          "reqDocFields.User": { ...reqDocFields.User },
+          "reqDocFields.Carrier": { ...reqDocFields.Carrier },
+        },
+      }
     );
 
     const carriersDeviceToken = await Carrier.find({

@@ -149,6 +149,18 @@ const collectionSchema = new Schema(
       type: String,
       default: null,
     },
+    reqDocFields: {
+      User: {
+        type: Map,
+        of: Boolean,
+        default: {},
+      },
+      Carrier: {
+        type: Map,
+        of: Boolean,
+        default: {},
+      },
+    },
   },
   {
     timestamps: true,
