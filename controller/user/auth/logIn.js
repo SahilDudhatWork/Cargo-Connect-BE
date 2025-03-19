@@ -8,7 +8,7 @@ const {
 } = require("../../../helper/constant");
 const { decrypt } = require("../../../helper/encrypt-decrypt");
 const { handleException } = require("../../../helper/exception");
-const { VerificationEmail } = require("../../../utils/nodemailerOtp");
+const { VerificationEmail } = require("../../../utils/nodemailer");
 require("dotenv").config();
 
 // Login

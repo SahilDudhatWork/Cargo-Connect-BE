@@ -1,4 +1,8 @@
 const Movement = require("../../../model/movement/movement");
+const User = require("../../../model/user/user");
+const Admin = require("../../../model/admin/admin");
+const Carrier = require("../../../model/carrier/carrier");
+const Notification = require("../../../model/common/notification");
 const Payment = require("../../../model/movement/payment");
 const TransitInfo = require("../../../model/admin/transitInfo");
 const Coordinates = require("../../../model/common/coordinates");
@@ -6,14 +10,13 @@ const Setting = require("../../../model/common/settings");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { generateMovementId } = require("../../../utils/generateUniqueId");
+const { sendNotification } = require("../../../utils/nodemailer");
 const {
   sendNotificationInApp,
 } = require("../../../utils/sendNotificationInApp");
 const {
   sendNotificationInWeb,
 } = require("../../../utils/sendNotificationInWeb");
-const Notification = require("../../../model/common/notification");
-const Carrier = require("../../../model/carrier/carrier");
 const { ObjectId } = require("mongoose").Types;
 const {
   getTypeOfService_TypeOfTransportation_Pipeline,
@@ -323,15 +326,19 @@ const createOrder = async (req, res) => {
       }
     );
 
-    const carriersDeviceToken = await Carrier.find({
-      deviceToken: { $exists: true, $ne: null },
+    const carriers = await Carrier.find({
+      $or: [
+        { deviceToken: { $exists: true, $ne: null } },
+        { webToken: { $exists: true, $ne: null } },
+      ],
     });
-    const carriersWebToken = await Carrier.find({
-      webToken: { $exists: true, $ne: null },
-    });
+    const admins = await Admin.find();
 
-    await appNotifyCarriers(carriersDeviceToken, saveData._id);
-    await webNotifyCarriers(carriersWebToken, saveData._id);
+    const userDetails = await User.findById(userId);
+
+    await notifyCarriers(carriers, saveData._id, amountDetails);
+    await notifyUser(userDetails, saveData._id);
+    await notifyAdmin(admins, saveData._id, getData.movementId);
 
     const statusCode = saveData ? STATUS_CODE.CREATED : STATUS_CODE.BAD_REQUEST;
     const message = saveData
@@ -355,14 +362,31 @@ module.exports = {
   createOrder,
 };
 
-const appNotifyCarriers = async (carriers, movementId) => {
+const notifyCarriers = async (carriers, movementId, amount) => {
   const body = "Cargo Connect";
+  const successfulNotifications = new Map();
 
   await Promise.all(
     carriers.map(async (carrier) => {
+      const title = `Hi ${carrier.contactName}, New service is available: [Origin → Destination] for [${amount}]. Accept before another carrier accepts.`;
+
+      let notified = false;
+
       try {
-        const title = `Hi ${carrier.contactName}, a new movement request has been created! Are you interested in accepting it?`;
-        await sendNotificationInApp(carrier.deviceToken, title, body);
+        if (carrier.deviceToken) {
+          await sendNotificationInApp(carrier.deviceToken, title, body);
+          notified = true;
+        }
+
+        if (carrier.webToken) {
+          await sendNotificationInWeb(carrier.webToken, title, body);
+          notified = true;
+        }
+
+        // Store only unique carriers in the map to avoid duplicates
+        if (notified && !successfulNotifications.has(carrier._id)) {
+          successfulNotifications.set(carrier._id, { carrier, title });
+        }
       } catch (error) {
         console.error(
           `Failed to notify carrier ${carrier.contactName}:`,
@@ -372,48 +396,112 @@ const appNotifyCarriers = async (carriers, movementId) => {
     })
   );
 
-  await Notification.bulkWrite(
-    carriers.map((carrier) => ({
-      insertOne: {
-        document: {
-          movementId: movementId,
-          clientRelationId: carrier._id,
-          collection: "Carriers",
-          title: `Hi ${carrier.contactName}, a new movement request has been created! Are you interested in accepting it?`,
-          body,
-        },
-      },
-    }))
-  );
+  if (successfulNotifications.size > 0) {
+    await Notification.bulkWrite(
+      Array.from(successfulNotifications.values()).map(
+        ({ carrier, title }) => ({
+          insertOne: {
+            document: {
+              movementId,
+              clientRelationId: carrier._id,
+              collection: "Carriers",
+              title,
+              body,
+            },
+          },
+        })
+      )
+    );
+  }
 };
-const webNotifyCarriers = async (carriers, movementId) => {
+
+const notifyAdmin = async (admins, movementId, movementAccId) => {
   const body = "Cargo Connect";
+  const successfulNotifications = new Map();
 
   await Promise.all(
-    carriers.map(async (carrier) => {
+    admins.map(async (admin) => {
+      const title = `Hi ${admin.contactName}, A new service request has been received, there are (${movementAccId}). Searching for carriers is in progress.`;
+
+      let notified = false;
+
       try {
-        const title = `Hi ${carrier.contactName}, a new movement request has been created! Are you interested in accepting it?`;
-        await sendNotificationInWeb(carrier.webToken, title, body);
+        if (admin.deviceToken) {
+          await sendNotificationInApp(admin.deviceToken, title, body);
+          notified = true;
+        }
+
+        if (admin.webToken) {
+          await sendNotificationInWeb(admin.webToken, title, body);
+          notified = true;
+        }
+
+        // Store only unique admins in the map to avoid duplicates
+        if (notified && !successfulNotifications.has(admin._id)) {
+          successfulNotifications.set(admin._id, { admin, title });
+        }
       } catch (error) {
         console.error(
-          `Failed to notify carrier ${carrier.contactName}:`,
+          `Failed to notify admin ${admin.contactName}:`,
           error.message
         );
       }
+      await sendNotification(
+        admin.email,
+        title,
+        admin.contactName,
+        "New Load Request Received"
+      );
     })
   );
 
-  await Notification.bulkWrite(
-    carriers.map((carrier) => ({
-      insertOne: {
-        document: {
-          movementId: movementId,
-          clientRelationId: carrier._id,
-          collection: "Carriers",
-          title: `Hi ${carrier.contactName}, a new movement request has been created! Are you interested in accepting it?`,
-          body,
-        },
-      },
-    }))
+  if (successfulNotifications.size > 0) {
+    await Notification.bulkWrite(
+      Array.from(successfulNotifications.values()).map(
+        ({ carrier, title }) => ({
+          insertOne: {
+            document: {
+              movementId,
+              clientRelationId: carrier._id,
+              collection: "Carriers",
+              title,
+              body,
+            },
+          },
+        })
+      )
+    );
+  }
+};
+
+const notifyUser = async (user, movementId) => {
+  const body = "Cargo Connect";
+  const title = `Hi ${user.contactName}, We have received your service request. We are looking for available carriers.`;
+
+  try {
+    if (user.deviceToken) {
+      await sendNotificationInApp(user.deviceToken, title, body);
+    } else if (user.webToken) {
+      await sendNotificationInWeb(user.webToken, title, body);
+    } else {
+      console.error(`No valid notification token for ${user.contactName}`);
+      return;
+    }
+  } catch (error) {
+    console.error(`Failed to notify ${user.contactName}:`, error.message);
+  }
+  await sendNotification(
+    user.email,
+    title,
+    user.contactName,
+    "Request Received"
   );
+
+  await Notification.create({
+    movementId,
+    clientRelationId: user._id,
+    collection: "Users",
+    title,
+    body,
+  });
 };

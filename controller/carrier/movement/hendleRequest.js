@@ -1,11 +1,13 @@
 const Movement = require("../../../model/movement/movement");
 const User = require("../../../model/user/user");
+const Admin = require("../../../model/admin/admin");
 const Carrier = require("../../../model/carrier/carrier");
 const Operator = require("../../../model/operator/operator");
 const Notification = require("../../../model/common/notification");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const { ObjectId } = require("mongoose").Types;
+const { sendNotification } = require("../../../utils/nodemailer");
 const {
   sendNotificationInApp,
 } = require("../../../utils/sendNotificationInApp");
@@ -94,7 +96,7 @@ const hendleRequest = async (req, res) => {
       }
     );
 
-    const [userData, carrierData, operatorData, notifications] =
+    const [userData, carrierData, operatorData, notifications, admins] =
       await getNotificationData(
         updateData.userId,
         carrierId,
@@ -102,13 +104,24 @@ const hendleRequest = async (req, res) => {
         updateData._id
       );
 
-    await updateNotifications(notifications, carrierId, id);
-    await sendUserNotification(userData, carrierData, updateData._id, id);
-    await sendOperatorNotification(
+    await updateNotifications(notifications, carrierId);
+    await sendUserLoadAcceptedNotification(userData, updateData._id);
+    await sendUserDriverAssignedNotification(
+      userData,
       operatorData,
+      updateData._id
+    );
+    await sendOperatorNewLoadAssignedNotification(operatorData, updateData._id);
+    await sendCarrierDriverAssignedNotification(carrierData, updateData._id);
+    await sendAdminLoadsAcceptedByCarriersNotification(
+      admins,
       carrierData,
-      updateData._id,
-      id
+      updateData._id
+    );
+    await sendAdminDriverAssignedToLoadNotification(
+      admins,
+      operatorData,
+      updateData._id
     );
 
     const statusCode = updateData
@@ -148,6 +161,7 @@ const getNotificationData = async (
     Notification.aggregate([
       { $match: { movementId, collection: "Carriers" } },
     ]),
+    Admin.find(),
   ]);
 };
 
@@ -168,78 +182,293 @@ const updateNotifications = async (notifications, carrierId) => {
   }
 };
 
-const sendUserNotification = async (
-  userData,
-  carrierData,
-  movementId,
-  movementAccId
-) => {
-  if (userData.deviceToken) {
-    const body = "Cargo Connect";
-    const title = `Hi ${userData.contactName}, your movement request ${movementAccId} has been approved by ${carrierData.contactName}.`;
+// Load Accepted Notification
+const sendUserLoadAcceptedNotification = async (userData, movementId) => {
+  const body = "Cargo Connect";
+  const title = `Hi ${userData.contactName}, Your service has been accepted by a carrier. You will receive the operator's details shortly.`;
 
-    await Promise.all([
-      sendNotificationInApp(userData.deviceToken, title, body),
-      Notification.create({
-        movementId,
-        clientRelationId: userData._id,
-        collection: "Users",
-        title,
-        body,
-      }),
-    ]);
+  const notificationTasks = [];
+
+  if (userData.deviceToken) {
+    notificationTasks.push(
+      sendNotificationInApp(userData.deviceToken, title, body)
+    );
   }
   if (userData.webToken) {
-    const body = "Cargo Connect";
-    const title = `Hi ${userData.contactName}, your movement request ${movementAccId} has been approved by ${carrierData.contactName}.`;
-
-    await Promise.all([
-      sendNotificationInWeb(userData.webToken, title, body),
+    notificationTasks.push(
+      sendNotificationInWeb(userData.webToken, title, body)
+    );
+  }
+  if (userData.deviceToken || userData.webToken) {
+    notificationTasks.push(
       Notification.create({
         movementId,
         clientRelationId: userData._id,
         collection: "Users",
         title,
         body,
-      }),
-    ]);
+      })
+    );
   }
+
+  notificationTasks.push(
+    sendNotification(
+      userData.email,
+      title,
+      userData.contactName,
+      "Load Accepted"
+    )
+  );
+
+  await Promise.all(notificationTasks);
 };
 
-const sendOperatorNotification = async (
-  operatorData,
-  carrierData,
-  movementId,
-  movementAccId
+// Driver Assigned Notification
+const sendUserDriverAssignedNotification = async (
+  userData,
+  operator,
+  movementId
 ) => {
-  if (operatorData.deviceToken) {
-    const body = "Cargo Connect";
-    const title = `Hi ${operatorData.operatorName}, movement ${movementAccId} has been assigned by ${carrierData.contactName}.`;
+  const body = "Cargo Connect";
+  const title = `Hi ${userData.contactName}, A driver has been assigned to your service. ${operator.operatorName} will arrive in approximately [ETA].`;
 
-    await Promise.all([
-      sendNotificationInApp(operatorData.deviceToken, title, body),
+  const notificationTasks = [];
+
+  if (userData.deviceToken) {
+    notificationTasks.push(
+      sendNotificationInApp(userData.deviceToken, title, body)
+    );
+  }
+  if (userData.webToken) {
+    notificationTasks.push(
+      sendNotificationInWeb(userData.webToken, title, body)
+    );
+  }
+  if (userData.deviceToken || userData.webToken) {
+    notificationTasks.push(
       Notification.create({
         movementId,
-        clientRelationId: operatorData._id,
-        collection: "Operator",
+        clientRelationId: userData._id,
+        collection: "Users",
         title,
         body,
-      }),
-    ]);
+      })
+    );
+  }
+
+  notificationTasks.push(
+    sendNotification(
+      userData.email,
+      title,
+      userData.contactName,
+      "Driver Assigned"
+    )
+  );
+
+  await Promise.all(notificationTasks);
+};
+
+// New Load Assigned Notification
+const sendOperatorNewLoadAssignedNotification = async (
+  operatorData,
+  movementId
+) => {
+  const body = "Cargo Connect";
+  const title = `Hi ${operatorData.operatorName}, You have a new service: [Origin → Destination]. Pickup time: [Date & Time].`;
+
+  const notificationTasks = [];
+
+  if (operatorData.deviceToken) {
+    notificationTasks.push(
+      sendNotificationInApp(operatorData.deviceToken, title, body)
+    );
   }
   if (operatorData.webToken) {
-    const body = "Cargo Connect";
-    const title = `Hi ${operatorData.operatorName}, movement ${movementAccId} has been assigned by ${carrierData.contactName}.`;
+    notificationTasks.push(
+      sendNotificationInWeb(operatorData.webToken, title, body)
+    );
+  }
+  if (operatorData.deviceToken || operatorData.webToken) {
+    await Notification.create({
+      movementId,
+      clientRelationId: operatorData._id,
+      collection: "Operators",
+      title,
+      body,
+    });
 
-    await Promise.all([
-      sendNotificationInWeb(operatorData.webToken, title, body),
+    // Schedule a reminder message after 10 minutes
+    setTimeout(
+      async () => {
+        const reminderTitle = `Hi ${operatorData.operatorName}, Your service is confirmed! Remember to pick up the load as scheduled and share your location for tracking.`;
+
+        const reminderTasks = [];
+        if (operatorData.deviceToken) {
+          reminderTasks.push(
+            sendNotificationInApp(operatorData.deviceToken, reminderTitle, body)
+          );
+        }
+        if (operatorData.webToken) {
+          reminderTasks.push(
+            sendNotificationInWeb(operatorData.webToken, reminderTitle, body)
+          );
+        }
+        if (operatorData.deviceToken || operatorData.webToken) {
+          reminderTasks.push(
+            Notification.create({
+              movementId,
+              clientRelationId: operatorData._id,
+              collection: "Operators",
+              title: reminderTitle,
+              body: body,
+            })
+          );
+        }
+
+        await Promise.all(reminderTasks);
+      },
+      10 * 60 * 1000
+    ); // 10 minutes delay
+  }
+
+  await Promise.all(notificationTasks);
+};
+
+// Driver Assigned Notification
+const sendCarrierDriverAssignedNotification = async (
+  carrierData,
+  movementId
+) => {
+  const body = "Cargo Connect";
+  const title = `Hi ${carrierData.contactName}, You have a new service: [Origin → Destination]. Pickup time: [Date & Time].`;
+
+  const notificationTasks = [];
+
+  if (carrierData.deviceToken) {
+    notificationTasks.push(
+      sendNotificationInApp(carrierData.deviceToken, title, body)
+    );
+  }
+  if (carrierData.webToken) {
+    notificationTasks.push(
+      sendNotificationInWeb(carrierData.webToken, title, body)
+    );
+  }
+  if (carrierData.deviceToken || carrierData.webToken) {
+    notificationTasks.push(
       Notification.create({
         movementId,
-        clientRelationId: operatorData._id,
-        collection: "Operator",
+        clientRelationId: carrierData._id,
+        collection: "Carriers",
         title,
         body,
-      }),
-    ]);
+      })
+    );
   }
+  notificationTasks.push(
+    sendNotification(
+      carrierData.email,
+      title,
+      carrierData.contactName,
+      "New Load Assigned"
+    )
+  );
+
+  await Promise.all(notificationTasks);
+};
+
+// Loads Accepted by Carriers Notification
+const sendAdminLoadsAcceptedByCarriersNotification = async (
+  admins,
+  carrierData,
+  movementId
+) => {
+  await Promise.all(
+    admins.map(async (admin) => {
+      const body = "Cargo Connect";
+      const title = `Hi ${admin.contactName}, (Name - ${carrierData.contactName} Email ${carrierData.email}) Carriers have accepted a service. Please review the details and make sure to follow the steps below.`;
+
+      const notificationTasks = [];
+
+      if (admin.deviceToken) {
+        notificationTasks.push(
+          sendNotificationInApp(admin.deviceToken, title, body)
+        );
+      }
+      if (admin.webToken) {
+        notificationTasks.push(
+          sendNotificationInWeb(admin.webToken, title, body)
+        );
+      }
+      if (admin.deviceToken || admin.webToken) {
+        notificationTasks.push(
+          Notification.create({
+            movementId,
+            clientRelationId: admin._id,
+            collection: "Admins",
+            title,
+            body,
+          })
+        );
+      }
+      notificationTasks.push(
+        sendNotification(
+          admin.email,
+          title,
+          admin.contactName,
+          "Loads Accepted by Carriers"
+        )
+      );
+
+      await Promise.all(notificationTasks);
+    })
+  );
+};
+
+// Driver Assigned to Load Notification
+const sendAdminDriverAssignedToLoadNotification = async (
+  admins,
+  operatorData,
+  movementId
+) => {
+  await Promise.all(
+    admins.map(async (admin) => {
+      const body = "Cargo Connect";
+      const title = `Hi ${admin.contactName}, Drivers Assigned to services [Driver Name - ${operatorData.operatorName}, Contact - ${operatorData.operatorNumber}] Drivers Pending Assignment.`;
+
+      const notificationTasks = [];
+
+      if (admin.deviceToken) {
+        notificationTasks.push(
+          sendNotificationInApp(admin.deviceToken, title, body)
+        );
+      }
+      if (admin.webToken) {
+        notificationTasks.push(
+          sendNotificationInWeb(admin.webToken, title, body)
+        );
+      }
+      if (admin.deviceToken || admin.webToken) {
+        notificationTasks.push(
+          Notification.create({
+            movementId,
+            clientRelationId: admin._id,
+            collection: "Admins",
+            title,
+            body,
+          })
+        );
+      }
+      notificationTasks.push(
+        sendNotification(
+          admin.email,
+          title,
+          admin.contactName,
+          "Driver Assigned to Load"
+        )
+      );
+
+      await Promise.all(notificationTasks);
+    })
+  );
 };

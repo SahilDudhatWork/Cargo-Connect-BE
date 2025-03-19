@@ -1,4 +1,13 @@
 const Movement = require("../../../model/movement/movement");
+const Admin = require("../../../model/admin/admin");
+const Notification = require("../../../model/common/notification");
+const { sendNotification } = require("../../../utils/nodemailer");
+const {
+  sendNotificationInApp,
+} = require("../../../utils/sendNotificationInApp");
+const {
+  sendNotificationInWeb,
+} = require("../../../utils/sendNotificationInWeb");
 const Response = require("../../../helper/response");
 const upload = require("../../../middleware/multer");
 const { handleException } = require("../../../helper/exception");
@@ -459,11 +468,25 @@ const docUpload = async (req, res) => {
 
     // const validationErrors = await validateRoleFields(role, docObj, obj);
 
-    if (finalResult) {
+    console.log("finalResult :>> ", finalResult);
+    if (true) {
+      // if (finalResult) {
       await Movement.findOneAndUpdate(
         { movementId: params.movementId },
         { status: "InProgress" },
         { new: true }
+      );
+      await sendUserInTransitNotification(
+        fetchData.userData,
+        fetchData._id,
+        fetchData.operatorData.trackingLink
+      );
+      const admins = await Admin.find();
+      await sendAdminLoadInTransitNotification(
+        admins,
+        fetchData._id,
+        fetchData.movementId,
+        fetchData.operatorData.trackingLink
       );
     }
 
@@ -507,4 +530,89 @@ const fetchMovement = async (id) => {
 module.exports = {
   docUpload,
   uploadDocsMiddleware,
+};
+
+// In Transit Notification
+const sendUserInTransitNotification = async (userData, movementId, link) => {
+  const body = "Cargo Connect";
+  const title = `Hi ${userData.contactName}, Your service is on the way. Track it in real-time here: ${link}.`;
+
+  const notificationTasks = [];
+
+  if (userData.deviceToken) {
+    notificationTasks.push(
+      sendNotificationInApp(userData.deviceToken, title, body)
+    );
+  }
+  if (userData.webToken) {
+    notificationTasks.push(
+      sendNotificationInWeb(userData.webToken, title, body)
+    );
+  }
+  if (userData.deviceToken || userData.webToken) {
+    notificationTasks.push(
+      Notification.create({
+        movementId,
+        clientRelationId: userData._id,
+        collection: "Users",
+        title,
+        body,
+      })
+    );
+  }
+
+  notificationTasks.push(
+    sendNotification(userData.email, title, userData.contactName, "In Transit")
+  );
+
+  await Promise.all(notificationTasks);
+};
+
+// Load in Transit Notification
+const sendAdminLoadInTransitNotification = async (
+  admins,
+  movementId,
+  movementAccId,
+  link
+) => {
+  await Promise.all(
+    admins.map(async (admin) => {
+      const body = "Cargo Connect";
+      const title = `Hi ${admin.contactName}, (${movementAccId}) Services are now in transit. Follow the progress here: ${link}.`;
+
+      const notificationTasks = [];
+
+      if (admin.deviceToken) {
+        notificationTasks.push(
+          sendNotificationInApp(admin.deviceToken, title, body)
+        );
+      }
+      if (admin.webToken) {
+        notificationTasks.push(
+          sendNotificationInWeb(admin.webToken, title, body)
+        );
+      }
+      if (admin.deviceToken || admin.webToken) {
+        notificationTasks.push(
+          Notification.create({
+            movementId,
+            clientRelationId: admin._id,
+            collection: "Admins",
+            title,
+            body,
+          })
+        );
+      }
+      notificationTasks.push(
+        sendNotification(
+          admin.email,
+          title,
+          admin.contactName,
+          "Load in Transit"
+        )
+      );
+
+      await Promise.all(notificationTasks);
+    })
+  );
 };

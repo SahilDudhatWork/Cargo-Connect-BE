@@ -1,7 +1,6 @@
 const Operator = require("../../../model/operator/operator");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
-const { ObjectId } = require("mongoose").Types;
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -11,9 +10,27 @@ const {
 const createData = async (req, res) => {
   const { logger, operatorId, body } = req;
   try {
+    const existingData = await Operator.findById(operatorId);
+
+    if (!existingData) {
+      return Response.error({
+        req,
+        res,
+        status: STATUS_CODE.NOT_FOUND,
+        msg: ERROR_MSGS.NOT_FOUND,
+      });
+    }
+
+    let trackingLink = existingData.trackingLink;
+    trackingLink = generateGoogleMapsLink(body.lat, body.long);
+    
+    // if (!existingData?.trackingLink) {
+    //   trackingLink = generateGoogleMapsLink(body.lat, body.long);
+    // }
+
     const updateData = await Operator.findByIdAndUpdate(
-      { _id: new ObjectId(operatorId) },
-      body,
+      operatorId,
+      { ...body, trackingLink },
       { new: true }
     );
 
@@ -22,24 +39,23 @@ const createData = async (req, res) => {
     delete result.token;
     delete result.__v;
 
-    const statusCode = updateData ? STATUS_CODE.OK : STATUS_CODE.BAD_REQUEST;
-    const message = updateData
-      ? INFO_MSGS.UPDATED_SUCCESSFULLY
-      : ERROR_MSGS.UPDATE_ERR;
-
-    return Response[statusCode === STATUS_CODE.OK ? "success" : "error"]({
+    return Response.success({
       req,
       res,
-      status: statusCode,
-      msg: message,
+      status: STATUS_CODE.OK,
+      msg: INFO_MSGS.UPDATED_SUCCESSFULLY,
       data: result,
     });
   } catch (error) {
-    console.error("error:", error);
+    console.error("Error:", error);
     return handleException(logger, res, error);
   }
 };
 
 module.exports = {
   createData,
+};
+
+const generateGoogleMapsLink = (lat, long) => {
+  return `https://www.google.com/maps?q=${lat},${long}`;
 };

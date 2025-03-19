@@ -1,6 +1,18 @@
 const Movement = require("../../../model/movement/movement");
+const User = require("../../../model/user/user");
+const Operator = require("../../../model/operator/operator");
+const Admin = require("../../../model/admin/admin");
+const Notification = require("../../../model/common/notification");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
+const { sendNotification } = require("../../../utils/nodemailer");
+
+const {
+  sendNotificationInApp,
+} = require("../../../utils/sendNotificationInApp");
+const {
+  sendNotificationInWeb,
+} = require("../../../utils/sendNotificationInWeb");
 const {
   STATUS_CODE,
   ERROR_MSGS,
@@ -15,6 +27,26 @@ const movementComplete = async (req, res) => {
       { movementId: id },
       { status: "Completed" },
       { new: true }
+    );
+
+    const [userData, operatorData, admins] = await getNotificationData(
+      updateData.userId,
+      updateData.operatorId
+    );
+
+    await sendUserDeliveryCompletedNotification(
+      userData,
+      updateData._id,
+      operatorData.trackingLink
+    );
+    await sendOperatorDeliveryCompletedNotification(
+      operatorData,
+      updateData._id
+    );
+    await sendAdminLoadDeliveredSuccessfullyNotification(
+      admins,
+      updateData._id,
+      updateData.movementId
     );
 
     const statusCode = updateData
@@ -39,4 +71,140 @@ const movementComplete = async (req, res) => {
 
 module.exports = {
   movementComplete,
+};
+
+const getNotificationData = async (userId, operatorId) => {
+  return await Promise.all([
+    User.findById(userId),
+    Operator.findById(operatorId),
+    Admin.find(),
+  ]);
+};
+
+// Delivery Completed Notification
+const sendUserDeliveryCompletedNotification = async (
+  userData,
+  movementId,
+  link
+) => {
+  const body = "Cargo Connect";
+  const title = `Hi ${userData.contactName}, Your load has been successfully delivered to ${link}. Thank you for trusting us!`;
+
+  const notificationTasks = [];
+
+  if (userData.deviceToken) {
+    notificationTasks.push(
+      sendNotificationInApp(userData.deviceToken, title, body)
+    );
+  }
+  if (userData.webToken) {
+    notificationTasks.push(
+      sendNotificationInWeb(userData.webToken, title, body)
+    );
+  }
+  if (userData.deviceToken || userData.webToken) {
+    notificationTasks.push(
+      Notification.create({
+        movementId,
+        clientRelationId: userData._id,
+        collection: "Users",
+        title,
+        body,
+      })
+    );
+  }
+
+  notificationTasks.push(
+    sendNotification(
+      userData.email,
+      title,
+      userData.contactName,
+      "Delivery Completed"
+    )
+  );
+
+  await Promise.all(notificationTasks);
+};
+
+// Delivery Confirmed Notification
+const sendOperatorDeliveryCompletedNotification = async (
+  operatorData,
+  movementId
+) => {
+  const body = "Cargo Connect";
+  const title = `Hi ${operatorData.operatorName}, Load delivered at ${operatorData.trackingLink}. Great job!`;
+
+  const notificationTasks = [];
+
+  if (operatorData.deviceToken) {
+    notificationTasks.push(
+      sendNotificationInApp(operatorData.deviceToken, title, body)
+    );
+  }
+  if (operatorData.webToken) {
+    notificationTasks.push(
+      sendNotificationInWeb(operatorData.webToken, title, body)
+    );
+  }
+  if (operatorData.deviceToken || operatorData.webToken) {
+    notificationTasks.push(
+      Notification.create({
+        movementId,
+        clientRelationId: operatorData._id,
+        collection: "Operators",
+        title,
+        body,
+      })
+    );
+  }
+
+  await Promise.all(notificationTasks);
+};
+
+// Load Delivered Successfully Notification
+const sendAdminLoadDeliveredSuccessfullyNotification = async (
+  admins,
+  movementId,
+  movementAccId
+) => {
+  await Promise.all(
+    admins.map(async (admin) => {
+      const body = "Cargo Connect";
+      const title = `Hi ${admin.contactName}, (${movementAccId}) Successfully delivered services`;
+
+      const notificationTasks = [];
+
+      if (admin.deviceToken) {
+        notificationTasks.push(
+          sendNotificationInApp(admin.deviceToken, title, body)
+        );
+      }
+      if (admin.webToken) {
+        notificationTasks.push(
+          sendNotificationInWeb(admin.webToken, title, body)
+        );
+      }
+      if (admin.deviceToken || admin.webToken) {
+        notificationTasks.push(
+          Notification.create({
+            movementId,
+            clientRelationId: admin._id,
+            collection: "Admins",
+            title,
+            body,
+          })
+        );
+      }
+      notificationTasks.push(
+        sendNotification(
+          admin.email,
+          title,
+          admin.contactName,
+          "Load Delivered Successfully"
+        )
+      );
+
+      await Promise.all(notificationTasks);
+    })
+  );
 };
