@@ -61,9 +61,21 @@ const update = async (req, res) => {
             new: true,
           });
         } else {
-          reference.clientRelationId = carrierId;
-          reference.type = "Carrier";
-          await Reference.create(reference);
+          const check2Exist = await Reference.find({
+            clientRelationId: carrierId,
+            type: "Carrier",
+          });
+          if (check2Exist.length >= 2) {
+            return Response.error({
+              res,
+              status: STATUS_CODE.BAD_REQUEST,
+              msg: ERROR_MSGS.REFERENCE_LIMIT,
+            });
+          } else {
+            reference.clientRelationId = carrierId;
+            reference.type = "Carrier";
+            await Reference.create(reference);
+          }
         }
       }
     }

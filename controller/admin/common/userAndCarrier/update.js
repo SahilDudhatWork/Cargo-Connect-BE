@@ -174,7 +174,20 @@ const update = async (req, res) => {
         } else {
           reference.clientRelationId = existingData._id;
           reference.type = type.replace(/\b\w/g, (char) => char.toUpperCase());
-          await Reference.create(reference);
+
+          const check2Exist = await Reference.find({
+            clientRelationId: existingData._id,
+            type: reference.type,
+          });
+          if (check2Exist.length >= 2) {
+            return Response.error({
+              res,
+              status: STATUS_CODE.BAD_REQUEST,
+              msg: ERROR_MSGS.REFERENCE_LIMIT,
+            });
+          } else {
+            await Reference.create(reference);
+          }
         }
       }
     }
