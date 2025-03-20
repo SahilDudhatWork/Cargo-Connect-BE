@@ -6,7 +6,7 @@ const {
   INFO_MSGS,
 } = require("../../../helper/constant");
 const { handleException } = require("../../../helper/exception");
-const { VerificationEmail } = require("../../../utils/nodemailerOtp");
+const { VerificationEmail } = require("../../../utils/nodemailer");
 const { hendleModel } = require("../../../utils/hendleModel");
 
 const sentOtp = async (req, res) => {
@@ -52,9 +52,12 @@ const sentOtp = async (req, res) => {
     }
 
     // Schedule OTP expiration
-    setTimeout(async () => {
-      await Otp.findOneAndDelete({ otp });
-    }, 5 * 60 * 1000); // 5 minutes
+    setTimeout(
+      async () => {
+        await Otp.findOneAndDelete({ otp });
+      },
+      5 * 60 * 1000
+    ); // 5 minutes
 
     return Response.success({
       res,

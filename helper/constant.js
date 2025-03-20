@@ -87,6 +87,8 @@ module.exports = {
       "The carrier reference has already been used. Please provide a unique reference.",
     CARRIER_REFERENCE_LIMIT:
       "The carrier reference must be exactly 10 characters long.",
+    REFERENCE_LIMIT:
+      "You can only add up to 2 commercial references.",
   },
 
   INFO_MSGS: {

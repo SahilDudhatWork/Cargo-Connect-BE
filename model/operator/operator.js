@@ -85,6 +85,10 @@ const collectionSchema = new Schema(
       type: String,
       default: null,
     },
+    trackingLink: {
+      type: String,
+      default: null,
+    },
     token: {
       type: {
         type: String,
