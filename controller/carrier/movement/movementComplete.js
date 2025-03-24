@@ -37,7 +37,7 @@ const movementComplete = async (req, res) => {
     await sendUserDeliveryCompletedNotification(
       userData,
       updateData._id,
-      operatorData.trackingLink
+      operatorData?.trackingLink
     );
     await sendOperatorDeliveryCompletedNotification(
       operatorData,

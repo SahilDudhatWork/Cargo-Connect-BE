@@ -469,8 +469,7 @@ const docUpload = async (req, res) => {
     // const validationErrors = await validateRoleFields(role, docObj, obj);
 
     console.log("finalResult :>> ", finalResult);
-    if (true) {
-      // if (finalResult) {
+    if (finalResult) {
       await Movement.findOneAndUpdate(
         { movementId: params.movementId },
         { status: "InProgress" },
@@ -479,14 +478,14 @@ const docUpload = async (req, res) => {
       await sendUserInTransitNotification(
         fetchData.userData,
         fetchData._id,
-        fetchData.operatorData.trackingLink
+        fetchData?.operatorData?.trackingLink
       );
       const admins = await Admin.find();
       await sendAdminLoadInTransitNotification(
         admins,
         fetchData._id,
         fetchData.movementId,
-        fetchData.operatorData.trackingLink
+        fetchData?.operatorData?.trackingLink
       );
     }
 

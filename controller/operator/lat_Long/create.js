@@ -21,9 +21,9 @@ const createData = async (req, res) => {
       });
     }
 
-    let trackingLink = existingData.trackingLink;
+    let trackingLink = existingData?.trackingLink;
     trackingLink = generateGoogleMapsLink(body.lat, body.long);
-    
+
     // if (!existingData?.trackingLink) {
     //   trackingLink = generateGoogleMapsLink(body.lat, body.long);
     // }
