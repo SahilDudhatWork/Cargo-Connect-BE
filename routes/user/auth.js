@@ -11,13 +11,11 @@ const {
   validateEmailAndPassword,
 } = require("../../middleware/validateEmailAndPass");
 const { refreshToken } = require("../../controller/user/auth/refreshToken");
-const { verifyLoginOtp } = require("../../controller/user/auth/verifyLoginOtp");
 const router = Router();
 
 router.post("/signUp", uploadMiddleware, validateEmailAndPassword, signUp);
 router.post("/logIn", validateEmailAndPassword, logIn);
 router.post("/token", refreshAuth, refreshToken);
-router.post("/verifyOtp", verifyLoginOtp);
 
 router.use(userAuth);
 router.post("/logOut", logOut);

@@ -1,5 +1,4 @@
 const User = require("../../../model/user/user");
-const Otp = require("../../../model/common/otp");
 const Response = require("../../../helper/response");
 const {
   STATUS_CODE,
@@ -8,7 +7,7 @@ const {
 } = require("../../../helper/constant");
 const { decrypt } = require("../../../helper/encrypt-decrypt");
 const { handleException } = require("../../../helper/exception");
-const { VerificationEmail } = require("../../../utils/nodemailer");
+const tokenGenerate = require("../../../utils/jwt");
 require("dotenv").config();
 
 // Login
@@ -42,42 +41,18 @@ const logIn = async (req, res) => {
       return Response.error(obj);
     }
 
-    await User.findByIdAndUpdate(
-      { _id: userInfo._id },
-      { deviceToken, webToken },
-      { new: true }
+    const { accessToken, refreshToken } = await tokenGenerate(
+      userInfo._id,
+      "User",
+      deviceToken,
+      webToken
     );
-
-    // Generate OTP
-    const otp = Math.floor(100000 + Math.random() * 900000);
-    const otpData = { email, otp };
-
-    // Send OTP to email
-    await VerificationEmail(email, otp);
-
-    await Otp.findOneAndDelete({ email });
-    const saveData = await Otp.create(otpData);
-
-    if (!saveData) {
-      return Response.error({
-        res,
-        status: STATUS_CODE.BAD_REQUEST,
-        msg: ERROR_MSGS.WENT_WRONG,
-      });
-    }
-
-    // Schedule OTP expiration
-    setTimeout(
-      async () => {
-        await Otp.findOneAndDelete({ otp });
-      },
-      5 * 60 * 1000
-    ); // 5 minutes
 
     return Response.success({
       res,
       status: STATUS_CODE.CREATED,
-      msg: INFO_MSGS.OTP_SENT_SUCC,
+      msg: INFO_MSGS.SUCCESSFUL_LOGIN,
+      data: { accessToken, refreshToken },
     });
   } catch (error) {
     console.log("Login Error : ", error);
