@@ -12,13 +12,16 @@ const tokenGenerate = async (id, role, deviceToken, webToken) => {
   const ACCESS_TOKEN = isUser
     ? process.env.USER_ACCESS_TOKEN
     : process.env.CARRIER_ACCESS_TOKEN;
+  const ENCRYPTION_KEY = isUser
+    ? process.env.USER_ENCRYPTION_KEY
+    : process.env.CARRIER_ENCRYPTION_KEY;
 
-  const encryptUser = encrypt(id, process.env.USER_ENCRYPTION_KEY);
+  const encryptId = encrypt(id, ENCRYPTION_KEY);
 
   const [accessToken, refreshToken] = await Promise.all([
-    commonAuth(encryptUser, ACCESS_TIME, ACCESS_TOKEN, "Access", role),
+    commonAuth(encryptId, ACCESS_TIME, ACCESS_TOKEN, "Access", role),
     commonAuth(
-      encryptUser,
+      encryptId,
       process.env.REFRESH_TOKEN_TIME,
       process.env.REFRESH_ACCESS_TOKEN,
       "Refresh",
@@ -45,10 +48,10 @@ const tokenGenerate = async (id, role, deviceToken, webToken) => {
   return { accessToken, refreshToken };
 };
 
-const commonAuth = async (encryptUser, expiresIn, secret, type, role) => {
+const commonAuth = async (encryptId, expiresIn, secret, type, role) => {
   try {
     return await generateJWTToken({
-      encryptUser,
+      encryptId,
       expiresIn,
       secret,
       type,
@@ -61,14 +64,19 @@ const commonAuth = async (encryptUser, expiresIn, secret, type, role) => {
 };
 
 const generateJWTToken = async ({
-  encryptUser,
+  encryptId,
   expiresIn,
   secret,
   type,
   role,
 }) => {
   try {
-    return jwt.sign({ userId: encryptUser, type, role }, secret, { expiresIn });
+    const payload =
+      role === "User"
+        ? { userId: encryptId, type, role }
+        : { carrierId: encryptId, type, role };
+
+    return jwt.sign(payload, secret, { expiresIn });
   } catch (error) {
     throw new Error(error.message);
   }

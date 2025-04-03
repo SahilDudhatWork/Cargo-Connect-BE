@@ -21,18 +21,9 @@ const createData = async (req, res) => {
       });
     }
 
-    let trackingLink = existingData?.trackingLink;
-    trackingLink = generateGoogleMapsLink(body.lat, body.long);
-
-    // if (!existingData?.trackingLink) {
-    //   trackingLink = generateGoogleMapsLink(body.lat, body.long);
-    // }
-
-    const updateData = await Operator.findByIdAndUpdate(
-      operatorId,
-      { ...body, trackingLink },
-      { new: true }
-    );
+    const updateData = await Operator.findByIdAndUpdate(operatorId, body, {
+      new: true,
+    });
 
     const result = updateData.toObject();
     delete result.password;
@@ -54,8 +45,4 @@ const createData = async (req, res) => {
 
 module.exports = {
   createData,
-};
-
-const generateGoogleMapsLink = (lat, long) => {
-  return `https://www.google.com/maps?q=${lat},${long}`;
 };

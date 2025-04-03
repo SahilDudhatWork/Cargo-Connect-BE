@@ -37,11 +37,12 @@ const movementComplete = async (req, res) => {
     await sendUserDeliveryCompletedNotification(
       userData,
       updateData._id,
-      operatorData?.trackingLink
+      updateData.movementId
     );
     await sendOperatorDeliveryCompletedNotification(
       operatorData,
-      updateData._id
+      updateData._id,
+      updateData.movementId
     );
     await sendAdminLoadDeliveredSuccessfullyNotification(
       admins,
@@ -85,10 +86,10 @@ const getNotificationData = async (userId, operatorId) => {
 const sendUserDeliveryCompletedNotification = async (
   userData,
   movementId,
-  link
+  movementAccId
 ) => {
   const body = "Cargo Connect";
-  const title = `Hi ${userData.contactName}, Your load has been successfully delivered to ${link}. Thank you for trusting us!`;
+  const title = `Hi ${userData.contactName}, Your load has been successfully delivered to https://mycargoconnects.com/my-orders/service/${movementAccId}. Thank you for trusting us!`;
 
   const notificationTasks = [];
 
@@ -129,10 +130,11 @@ const sendUserDeliveryCompletedNotification = async (
 // Delivery Confirmed Notification
 const sendOperatorDeliveryCompletedNotification = async (
   operatorData,
-  movementId
+  movementId,
+  movementAccId
 ) => {
   const body = "Cargo Connect";
-  const title = `Hi ${operatorData.operatorName}, Load delivered at ${operatorData.trackingLink}. Great job!`;
+  const title = `Hi ${operatorData.operatorName}, Load delivered at https://mycargoconnects.com/my-orders/service/${movementAccId}. Great job!`;
 
   const notificationTasks = [];
 

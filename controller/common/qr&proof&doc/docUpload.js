@@ -468,7 +468,6 @@ const docUpload = async (req, res) => {
 
     // const validationErrors = await validateRoleFields(role, docObj, obj);
 
-    console.log("finalResult :>> ", finalResult);
     if (finalResult) {
       await Movement.findOneAndUpdate(
         { movementId: params.movementId },
@@ -478,14 +477,13 @@ const docUpload = async (req, res) => {
       await sendUserInTransitNotification(
         fetchData.userData,
         fetchData._id,
-        fetchData?.operatorData?.trackingLink
+        fetchData?.movementId
       );
       const admins = await Admin.find();
       await sendAdminLoadInTransitNotification(
         admins,
         fetchData._id,
         fetchData.movementId,
-        fetchData?.operatorData?.trackingLink
       );
     }
 
@@ -532,9 +530,9 @@ module.exports = {
 };
 
 // In Transit Notification
-const sendUserInTransitNotification = async (userData, movementId, link) => {
+const sendUserInTransitNotification = async (userData, movementId, movementAccId) => {
   const body = "Cargo Connect";
-  const title = `Hi ${userData.contactName}, Your service is on the way. Track it in real-time here: ${link}.`;
+  const title = `Hi ${userData.contactName}, Your service is on the way. Track it in real-time here: https://mycargoconnects.com/my-orders/service/${movementAccId}.`;
 
   const notificationTasks = [];
 
@@ -572,12 +570,11 @@ const sendAdminLoadInTransitNotification = async (
   admins,
   movementId,
   movementAccId,
-  link
 ) => {
   await Promise.all(
     admins.map(async (admin) => {
       const body = "Cargo Connect";
-      const title = `Hi ${admin.contactName}, (${movementAccId}) Services are now in transit. Follow the progress here: ${link}.`;
+      const title = `Hi ${admin.contactName}, (${movementAccId}) Services are now in transit. Follow the progress here: https://mycargoconnects.com/my-orders/service/${movementAccId}.`;
 
       const notificationTasks = [];
 
