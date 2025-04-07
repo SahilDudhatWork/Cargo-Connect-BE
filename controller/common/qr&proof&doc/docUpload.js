@@ -532,21 +532,21 @@ module.exports = {
 // In Transit Notification
 const sendUserInTransitNotification = async (userData, movementId, movementAccId) => {
   const body = "Cargo Connect";
-  const title = `Hi ${userData.contactName}, Your service is on the way. Track it in real-time here: https://mycargoconnects.com/my-orders/service/${movementAccId}.`;
+  const title = `Hi ${userData?.contactName}, Your service is on the way. Track it in real-time here: https://mycargoconnects.com/my-orders/service/${movementAccId}.`;
 
   const notificationTasks = [];
 
-  if (userData.deviceToken) {
+  if (userData?.deviceToken) {
     notificationTasks.push(
-      sendNotificationInApp(userData.deviceToken, title, body)
+      sendNotificationInApp(userData?.deviceToken, title, body)
     );
   }
-  if (userData.webToken) {
+  if (userData?.webToken) {
     notificationTasks.push(
-      sendNotificationInWeb(userData.webToken, title, body)
+      sendNotificationInWeb(userData?.webToken, title, body)
     );
   }
-  if (userData.deviceToken || userData.webToken) {
+  if (userData?.deviceToken || userData?.webToken) {
     notificationTasks.push(
       Notification.create({
         movementId,
@@ -559,7 +559,7 @@ const sendUserInTransitNotification = async (userData, movementId, movementAccId
   }
 
   notificationTasks.push(
-    sendNotification(userData.email, title, userData.contactName, "In Transit")
+    sendNotification(userData?.email, title, userData?.contactName, "In Transit")
   );
 
   await Promise.all(notificationTasks);
@@ -574,21 +574,21 @@ const sendAdminLoadInTransitNotification = async (
   await Promise.all(
     admins.map(async (admin) => {
       const body = "Cargo Connect";
-      const title = `Hi ${admin.contactName}, (${movementAccId}) Services are now in transit. Follow the progress here: https://mycargoconnects.com/my-orders/service/${movementAccId}.`;
+      const title = `Hi ${admin?.contactName}, (${movementAccId}) Services are now in transit. Follow the progress here: https://mycargoconnects.com/my-orders/service/${movementAccId}.`;
 
       const notificationTasks = [];
 
-      if (admin.deviceToken) {
+      if (admin?.deviceToken) {
         notificationTasks.push(
-          sendNotificationInApp(admin.deviceToken, title, body)
+          sendNotificationInApp(admin?.deviceToken, title, body)
         );
       }
-      if (admin.webToken) {
+      if (admin?.webToken) {
         notificationTasks.push(
-          sendNotificationInWeb(admin.webToken, title, body)
+          sendNotificationInWeb(admin?.webToken, title, body)
         );
       }
-      if (admin.deviceToken || admin.webToken) {
+      if (admin?.deviceToken || admin?.webToken) {
         notificationTasks.push(
           Notification.create({
             movementId,
@@ -601,9 +601,9 @@ const sendAdminLoadInTransitNotification = async (
       }
       notificationTasks.push(
         sendNotification(
-          admin.email,
+          admin?.email,
           title,
-          admin.contactName,
+          admin?.contactName,
           "Load in Transit"
         )
       );

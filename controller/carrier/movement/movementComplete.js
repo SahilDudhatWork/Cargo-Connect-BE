@@ -89,21 +89,21 @@ const sendUserDeliveryCompletedNotification = async (
   movementAccId
 ) => {
   const body = "Cargo Connect";
-  const title = `Hi ${userData.contactName}, Your load has been successfully delivered to https://mycargoconnects.com/my-orders/service/${movementAccId}. Thank you for trusting us!`;
+  const title = `Hi ${userData?.contactName}, Your load has been successfully delivered to https://mycargoconnects.com/my-orders/service/${movementAccId}. Thank you for trusting us!`;
 
   const notificationTasks = [];
 
-  if (userData.deviceToken) {
+  if (userData?.deviceToken) {
     notificationTasks.push(
-      sendNotificationInApp(userData.deviceToken, title, body)
+      sendNotificationInApp(userData?.deviceToken, title, body)
     );
   }
-  if (userData.webToken) {
+  if (userData?.webToken) {
     notificationTasks.push(
-      sendNotificationInWeb(userData.webToken, title, body)
+      sendNotificationInWeb(userData?.webToken, title, body)
     );
   }
-  if (userData.deviceToken || userData.webToken) {
+  if (userData?.deviceToken || userData?.webToken) {
     notificationTasks.push(
       Notification.create({
         movementId,
@@ -117,9 +117,9 @@ const sendUserDeliveryCompletedNotification = async (
 
   notificationTasks.push(
     sendNotification(
-      userData.email,
+      userData?.email,
       title,
-      userData.contactName,
+      userData?.contactName,
       "Delivery Completed"
     )
   );
@@ -134,21 +134,21 @@ const sendOperatorDeliveryCompletedNotification = async (
   movementAccId
 ) => {
   const body = "Cargo Connect";
-  const title = `Hi ${operatorData.operatorName}, Load delivered at https://mycargoconnects.com/my-orders/service/${movementAccId}. Great job!`;
+  const title = `Hi ${operatorData?.operatorName}, Load delivered at https://mycargoconnects.com/my-orders/service/${movementAccId}. Great job!`;
 
   const notificationTasks = [];
 
-  if (operatorData.deviceToken) {
+  if (operatorData?.deviceToken) {
     notificationTasks.push(
-      sendNotificationInApp(operatorData.deviceToken, title, body)
+      sendNotificationInApp(operatorData?.deviceToken, title, body)
     );
   }
-  if (operatorData.webToken) {
+  if (operatorData?.webToken) {
     notificationTasks.push(
-      sendNotificationInWeb(operatorData.webToken, title, body)
+      sendNotificationInWeb(operatorData?.webToken, title, body)
     );
   }
-  if (operatorData.deviceToken || operatorData.webToken) {
+  if (operatorData?.deviceToken || operatorData?.webToken) {
     notificationTasks.push(
       Notification.create({
         movementId,
@@ -172,21 +172,21 @@ const sendAdminLoadDeliveredSuccessfullyNotification = async (
   await Promise.all(
     admins.map(async (admin) => {
       const body = "Cargo Connect";
-      const title = `Hi ${admin.contactName}, (${movementAccId}) Successfully delivered services`;
+      const title = `Hi ${admin?.contactName}, (${movementAccId}) Successfully delivered services`;
 
       const notificationTasks = [];
 
-      if (admin.deviceToken) {
+      if (admin?.deviceToken) {
         notificationTasks.push(
-          sendNotificationInApp(admin.deviceToken, title, body)
+          sendNotificationInApp(admin?.deviceToken, title, body)
         );
       }
-      if (admin.webToken) {
+      if (admin?.webToken) {
         notificationTasks.push(
-          sendNotificationInWeb(admin.webToken, title, body)
+          sendNotificationInWeb(admin?.webToken, title, body)
         );
       }
-      if (admin.deviceToken || admin.webToken) {
+      if (admin?.deviceToken || admin?.webToken) {
         notificationTasks.push(
           Notification.create({
             movementId,
@@ -199,9 +199,9 @@ const sendAdminLoadDeliveredSuccessfullyNotification = async (
       }
       notificationTasks.push(
         sendNotification(
-          admin.email,
+          admin?.email,
           title,
-          admin.contactName,
+          admin?.contactName,
           "Load Delivered Successfully"
         )
       );

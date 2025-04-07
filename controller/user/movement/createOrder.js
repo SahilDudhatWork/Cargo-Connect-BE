@@ -368,18 +368,18 @@ const notifyCarriers = async (carriers, movementId, amount) => {
 
   await Promise.all(
     carriers.map(async (carrier) => {
-      const title = `Hi ${carrier.contactName}, New service is available: [Origin → Destination] for [${amount}]. Accept before another carrier accepts.`;
+      const title = `Hi ${carrier?.contactName}, New service is available: [Origin → Destination] for [${amount}]. Accept before another carrier accepts.`;
 
       let notified = false;
 
       try {
-        if (carrier.deviceToken) {
-          await sendNotificationInApp(carrier.deviceToken, title, body);
+        if (carrier?.deviceToken) {
+          await sendNotificationInApp(carrier?.deviceToken, title, body);
           notified = true;
         }
 
-        if (carrier.webToken) {
-          await sendNotificationInWeb(carrier.webToken, title, body);
+        if (carrier?.webToken) {
+          await sendNotificationInWeb(carrier?.webToken, title, body);
           notified = true;
         }
 
@@ -389,8 +389,8 @@ const notifyCarriers = async (carriers, movementId, amount) => {
         }
       } catch (error) {
         console.error(
-          `Failed to notify carrier ${carrier.contactName}:`,
-          error.message
+          `Failed to notify carrier ${carrier?.contactName}:`,
+          error?.message
         );
       }
     })
@@ -421,18 +421,18 @@ const notifyAdmin = async (admins, movementId, movementAccId) => {
 
   await Promise.all(
     admins.map(async (admin) => {
-      const title = `Hi ${admin.contactName}, A new service request has been received, there are (${movementAccId}). Searching for carriers is in progress.`;
+      const title = `Hi ${admin?.contactName}, A new service request has been received, there are (${movementAccId}). Searching for carriers is in progress.`;
 
       let notified = false;
 
       try {
-        if (admin.deviceToken) {
-          await sendNotificationInApp(admin.deviceToken, title, body);
+        if (admin?.deviceToken) {
+          await sendNotificationInApp(admin?.deviceToken, title, body);
           notified = true;
         }
 
-        if (admin.webToken) {
-          await sendNotificationInWeb(admin.webToken, title, body);
+        if (admin?.webToken) {
+          await sendNotificationInWeb(admin?.webToken, title, body);
           notified = true;
         }
 
@@ -442,14 +442,14 @@ const notifyAdmin = async (admins, movementId, movementAccId) => {
         }
       } catch (error) {
         console.error(
-          `Failed to notify admin ${admin.contactName}:`,
+          `Failed to notify admin ${admin?.contactName}:`,
           error.message
         );
       }
       await sendNotification(
-        admin.email,
+        admin?.email,
         title,
-        admin.contactName,
+        admin?.contactName,
         "New Load Request Received"
       );
     })
@@ -476,24 +476,24 @@ const notifyAdmin = async (admins, movementId, movementAccId) => {
 
 const notifyUser = async (user, movementId) => {
   const body = "Cargo Connect";
-  const title = `Hi ${user.contactName}, We have received your service request. We are looking for available carriers.`;
+  const title = `Hi ${user?.contactName}, We have received your service request. We are looking for available carriers.`;
 
   try {
-    if (user.deviceToken) {
-      await sendNotificationInApp(user.deviceToken, title, body);
-    } else if (user.webToken) {
-      await sendNotificationInWeb(user.webToken, title, body);
+    if (user?.deviceToken) {
+      await sendNotificationInApp(user?.deviceToken, title, body);
+    } else if (user?.webToken) {
+      await sendNotificationInWeb(user?.webToken, title, body);
     } else {
-      console.error(`No valid notification token for ${user.contactName}`);
+      console.error(`No valid notification token for ${user?.contactName}`);
       return;
     }
   } catch (error) {
-    console.error(`Failed to notify ${user.contactName}:`, error.message);
+    console.error(`Failed to notify ${user?.contactName}:`, error.message);
   }
   await sendNotification(
-    user.email,
+    user?.email,
     title,
-    user.contactName,
+    user?.contactName,
     "Request Received"
   );
 

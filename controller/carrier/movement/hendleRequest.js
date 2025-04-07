@@ -167,7 +167,7 @@ const getNotificationData = async (
 
 const updateNotifications = async (notifications, carrierId) => {
   const bulkOperations = notifications.map((notification) =>
-    notification.clientRelationId.equals(carrierId)
+    notification?.clientRelationId.equals(carrierId)
       ? {
           updateOne: {
             filter: { _id: notification._id },
@@ -185,21 +185,21 @@ const updateNotifications = async (notifications, carrierId) => {
 // Load Accepted Notification
 const sendUserLoadAcceptedNotification = async (userData, movementId) => {
   const body = "Cargo Connect";
-  const title = `Hi ${userData.contactName}, Your service has been accepted by a carrier. You will receive the operator's details shortly.`;
+  const title = `Hi ${userData?.contactName}, Your service has been accepted by a carrier. You will receive the operator's details shortly.`;
 
   const notificationTasks = [];
 
-  if (userData.deviceToken) {
+  if (userData?.deviceToken) {
     notificationTasks.push(
-      sendNotificationInApp(userData.deviceToken, title, body)
+      sendNotificationInApp(userData?.deviceToken, title, body)
     );
   }
-  if (userData.webToken) {
+  if (userData?.webToken) {
     notificationTasks.push(
-      sendNotificationInWeb(userData.webToken, title, body)
+      sendNotificationInWeb(userData?.webToken, title, body)
     );
   }
-  if (userData.deviceToken || userData.webToken) {
+  if (userData?.deviceToken || userData?.webToken) {
     notificationTasks.push(
       Notification.create({
         movementId,
@@ -213,9 +213,9 @@ const sendUserLoadAcceptedNotification = async (userData, movementId) => {
 
   notificationTasks.push(
     sendNotification(
-      userData.email,
+      userData?.email,
       title,
-      userData.contactName,
+      userData?.contactName,
       "Load Accepted"
     )
   );
@@ -230,21 +230,21 @@ const sendUserDriverAssignedNotification = async (
   movementId
 ) => {
   const body = "Cargo Connect";
-  const title = `Hi ${userData.contactName}, A driver has been assigned to your service. ${operator.operatorName} will arrive in approximately [ETA].`;
+  const title = `Hi ${userData?.contactName}, A driver has been assigned to your service. ${operator?.operatorName} will arrive in approximately [ETA].`;
 
   const notificationTasks = [];
 
-  if (userData.deviceToken) {
+  if (userData?.deviceToken) {
     notificationTasks.push(
-      sendNotificationInApp(userData.deviceToken, title, body)
+      sendNotificationInApp(userData?.deviceToken, title, body)
     );
   }
-  if (userData.webToken) {
+  if (userData?.webToken) {
     notificationTasks.push(
-      sendNotificationInWeb(userData.webToken, title, body)
+      sendNotificationInWeb(userData?.webToken, title, body)
     );
   }
-  if (userData.deviceToken || userData.webToken) {
+  if (userData?.deviceToken || userData?.webToken) {
     notificationTasks.push(
       Notification.create({
         movementId,
@@ -258,9 +258,9 @@ const sendUserDriverAssignedNotification = async (
 
   notificationTasks.push(
     sendNotification(
-      userData.email,
+      userData?.email,
       title,
-      userData.contactName,
+      userData?.contactName,
       "Driver Assigned"
     )
   );
@@ -274,21 +274,21 @@ const sendOperatorNewLoadAssignedNotification = async (
   movementId
 ) => {
   const body = "Cargo Connect";
-  const title = `Hi ${operatorData.operatorName}, You have a new service: [Origin → Destination]. Pickup time: [Date & Time].`;
+  const title = `Hi ${operatorData?.operatorName}, You have a new service: [Origin → Destination]. Pickup time: [Date & Time].`;
 
   const notificationTasks = [];
 
-  if (operatorData.deviceToken) {
+  if (operatorData?.deviceToken) {
     notificationTasks.push(
-      sendNotificationInApp(operatorData.deviceToken, title, body)
+      sendNotificationInApp(operatorData?.deviceToken, title, body)
     );
   }
-  if (operatorData.webToken) {
+  if (operatorData?.webToken) {
     notificationTasks.push(
-      sendNotificationInWeb(operatorData.webToken, title, body)
+      sendNotificationInWeb(operatorData?.webToken, title, body)
     );
   }
-  if (operatorData.deviceToken || operatorData.webToken) {
+  if (operatorData?.deviceToken || operatorData?.webToken) {
     await Notification.create({
       movementId,
       clientRelationId: operatorData._id,
@@ -300,20 +300,20 @@ const sendOperatorNewLoadAssignedNotification = async (
     // Schedule a reminder message after 10 minutes
     setTimeout(
       async () => {
-        const reminderTitle = `Hi ${operatorData.operatorName}, Your service is confirmed! Remember to pick up the load as scheduled and share your location for tracking.`;
+        const reminderTitle = `Hi ${operatorData?.operatorName}, Your service is confirmed! Remember to pick up the load as scheduled and share your location for tracking.`;
 
         const reminderTasks = [];
-        if (operatorData.deviceToken) {
+        if (operatorData?.deviceToken) {
           reminderTasks.push(
-            sendNotificationInApp(operatorData.deviceToken, reminderTitle, body)
+            sendNotificationInApp(operatorData?.deviceToken, reminderTitle, body)
           );
         }
-        if (operatorData.webToken) {
+        if (operatorData?.webToken) {
           reminderTasks.push(
-            sendNotificationInWeb(operatorData.webToken, reminderTitle, body)
+            sendNotificationInWeb(operatorData?.webToken, reminderTitle, body)
           );
         }
-        if (operatorData.deviceToken || operatorData.webToken) {
+        if (operatorData?.deviceToken || operatorData?.webToken) {
           reminderTasks.push(
             Notification.create({
               movementId,
@@ -340,21 +340,21 @@ const sendCarrierDriverAssignedNotification = async (
   movementId
 ) => {
   const body = "Cargo Connect";
-  const title = `Hi ${carrierData.contactName}, You have a new service: [Origin → Destination]. Pickup time: [Date & Time].`;
+  const title = `Hi ${carrierData?.contactName}, You have a new service: [Origin → Destination]. Pickup time: [Date & Time].`;
 
   const notificationTasks = [];
 
-  if (carrierData.deviceToken) {
+  if (carrierData?.deviceToken) {
     notificationTasks.push(
-      sendNotificationInApp(carrierData.deviceToken, title, body)
+      sendNotificationInApp(carrierData?.deviceToken, title, body)
     );
   }
-  if (carrierData.webToken) {
+  if (carrierData?.webToken) {
     notificationTasks.push(
-      sendNotificationInWeb(carrierData.webToken, title, body)
+      sendNotificationInWeb(carrierData?.webToken, title, body)
     );
   }
-  if (carrierData.deviceToken || carrierData.webToken) {
+  if (carrierData?.deviceToken || carrierData?.webToken) {
     notificationTasks.push(
       Notification.create({
         movementId,
@@ -367,9 +367,9 @@ const sendCarrierDriverAssignedNotification = async (
   }
   notificationTasks.push(
     sendNotification(
-      carrierData.email,
+      carrierData?.email,
       title,
-      carrierData.contactName,
+      carrierData?.contactName,
       "New Load Assigned"
     )
   );
@@ -386,21 +386,21 @@ const sendAdminLoadsAcceptedByCarriersNotification = async (
   await Promise.all(
     admins.map(async (admin) => {
       const body = "Cargo Connect";
-      const title = `Hi ${admin.contactName}, (Name - ${carrierData.contactName} Email ${carrierData.email}) Carriers have accepted a service. Please review the details and make sure to follow the steps below.`;
+      const title = `Hi ${admin?.contactName}, (Name - ${carrierData?.contactName} Email ${carrierData?.email}) Carriers have accepted a service. Please review the details and make sure to follow the steps below.`;
 
       const notificationTasks = [];
 
-      if (admin.deviceToken) {
+      if (admin?.deviceToken) {
         notificationTasks.push(
-          sendNotificationInApp(admin.deviceToken, title, body)
+          sendNotificationInApp(admin?.deviceToken, title, body)
         );
       }
-      if (admin.webToken) {
+      if (admin?.webToken) {
         notificationTasks.push(
-          sendNotificationInWeb(admin.webToken, title, body)
+          sendNotificationInWeb(admin?.webToken, title, body)
         );
       }
-      if (admin.deviceToken || admin.webToken) {
+      if (admin?.deviceToken || admin?.webToken) {
         notificationTasks.push(
           Notification.create({
             movementId,
@@ -413,9 +413,9 @@ const sendAdminLoadsAcceptedByCarriersNotification = async (
       }
       notificationTasks.push(
         sendNotification(
-          admin.email,
+          admin?.email,
           title,
-          admin.contactName,
+          admin?.contactName,
           "Loads Accepted by Carriers"
         )
       );
@@ -434,21 +434,21 @@ const sendAdminDriverAssignedToLoadNotification = async (
   await Promise.all(
     admins.map(async (admin) => {
       const body = "Cargo Connect";
-      const title = `Hi ${admin.contactName}, Drivers Assigned to services [Driver Name - ${operatorData.operatorName}, Contact - ${operatorData.operatorNumber}] Drivers Pending Assignment.`;
+      const title = `Hi ${admin?.contactName}, Drivers Assigned to services [Driver Name - ${operatorData?.operatorName}, Contact - ${operatorData?.operatorNumber}] Drivers Pending Assignment.`;
 
       const notificationTasks = [];
 
-      if (admin.deviceToken) {
+      if (admin?.deviceToken) {
         notificationTasks.push(
-          sendNotificationInApp(admin.deviceToken, title, body)
+          sendNotificationInApp(admin?.deviceToken, title, body)
         );
       }
-      if (admin.webToken) {
+      if (admin?.webToken) {
         notificationTasks.push(
-          sendNotificationInWeb(admin.webToken, title, body)
+          sendNotificationInWeb(admin?.webToken, title, body)
         );
       }
-      if (admin.deviceToken || admin.webToken) {
+      if (admin?.deviceToken || admin?.webToken) {
         notificationTasks.push(
           Notification.create({
             movementId,
@@ -463,7 +463,7 @@ const sendAdminDriverAssignedToLoadNotification = async (
         sendNotification(
           admin.email,
           title,
-          admin.contactName,
+          admin?.contactName,
           "Driver Assigned to Load"
         )
       );
