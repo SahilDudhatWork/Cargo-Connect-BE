@@ -22,17 +22,18 @@ const uploadData = async (req, res) => {
       "proofOfPhotography"
     );
 
-    const payload = {};
-    if (qrCode.length > 0) payload.qrCode = qrCode;
+    const updatePayload = {};
+
+    if (qrCode.length > 0) updatePayload.qrCode = qrCode;
+
     if (proofOfPhotography.length > 0) {
-      payload.proofOfPhotography = proofOfPhotography;
-      payload.documents = {};
-      payload.documents.proofOfDeliveryForCarrier = proofOfPhotography;
+      updatePayload.proofOfPhotography = proofOfPhotography;
+      updatePayload["documents.proofOfDeliveryForCarrier"] = proofOfPhotography;
     }
 
     await Movement.findOneAndUpdate(
       { movementId: params.movementId },
-      payload,
+      { $set: updatePayload },
       { new: true }
     );
 
