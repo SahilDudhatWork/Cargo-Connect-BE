@@ -176,7 +176,21 @@ const requiredConditions = {
     speReq: "",
     modeOfTrans: "",
   },
-  damagesDiscrepancies: {
+  damagesDiscrepanciesForUser: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "",
+  },
+  damagesDiscrepanciesForCarrier: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "",
+  },
+  damagesDiscrepanciesForOperator: {
     typeOfService: ["Northbound Service", "Southbound"],
     userComForType: "",
     carrierComForType: "",
@@ -199,7 +213,7 @@ const rolePermissions = {
     "profepaPackageEnvironmental",
     "intercambioTrailerRelease",
     "sedenaPackage",
-    "damagesDiscrepancies",
+    "damagesDiscrepanciesForUser",
     "proofOfDeliveryForUser",
   ],
   Carrier: [
@@ -210,7 +224,7 @@ const rolePermissions = {
     "temperatureControlIn",
     "temperatureControlOut",
     "proofOfDelivery",
-    "damagesDiscrepancies",
+    "damagesDiscrepanciesForCarrier",
     "proofOfDeliveryForCarrier",
   ],
   Operator: [
@@ -218,7 +232,7 @@ const rolePermissions = {
     "temperatureControlOut",
     "profepaPackageEnvironmental",
     "proofOfDelivery",
-    "damagesDiscrepancies",
+    "damagesDiscrepanciesForOperator",
     "proofOfDeliveryForOperator",
   ],
 };
@@ -238,8 +252,12 @@ const servicePermissions = {
     "sagarpaPackageAgriculture",
     "profepaPackageEnvironmental",
     "intercambioTrailerRelease",
-    "proofOfDelivery",
-    "damagesDiscrepancies",
+    "proofOfDeliveryForUser",
+    "proofOfDeliveryForCarrier",
+    "proofOfDeliveryForOperator",
+    "damagesDiscrepanciesForUser",
+    "damagesDiscrepanciesForCarrier",
+    "damagesDiscrepanciesForOperator",
     "oversizePermitCarrier",
   ],
   Southbound: [
@@ -258,9 +276,12 @@ const servicePermissions = {
     "profepaPackageEnvironmental",
     "intercambioTrailerRelease",
     "sedenaPackage",
-    "proofOfDelivery",
-    "damagesDiscrepancies",
-    "oversizePermitCarrier",
+    "proofOfDeliveryForUser",
+    "proofOfDeliveryForCarrier",
+    "proofOfDeliveryForOperator",
+    "damagesDiscrepanciesForUser",
+    "damagesDiscrepanciesForCarrier",
+    "oversizePermitCarrierForOperator",
   ],
   Other: ["oversizePermitCarrier"],
 };
@@ -446,9 +467,17 @@ const docUpload = async (req, res) => {
         documents?.proofOfDeliveryForOperator ??
         fetchData?.documents["proofOfDeliveryForOperator"] ??
         [],
-      damagesDiscrepancies:
-        documents?.damagesDiscrepancies ??
-        fetchData?.documents["damagesDiscrepancies"] ??
+      damagesDiscrepanciesForUser:
+        documents?.damagesDiscrepanciesForUser ??
+        fetchData?.documents["damagesDiscrepanciesForUser"] ??
+        [],
+      damagesDiscrepanciesForCarrier:
+        documents?.damagesDiscrepanciesForCarrier ??
+        fetchData?.documents["damagesDiscrepanciesForCarrier"] ??
+        [],
+      damagesDiscrepanciesForOperator:
+        documents?.damagesDiscrepanciesForOperator ??
+        fetchData?.documents["damagesDiscrepanciesForOperator"] ??
         [],
     };
 

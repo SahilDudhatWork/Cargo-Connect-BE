@@ -2187,8 +2187,18 @@
                     "format": "binary"
                   },
                   "sedenaPackage": { "type": "string", "format": "binary" },
-                  "proofOfDelivery": { "type": "string", "format": "binary" },
-                  "damagesDiscrepancies": {
+                  "proofOfDeliveryForUser": { "type": "string", "format": "binary" },
+                  "proofOfDeliveryForCarrier": { "type": "string", "format": "binary" },
+                  "proofOfDeliveryForOperator": { "type": "string", "format": "binary" },
+                  "damagesDiscrepanciesForUser": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "damagesDiscrepanciesForCarrier": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "damagesDiscrepanciesForOperator": {
                     "type": "string",
                     "format": "binary"
                   }
