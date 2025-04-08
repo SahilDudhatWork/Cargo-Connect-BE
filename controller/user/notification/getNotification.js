@@ -27,6 +27,25 @@ const getNotification = async (req, res) => {
       },
       { $sort: { createdAt: -1 } },
       {
+        $lookup: {
+          from: "movements",
+          localField: "movementId",
+          foreignField: "_id",
+          as: "movementData",
+        },
+      },
+      {
+        $unwind: {
+          path: "$movementData",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $addFields: {
+          redirectId: "$movementData.movementId",
+        },
+      },
+      {
         $facet: {
           paginatedResult: [
             { $skip: skip },
@@ -34,6 +53,7 @@ const getNotification = async (req, res) => {
             {
               $project: {
                 __v: 0,
+                movementData: 0,
               },
             },
           ],
