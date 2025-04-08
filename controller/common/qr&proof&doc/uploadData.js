@@ -49,7 +49,7 @@ const uploadData = async (req, res) => {
       res,
       status: STATUS_CODE.CREATED,
       msg: INFO_MSGS.UPLOADED_SUCCESSFULLY,
-      data: payload,
+      data: updatePayload,
     });
   } catch (error) {
     console.log("error :>> ", error);

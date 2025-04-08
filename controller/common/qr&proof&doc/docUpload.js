@@ -737,15 +737,16 @@ const sendCarrierNotification = async (
       })
     );
   }
-
-  notificationTasks.push(
-    sendNotification(
-      carrier?.email,
-      title,
-      carrier?.contactName,
-      "Document(s) Recently Uploaded by User"
-    )
-  );
+  if (carrier?.email) {
+    notificationTasks.push(
+      sendNotification(
+        carrier?.email,
+        title,
+        carrier?.contactName,
+        "Document(s) Recently Uploaded by User"
+      )
+    );
+  }
 
   await Promise.all(notificationTasks);
 };
