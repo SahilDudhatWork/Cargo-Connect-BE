@@ -155,7 +155,21 @@ const requiredConditions = {
     speReq: "Sedena Inspection MX (USD 0)",
     modeOfTrans: "",
   },
-  proofOfDelivery: {
+  proofOfDeliveryForUser: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "",
+  },
+  proofOfDeliveryForCarrier: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "",
+  },
+  proofOfDeliveryForOperator: {
     typeOfService: ["Northbound Service", "Southbound"],
     userComForType: "",
     carrierComForType: "",
@@ -186,6 +200,7 @@ const rolePermissions = {
     "intercambioTrailerRelease",
     "sedenaPackage",
     "damagesDiscrepancies",
+    "proofOfDeliveryForUser",
   ],
   Carrier: [
     "cartaPorteFolio",
@@ -196,6 +211,7 @@ const rolePermissions = {
     "temperatureControlOut",
     "proofOfDelivery",
     "damagesDiscrepancies",
+    "proofOfDeliveryForCarrier",
   ],
   Operator: [
     "temperatureControlIn",
@@ -203,6 +219,7 @@ const rolePermissions = {
     "profepaPackageEnvironmental",
     "proofOfDelivery",
     "damagesDiscrepancies",
+    "proofOfDeliveryForOperator",
   ],
 };
 const servicePermissions = {
@@ -417,9 +434,17 @@ const docUpload = async (req, res) => {
         [],
       sedenaPackage:
         documents?.sedenaPackage ?? fetchData?.documents["sedenaPackage"] ?? [],
-      proofOfDelivery:
-        documents?.proofOfDelivery ??
-        fetchData?.documents["proofOfDelivery"] ??
+      proofOfDeliveryForUser:
+        documents?.proofOfDeliveryForUser ??
+        fetchData?.documents["proofOfDeliveryForUser"] ??
+        [],
+      proofOfDeliveryForCarrier:
+        documents?.proofOfDeliveryForCarrier ??
+        fetchData?.documents["proofOfDeliveryForCarrier"] ??
+        [],
+      proofOfDeliveryForOperator:
+        documents?.proofOfDeliveryForOperator ??
+        fetchData?.documents["proofOfDeliveryForOperator"] ??
         [],
       damagesDiscrepancies:
         documents?.damagesDiscrepancies ??
@@ -468,7 +493,29 @@ const docUpload = async (req, res) => {
 
     // const validationErrors = await validateRoleFields(role, docObj, obj);
 
-    if (finalResult) {
+    if (role === "User") {
+      await sendCarrierNotification(
+        fetchData.carrierData,
+        fetchData.userData,
+        fetchData._id,
+        fetchData?.movementId,
+        documents
+      );
+    }
+    if (role === "Carrier") {
+      await sendUserNotification(
+        fetchData.carrierData,
+        fetchData.userData,
+        fetchData._id,
+        fetchData?.movementId,
+        documents
+      );
+    }
+    if (
+      finalResult &&
+      fetchData.status !== "Completed" &&
+      fetchData.status !== "Cancelled"
+    ) {
       await Movement.findOneAndUpdate(
         { movementId: params.movementId },
         { status: "InProgress" },
@@ -483,7 +530,7 @@ const docUpload = async (req, res) => {
       await sendAdminLoadInTransitNotification(
         admins,
         fetchData._id,
-        fetchData.movementId,
+        fetchData.movementId
       );
     }
 
@@ -530,20 +577,25 @@ module.exports = {
 };
 
 // In Transit Notification
-const sendUserInTransitNotification = async (userData, movementId, movementAccId) => {
+const sendUserInTransitNotification = async (
+  userData,
+  movementId,
+  movementAccId
+) => {
   const body = "Cargo Connect";
-  const title = `Hi ${userData?.contactName}, Your service is on the way. Track it in real-time here: https://mycargoconnects.com/my-orders/service/${movementAccId}.`;
+  const redirectUrl = `https://mycargoconnects.com/my-orders/service/${movementAccId}`;
+  const title = `Hi ${userData?.contactName}, Your service is on the way. Track it in real-time here: ${redirectUrl}.`;
 
   const notificationTasks = [];
 
   if (userData?.deviceToken) {
     notificationTasks.push(
-      sendNotificationInApp(userData?.deviceToken, title, body)
+      sendNotificationInApp(userData?.deviceToken, title, body, redirectUrl)
     );
   }
   if (userData?.webToken) {
     notificationTasks.push(
-      sendNotificationInWeb(userData?.webToken, title, body)
+      sendNotificationInWeb(userData?.webToken, title, body, redirectUrl)
     );
   }
   if (userData?.deviceToken || userData?.webToken) {
@@ -554,12 +606,18 @@ const sendUserInTransitNotification = async (userData, movementId, movementAccId
         collection: "Users",
         title,
         body,
+        redirectUrl,
       })
     );
   }
 
   notificationTasks.push(
-    sendNotification(userData?.email, title, userData?.contactName, "In Transit")
+    sendNotification(
+      userData?.email,
+      title,
+      userData?.contactName,
+      "In Transit"
+    )
   );
 
   await Promise.all(notificationTasks);
@@ -569,23 +627,24 @@ const sendUserInTransitNotification = async (userData, movementId, movementAccId
 const sendAdminLoadInTransitNotification = async (
   admins,
   movementId,
-  movementAccId,
+  movementAccId
 ) => {
   await Promise.all(
     admins.map(async (admin) => {
       const body = "Cargo Connect";
-      const title = `Hi ${admin?.contactName}, (${movementAccId}) Services are now in transit. Follow the progress here: https://mycargoconnects.com/my-orders/service/${movementAccId}.`;
+      const redirectUrl = `https://mycargoconnects.com/my-orders/service/${movementAccId}`;
+      const title = `Hi ${admin?.contactName}, (${movementAccId}) Services are now in transit. Follow the progress here: ${redirectUrl}.`;
 
       const notificationTasks = [];
 
       if (admin?.deviceToken) {
         notificationTasks.push(
-          sendNotificationInApp(admin?.deviceToken, title, body)
+          sendNotificationInApp(admin?.deviceToken, title, body, redirectUrl)
         );
       }
       if (admin?.webToken) {
         notificationTasks.push(
-          sendNotificationInWeb(admin?.webToken, title, body)
+          sendNotificationInWeb(admin?.webToken, title, body, redirectUrl)
         );
       }
       if (admin?.deviceToken || admin?.webToken) {
@@ -596,6 +655,7 @@ const sendAdminLoadInTransitNotification = async (
             collection: "Admins",
             title,
             body,
+            redirectUrl,
           })
         );
       }
@@ -611,4 +671,99 @@ const sendAdminLoadInTransitNotification = async (
       await Promise.all(notificationTasks);
     })
   );
+};
+
+// User doc upload notification
+const sendCarrierNotification = async (
+  carrier,
+  user,
+  movementId,
+  movementAccId
+) => {
+  const body = "Cargo Connect";
+  const redirectUrl = `https://mycargoconnects.com/my-orders/service/${movementAccId}`;
+  const title = `Hi ${carrier?.contactName}, a new document has been uploaded by ${user?.contactName}. View it here: ${redirectUrl}.`;
+
+  const notificationTasks = [];
+
+  if (carrier?.deviceToken) {
+    notificationTasks.push(
+      sendNotificationInApp(carrier?.deviceToken, title, body, redirectUrl)
+    );
+  }
+  if (carrier?.webToken) {
+    notificationTasks.push(
+      sendNotificationInWeb(carrier?.webToken, title, body, redirectUrl)
+    );
+  }
+  if (carrier?.deviceToken || carrier?.webToken) {
+    notificationTasks.push(
+      Notification.create({
+        movementId,
+        clientRelationId: carrier._id,
+        collection: "Carriers",
+        title,
+        body,
+        redirectUrl,
+      })
+    );
+  }
+
+  notificationTasks.push(
+    sendNotification(
+      carrier?.email,
+      title,
+      carrier?.contactName,
+      "Document(s) Recently Uploaded by User"
+    )
+  );
+
+  await Promise.all(notificationTasks);
+};
+
+// Carrier upload notification
+const sendUserNotification = async (
+  carrier,
+  user,
+  movementId,
+  movementAccId
+) => {
+  const body = "Cargo Connect";
+  const redirectUrl = `https://mycargoconnects.com/my-orders/service/${movementAccId}`;
+  const title = `Hi ${user?.contactName}, a new document has been uploaded by ${carrier?.contactName}. View it here: ${redirectUrl}.`;
+  const notificationTasks = [];
+
+  if (user?.deviceToken) {
+    notificationTasks.push(
+      sendNotificationInApp(user?.deviceToken, title, body, redirectUrl)
+    );
+  }
+  if (user?.webToken) {
+    notificationTasks.push(
+      sendNotificationInWeb(user?.webToken, title, body, redirectUrl)
+    );
+  }
+  if (user?.deviceToken || user?.webToken) {
+    notificationTasks.push(
+      Notification.create({
+        movementId,
+        clientRelationId: user._id,
+        collection: "Users",
+        title,
+        body,
+        redirectUrl,
+      })
+    );
+  }
+
+  notificationTasks.push(
+    sendNotification(
+      user?.email,
+      title,
+      user?.contactName,
+      "Document(s) Recently Uploaded by Carrier"
+    )
+  );
+
+  await Promise.all(notificationTasks);
 };

@@ -18,6 +18,9 @@ const collectionSchema = new Schema(
     body: {
       type: String,
     },
+    redirectUrl: {
+      type: String,
+    },
     isRead: {
       type: Boolean,
       default: false,

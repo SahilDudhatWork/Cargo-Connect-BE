@@ -1,6 +1,6 @@
 const admin = require("../helper/firebaseAdmin");
 
-const sendNotificationInWeb = async (webToken, title, body, image) => {
+const sendNotificationInWeb = async (webToken, title, body, redirectUrl) => {
   try {
     const message = {
       notification: {
@@ -11,12 +11,13 @@ const sendNotificationInWeb = async (webToken, title, body, image) => {
         headers: {
           Urgency: "high",
         },
-        notification: {
-          click_action: "https://mycargoconnects.com/",
-        },
+        notification: {},
       },
       token: webToken,
     };
+    if (redirectUrl) {
+      message.webpush.notification.click_action = redirectUrl;
+    }
 
     admin
       .messaging()

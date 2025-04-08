@@ -340,6 +340,81 @@
         }
       }
     },
+    "/v1/operator/notification": {
+      "get": {
+        "tags": ["Notification"],
+        "summary": "Get Notification",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "10"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/operator/notification/mark/read/{notificationId}": {
+      "put": {
+        "tags": ["Notification"],
+        "summary": "Mark as read",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/operator/notification/mark/all/read": {
+      "put": {
+        "tags": ["Notification"],
+        "summary": "Mark all read",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully.",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
     "/v1/operator/notification/token": {
       "put": {
         "tags": ["Notification"],

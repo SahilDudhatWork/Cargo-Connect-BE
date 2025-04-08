@@ -24,21 +24,24 @@ const uploadData = async (req, res) => {
 
     const payload = {};
     if (qrCode.length > 0) payload.qrCode = qrCode;
-    if (proofOfPhotography.length > 0)
+    if (proofOfPhotography.length > 0) {
       payload.proofOfPhotography = proofOfPhotography;
+      payload.documents = {};
+      payload.documents.proofOfDeliveryForCarrier = proofOfPhotography;
+    }
 
-    const updateData = await Movement.findOneAndUpdate(
+    await Movement.findOneAndUpdate(
       { movementId: params.movementId },
       payload,
       { new: true }
     );
 
     // if (updateData.qrCode?.length > 0) {
-      // await Movement.findOneAndUpdate(
-      //   { movementId: params.movementId },
-      //   { status: "InProgress" },
-      //   { new: true }
-      // );
+    // await Movement.findOneAndUpdate(
+    //   { movementId: params.movementId },
+    //   { status: "InProgress" },
+    //   { new: true }
+    // );
     // }
 
     return Response.success({

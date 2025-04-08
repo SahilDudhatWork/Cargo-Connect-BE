@@ -5,26 +5,30 @@ const axios = require("axios");
 // Define the required scopes
 const SCOPES = ["https://www.googleapis.com/auth/firebase.messaging"];
 
-const sendNotificationInApp = async (deviceToken, title, body) => {
+const sendNotificationInApp = async (deviceToken, title, body, redirectUrl) => {
   const accessToken = await getAccessToken();
   const FCM_URL =
     "https://fcm.googleapis.com/v1/projects/notification-92dce/messages:send";
 
-  const payload = {
-    message: {
-      token: deviceToken,
+  const message = {
+    token: deviceToken,
+    notification: {
+      title,
+      body,
+    },
+    android: {
       notification: {
-        title: title,
-        body: body,
-      },
-      android: {
-        notification: {
-          icon: "stock_ticker_update",
-          color: "#7e55c3",
-        },
+        icon: "stock_ticker_update",
+        color: "#7e55c3",
       },
     },
   };
+
+  if (redirectUrl) {
+    message.data = { link: redirectUrl };
+  }
+
+  const payload = { message };
 
   try {
     const response = await axios.post(FCM_URL, payload, {

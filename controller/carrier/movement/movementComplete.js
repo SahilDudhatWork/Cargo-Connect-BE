@@ -89,18 +89,19 @@ const sendUserDeliveryCompletedNotification = async (
   movementAccId
 ) => {
   const body = "Cargo Connect";
-  const title = `Hi ${userData?.contactName}, Your load has been successfully delivered to https://mycargoconnects.com/my-orders/service/${movementAccId}. Thank you for trusting us!`;
+  const redirectUrl = `https://mycargoconnects.com/my-orders/service/${movementAccId}`;
+  const title = `Hi ${userData?.contactName}, Your load has been successfully delivered to ${redirectUrl}. Thank you for trusting us!`;
 
   const notificationTasks = [];
 
   if (userData?.deviceToken) {
     notificationTasks.push(
-      sendNotificationInApp(userData?.deviceToken, title, body)
+      sendNotificationInApp(userData?.deviceToken, title, body, redirectUrl)
     );
   }
   if (userData?.webToken) {
     notificationTasks.push(
-      sendNotificationInWeb(userData?.webToken, title, body)
+      sendNotificationInWeb(userData?.webToken, title, body, redirectUrl)
     );
   }
   if (userData?.deviceToken || userData?.webToken) {
@@ -111,6 +112,7 @@ const sendUserDeliveryCompletedNotification = async (
         collection: "Users",
         title,
         body,
+        redirectUrl,
       })
     );
   }
@@ -134,18 +136,19 @@ const sendOperatorDeliveryCompletedNotification = async (
   movementAccId
 ) => {
   const body = "Cargo Connect";
-  const title = `Hi ${operatorData?.operatorName}, Load delivered at https://mycargoconnects.com/my-orders/service/${movementAccId}. Great job!`;
+  const redirectUrl = `https://mycargoconnects.com/my-orders/service/${movementAccId}`;
+  const title = `Hi ${operatorData?.operatorName}, Load delivered at ${redirectUrl}. Great job!`;
 
   const notificationTasks = [];
 
   if (operatorData?.deviceToken) {
     notificationTasks.push(
-      sendNotificationInApp(operatorData?.deviceToken, title, body)
+      sendNotificationInApp(operatorData?.deviceToken, title, body, redirectUrl)
     );
   }
   if (operatorData?.webToken) {
     notificationTasks.push(
-      sendNotificationInWeb(operatorData?.webToken, title, body)
+      sendNotificationInWeb(operatorData?.webToken, title, body, redirectUrl)
     );
   }
   if (operatorData?.deviceToken || operatorData?.webToken) {
@@ -156,6 +159,7 @@ const sendOperatorDeliveryCompletedNotification = async (
         collection: "Operators",
         title,
         body,
+        redirectUrl,
       })
     );
   }

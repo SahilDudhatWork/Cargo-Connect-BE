@@ -336,7 +336,7 @@ const createOrder = async (req, res) => {
 
     const userDetails = await User.findById(userId);
 
-    await notifyCarriers(carriers, saveData._id, amountDetails);
+    await notifyCarriers(carriers, saveData._id, amountDetails.price);
     await notifyUser(userDetails, saveData._id);
     await notifyAdmin(admins, saveData._id, getData.movementId);
 
