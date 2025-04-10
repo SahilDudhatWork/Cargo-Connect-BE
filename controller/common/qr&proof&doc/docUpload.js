@@ -661,7 +661,7 @@ const sendAdminLoadInTransitNotification = async (
   await Promise.all(
     admins.map(async (admin) => {
       const body = "Cargo Connect";
-      const redirectUrl = `https://mycargoconnects.com/my-orders/service/${movementAccId}`;
+      const redirectUrl = `https://admin.mycargoconnects.com/services/${movementAccId}`;
       const title = `Hi ${admin?.contactName}, (${movementAccId}) Services are now in transit. Follow the progress here: ${redirectUrl}.`;
 
       const notificationTasks = [];
@@ -711,7 +711,7 @@ const sendCarrierNotification = async (
 ) => {
   const body = "Cargo Connect";
   const redirectUrl = `https://mycargoconnects.com/my-orders/service/${movementAccId}`;
-  const title = `Hi ${carrier?.contactName}, a new document has been uploaded by ${user?.contactName}. View it here: ${redirectUrl}.`;
+  const title = `Hi ${carrier?.contactName}, a new document has been uploaded by ${user?.contactName}.`;
 
   const notificationTasks = [];
 
@@ -760,7 +760,7 @@ const sendUserNotification = async (
 ) => {
   const body = "Cargo Connect";
   const redirectUrl = `https://mycargoconnects.com/my-orders/service/${movementAccId}`;
-  const title = `Hi ${user?.contactName}, a new document has been uploaded by ${carrier?.contactName}. View it here: ${redirectUrl}.`;
+  const title = `Hi ${user?.contactName}, a new document has been uploaded by ${carrier?.contactName}.`;
   const notificationTasks = [];
 
   if (user?.deviceToken) {

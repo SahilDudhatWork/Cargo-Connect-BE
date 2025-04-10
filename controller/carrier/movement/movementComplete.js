@@ -90,7 +90,7 @@ const sendUserDeliveryCompletedNotification = async (
 ) => {
   const body = "Cargo Connect";
   const redirectUrl = `https://mycargoconnects.com/my-orders/service/${movementAccId}`;
-  const title = `Hi ${userData?.contactName}, Your load has been successfully delivered to ${redirectUrl}. Thank you for trusting us!`;
+  const title = `Hi ${userData?.contactName}, Your load has been successfully delivered. Thank you for trusting us!`;
 
   const notificationTasks = [];
 
@@ -137,7 +137,7 @@ const sendOperatorDeliveryCompletedNotification = async (
 ) => {
   const body = "Cargo Connect";
   const redirectUrl = `https://mycargoconnects.com/my-orders/service/${movementAccId}`;
-  const title = `Hi ${operatorData?.operatorName}, Load delivered at ${redirectUrl}. Great job!`;
+  const title = `Hi ${operatorData?.operatorName}, Load delivered. Great job!`;
 
   const notificationTasks = [];
 
