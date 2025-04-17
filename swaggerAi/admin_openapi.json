@@ -2598,6 +2598,29 @@
         }
       }
     },
+    "/v1/admin/commonRequirements/{type}": {
+      "get": {
+        "tags": ["Common Requirements"],
+        "summary": "Get All Trans and Port Data",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["transportation", "post_bridge"]
+            }
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "The request was processed successfully."
+          }
+        }
+      }
+    },
     "/v1/admin/commonRequirements/{type}/{id}": {
       "post": {
         "tags": ["Common Requirements"],
