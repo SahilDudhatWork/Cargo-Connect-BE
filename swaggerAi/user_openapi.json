@@ -897,20 +897,23 @@
         }
       }
     },
-    "/v1/user/specialRequirements/{post_bridgeId}": {
-      "get": {
+    "/v1/user/specialRequirements": {
+      "post": {
         "tags": ["Special Requirements"],
         "summary": "Get Special Requirements",
-        "parameters": [
-          {
-            "name": "post_bridgeId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "postBridgeId": "66fa4486b76ac71e890196df",
+                  "transportationId": "6739ef5e50079fe19141c24d"
+                }
+              }
             }
           }
-        ],
+        },
         "security": [
           {
             "bearerAuth": []
@@ -1603,9 +1606,18 @@
                     "format": "binary"
                   },
                   "sedenaPackage": { "type": "string", "format": "binary" },
-                  "proofOfDeliveryForUser": { "type": "string", "format": "binary" },
-                  "proofOfDeliveryForCarrier": { "type": "string", "format": "binary" },
-                  "proofOfDeliveryForOperator": { "type": "string", "format": "binary" },
+                  "proofOfDeliveryForUser": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "proofOfDeliveryForCarrier": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "proofOfDeliveryForOperator": {
+                    "type": "string",
+                    "format": "binary"
+                  },
                   "damagesDiscrepanciesForUser": {
                     "type": "string",
                     "format": "binary"

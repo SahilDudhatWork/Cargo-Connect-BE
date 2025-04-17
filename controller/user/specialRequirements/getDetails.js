@@ -1,4 +1,5 @@
 const SpecialRequirements = require("../../../model/common/specialRequirements");
+const TransitInfo = require("../../../model/common/transitInfo");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const {
@@ -8,20 +9,67 @@ const {
 } = require("../../../helper/constant");
 
 const getDetails = async (req, res) => {
-  const { logger, params } = req;
+  const { logger, body } = req;
   try {
-    const { id } = params;
-    const getData = await SpecialRequirements.findById(id);
+    const { postBridgeId, transportationId } = body;
 
-    const statusCode = getData ? STATUS_CODE.OK : STATUS_CODE.OK;
-    const message = getData ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_AVAILABLE;
+    if (!postBridgeId && !transportationId) {
+      return Response.error({
+        res,
+        status: STATUS_CODE.BAD_REQUEST,
+        msg: `Either postBridgeId or transportationId ${ERROR_MSGS.KEY_REQUIRED}`,
+      });
+    }
 
-    return Response[statusCode === STATUS_CODE.OK ? "success" : "error"]({
+    let result = null;
+
+    if (postBridgeId) {
+      const specialRequirementsInfo = await SpecialRequirements.findById(
+        postBridgeId
+      );
+
+      if (specialRequirementsInfo?.requirements?.length > 0) {
+        result = {
+          _id: specialRequirementsInfo._id,
+          match: "post_bridge",
+          title: specialRequirementsInfo.post_bridge,
+          requirements: specialRequirementsInfo.requirements,
+        };
+      }
+    }
+
+    if (!result && transportationId) {
+      const transitInfo = await TransitInfo.findOne();
+      const item = transitInfo?.transportation?.find(
+        (i) => i._id.toString() === transportationId
+      );
+
+      if (item?.requirements?.length > 0) {
+        result = {
+          _id: item._id,
+          match: "transportation",
+          title: item.title,
+          requirements: item.requirements,
+        };
+      }
+    }
+
+    if (!result) {
+      return Response.success({
+        req,
+        res,
+        status: STATUS_CODE.OK,
+        msg: ERROR_MSGS.DATA_NOT_AVAILABLE,
+        data: [],
+      });
+    }
+
+    return Response.success({
       req,
       res,
-      status: statusCode,
-      msg: message,
-      data: getData || null,
+      status: STATUS_CODE.OK,
+      msg: INFO_MSGS.SUCCESS,
+      data: result,
     });
   } catch (error) {
     return handleException(logger, res, error);

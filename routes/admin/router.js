@@ -12,6 +12,7 @@ const transitInfoRoute = require("./transitInfo");
 const coordinatesRoute = require("./coordinates");
 const settingsRoute = require("./settings");
 const specialRequirementsRoute = require("./specialRequirements");
+const commonRequirementsRoute = require("./commonRequirements");
 const guidelinePagesRoute = require("./guidelinePages");
 const subAdminRoute = require("./subAdmin");
 const menuAccessRoute = require("./menuAccess");
@@ -37,6 +38,7 @@ router.use("/banners", bannersRoute);
 router.use("/transitInfo", transitInfoRoute);
 router.use("/coordinates", coordinatesRoute);
 router.use("/specialRequirements", specialRequirementsRoute);
+router.use("/commonRequirements", commonRequirementsRoute);
 router.use("/settings", settingsRoute);
 router.use("/guidelinePages", guidelinePagesRoute);
 

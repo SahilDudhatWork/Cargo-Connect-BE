@@ -33,6 +33,18 @@ const collectionSchema = new Schema(
           type: Number,
           default: 0,
         },
+        requirements: [
+          {
+            type: {
+              type: String,
+              default: null,
+            },
+            price: {
+              type: Number,
+              default: 0,
+            },
+          },
+        ],
         modes: [
           {
             title: {
