@@ -13,12 +13,16 @@ const create = async (req, res) => {
     if (type === "transportation") {
       const transitInfo = await TransitInfo.findOne();
       for (const i of transitInfo.transportation) {
-        if (i._id.toString() === id) {
-          i.requirements.push(...requirements);
+        if (i.modes.length > 0) {
+          for (const mode of i.modes) {
+            if (mode._id.toString() === id) {
+              mode.requirements.push(...requirements);
+            }
+          }
         }
       }
       await transitInfo.save();
-    } else if (type === "post_bridge") {
+    } else if (type === "port_bridge") {
       const specialRequirementsInfo = await SpecialRequirements.findById(id);
       specialRequirementsInfo.requirements.push(...requirements);
       await specialRequirementsInfo.save();

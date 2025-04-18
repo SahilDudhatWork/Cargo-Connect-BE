@@ -12,14 +12,16 @@ const removeData = async (req, res) => {
     if (type === "transportation") {
       const transitInfo = await TransitInfo.findOne();
       for (const i of transitInfo.transportation) {
-        if (i._id.toString() === id) {
-          i.requirements = i.requirements.filter(
-            (r) => r._id.toString() !== requirementId
-          );
+        for (const mode of i.modes || []) {
+          if (mode._id.toString() === id) {
+            mode.requirements = mode.requirements.filter(
+              (r) => r._id.toString() !== requirementId
+            );
+          }
         }
       }
       await transitInfo.save();
-    } else if (type === "post_bridge") {
+    } else if (type === "port_bridge") {
       const specialRequirementsInfo = await SpecialRequirements.findById(id);
       specialRequirementsInfo.requirements =
         specialRequirementsInfo.requirements.filter(

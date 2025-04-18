@@ -56,7 +56,7 @@ const update = async (req, res) => {
     const cleanedRequirements = cleanRequirements(updatedRequirements);
 
     const payload = {
-      post_bridge: body.post_bridge || existingData.post_bridge,
+      port_bridge: body.port_bridge || existingData.port_bridge,
       requirements: cleanedRequirements,
     };
 

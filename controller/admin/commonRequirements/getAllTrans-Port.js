@@ -16,23 +16,29 @@ const getAllTrans_Port = async (req, res) => {
 
     if (type === "transportation") {
       const { transportation } = await TransitInfo.findOne();
-      let array = await transportation.map((i) => {
-        return {
-          _id: i._id,
-          type: "transportation",
-          title: i.title,
-          requirements: i.requirements,
-        };
-      });
+
+      let array = [];
+
+      for (const t of transportation) {
+        for (const mode of t.modes) {
+          array.push({
+            _id: mode._id,
+            type: "transportation",
+            title: mode.title,
+            requirements: mode.requirements,
+          });
+        }
+      }
+
       result = array;
-    } else if (type === "post_bridge") {
+    } else if (type === "port_bridge") {
       const specialRequirementsInfo = await SpecialRequirements.find();
       // result = specialRequirementsInfo;
       let array = specialRequirementsInfo.map((i) => {
         return {
           _id: i._id,
-          type: "post_bridge",
-          title: i.post_bridge,
+          type: "port_bridge",
+          title: i.port_bridge,
           requirements: i.requirements,
         };
       });

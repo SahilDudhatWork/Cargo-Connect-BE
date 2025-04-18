@@ -58,6 +58,7 @@ const calculatePrice = (
   let highestMatchPrice = 0;
   let matchedCount = 0;
   let nonMatchedCount = 0;
+  const addLength = addresses.length;
 
   for (const address of addresses) {
     const lat = parseFloat(address.addressDetails.lat);
@@ -84,7 +85,11 @@ const calculatePrice = (
     totalMatchingPrice += highestMatchPrice + basePrice;
   }
   if (nonMatchedCount > 0) {
-    totalMatchingPrice += nonMatchedCount * additionalPrice;
+    if (nonMatchedCount === 1 && addLength === 1) {
+      totalMatchingPrice += nonMatchedCount * basePrice;
+    } else {
+      totalMatchingPrice += nonMatchedCount * additionalPrice;
+    }
   }
 
   return totalMatchingPrice;

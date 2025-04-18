@@ -16,11 +16,12 @@ const getAll = async (req, res) => {
 
     if (type === "transportation") {
       const transitInfo = await TransitInfo.findOne();
-      const item = transitInfo.transportation.find(
-        (i) => i._id.toString() === id
+      const item = transitInfo.transportation.find((i) =>
+        i.modes.some((mode) => mode._id.toString() === id)
       );
-      result = item?.requirements || [];
-    } else if (type === "post_bridge") {
+      const mode = item.modes.find((m) => m._id.toString() === id);
+      result = mode?.requirements || [];
+    } else if (type === "port_bridge") {
       const specialRequirementsInfo = await SpecialRequirements.findById(id);
       result = specialRequirementsInfo?.requirements || [];
     }

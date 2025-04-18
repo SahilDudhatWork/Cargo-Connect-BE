@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const collectionSchema = new Schema(
   {
-    post_bridge: {
+    port_bridge: {
       type: String,
       default: null,
     },

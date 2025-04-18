@@ -11,16 +11,18 @@ const update = async (req, res) => {
 
     if (type === "transportation") {
       const transitInfo = await TransitInfo.findOne();
-      for (const i of transitInfo.transportation) {
-        if (i._id.toString() === id) {
-          const reqItem = i.requirements.find(
-            (r) => r._id.toString() === requirementId
-          );
-          if (reqItem) Object.assign(reqItem, body);
+      for (const transport of transitInfo.transportation) {
+        for (const mode of transport.modes) {
+          if (mode._id.toString() === id) {
+            const reqItem = mode.requirements.find(
+              (r) => r._id.toString() === requirementId
+            );
+            if (reqItem) Object.assign(reqItem, body);
+          }
         }
       }
       await transitInfo.save();
-    } else if (type === "post_bridge") {
+    } else if (type === "port_bridge") {
       const specialRequirementsInfo = await SpecialRequirements.findById(id);
       const reqItem = specialRequirementsInfo.requirements.find(
         (r) => r._id.toString() === requirementId
