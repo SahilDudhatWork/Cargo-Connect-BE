@@ -49,6 +49,7 @@ const coordinatesPrice = async (req, res) => {
       let highestMatchPrice = 0;
       let matchedCount = 0;
       let nonMatchedCount = 0;
+      const addLength = addresses.length;
 
       // To store multiple matches for determining the highest price
       const matchedPrices = [];
@@ -87,7 +88,11 @@ const coordinatesPrice = async (req, res) => {
 
       // Case 1: No matching coordinates, apply additionalPrice
       if (matchedPrices.length === 0) {
-        totalMatchingPrice += nonMatchedCount * additionalPrice;
+        if (nonMatchedCount === 1 && addLength === 1) {
+          totalMatchingPrice += nonMatchedCount * basePrice;
+        } else {
+          totalMatchingPrice += nonMatchedCount * additionalPrice;
+        }
       }
 
       // Case 2: One or more matches, use the highest match + basePrice, and apply additional price for non-matched ones
@@ -96,7 +101,11 @@ const coordinatesPrice = async (req, res) => {
         totalMatchingPrice += highestMatchPrice + basePrice;
 
         if (nonMatchedCount > 0) {
-          totalMatchingPrice += nonMatchedCount * additionalPrice;
+          if (nonMatchedCount === 1 && addLength === 1) {
+            totalMatchingPrice += nonMatchedCount * basePrice;
+          } else {
+            totalMatchingPrice += nonMatchedCount * additionalPrice;
+          }
         }
       }
 
