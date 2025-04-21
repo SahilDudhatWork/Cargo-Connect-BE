@@ -258,7 +258,12 @@ const createOrder = async (req, res) => {
         special: "Over Size",
       },
       {
-        fields: ["overweightPermit"],
+        fields: ["overweightPermitUser"],
+        condition: isNorthOrSouth,
+        special: "Over Weight",
+      },
+      {
+        fields: ["overweightPermitCarrier"],
         condition: isNorthOrSouth,
         special: "Over Weight",
       },
@@ -304,7 +309,12 @@ const createOrder = async (req, res) => {
         special: "Over Size",
       },
       {
-        fields: ["overweightPermit"],
+        fields: ["overweightPermitUser"],
+        condition: isNorthOrSouth,
+        special: "Over Weight",
+      },
+      {
+        fields: ["overweightPermitCarrier"],
         condition: isNorthOrSouth,
         special: "Over Weight",
       },

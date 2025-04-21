@@ -92,11 +92,18 @@ const requiredConditions = {
     speReq: "Over Size",
     modeOfTrans: "",
   },
-  oversizePermitCarrier: {
-    typeOfService: "",
+  overweightPermitUser: {
+    typeOfService: ["Northbound Service", "Southbound"],
     userComForType: "",
     carrierComForType: "",
-    speReq: "Over Size",
+    speReq: "Over Weight",
+    modeOfTrans: "",
+  },
+  overweightPermitCarrier: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "Over Weight",
     modeOfTrans: "",
   },
   overweightNotification: {
@@ -444,9 +451,13 @@ const docUpload = async (req, res) => {
         documents?.oversizePermitCarrier ??
         fetchData?.documents["oversizePermitCarrier"] ??
         [],
-      overweightPermit:
-        documents?.overweightPermit ??
-        fetchData?.documents["overweightPermit"] ??
+      overweightPermitUser:
+        documents?.overweightPermitUser ??
+        fetchData?.documents["overweightPermitUser"] ??
+        [],
+      overweightPermitCarrier:
+        documents?.overweightPermitCarrier ??
+        fetchData?.documents["overweightPermitCarrier"] ??
         [],
       temperatureControlIn:
         documents?.temperatureControlIn ??
@@ -505,9 +516,7 @@ const docUpload = async (req, res) => {
         fetchData?.documents["overweightNotification"] ??
         [],
       cuadernoAta:
-        documents?.cuadernoAta ??
-        fetchData?.documents["cuadernoAta"] ??
-        [],
+        documents?.cuadernoAta ?? fetchData?.documents["cuadernoAta"] ?? [],
       informalExport:
         documents?.informalExport ??
         fetchData?.documents["informalExport"] ??
