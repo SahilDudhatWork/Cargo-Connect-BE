@@ -263,6 +263,11 @@ const createOrder = async (req, res) => {
         special: "Over Weight",
       },
       {
+        fields: ["overweightNotification"],
+        condition: isNorthOrSouth,
+        special: "Over Weight",
+      },
+      {
         fields: ["hazmatBol", "hazmatSdsSafetyDataSheet"],
         condition: isNorthOrSouth,
         special: "Hazmat (USD405)",
@@ -281,6 +286,14 @@ const createOrder = async (req, res) => {
         fields: ["sedenaPackage"],
         condition: isSouthbound,
         special: "Sedena Inspection MX (USD 0)",
+      },
+      {
+        fields: ["cuadernoAta"],
+        condition: isNorthOrSouth,
+      },
+      {
+        fields: ["informalExport"],
+        condition: isNorthbound,
       },
     ];
     const carrierConditions = [
