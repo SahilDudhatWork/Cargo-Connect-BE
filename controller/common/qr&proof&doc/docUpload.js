@@ -500,6 +500,18 @@ const docUpload = async (req, res) => {
         documents?.damagesDiscrepanciesForOperator ??
         fetchData?.documents["damagesDiscrepanciesForOperator"] ??
         [],
+      overweightNotification:
+        documents?.overweightNotification ??
+        fetchData?.documents["overweightNotification"] ??
+        [],
+      cuadernoAta:
+        documents?.cuadernoAta ??
+        fetchData?.documents["cuadernoAta"] ??
+        [],
+      informalExport:
+        documents?.informalExport ??
+        fetchData?.documents["informalExport"] ??
+        [],
     };
 
     await Movement.findOneAndUpdate(
