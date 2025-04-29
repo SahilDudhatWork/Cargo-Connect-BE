@@ -346,3 +346,51 @@ const sendCarrierDriverAssignedNotification = async (
 
   await Promise.all(notificationTasks);
 };
+
+// Loads Accepted by Carriers Notification
+const sendAdminLoadsAcceptedByCarriersNotification = async (
+  admins,
+  carrierData,
+  movementId
+) => {
+  await Promise.all(
+    admins.map(async (admin) => {
+      const body = "Cargo Connect";
+      const title = `Hi ${admin?.contactName}, (Name - ${carrierData?.contactName} Email ${carrierData?.email}) Carriers have accepted a service. Please review the details and make sure to follow the steps below.`;
+
+      const notificationTasks = [];
+
+      if (admin?.deviceToken) {
+        notificationTasks.push(
+          sendNotificationInApp(admin?.deviceToken, title, body)
+        );
+      }
+      if (admin?.webToken) {
+        notificationTasks.push(
+          sendNotificationInWeb(admin?.webToken, title, body)
+        );
+      }
+      if (admin?.deviceToken || admin?.webToken) {
+        notificationTasks.push(
+          Notification.create({
+            movementId,
+            clientRelationId: admin._id,
+            collection: "Admins",
+            title,
+            body,
+          })
+        );
+      }
+      notificationTasks.push(
+        sendNotification(
+          admin?.email,
+          title,
+          admin?.contactName,
+          "Loads Accepted by Carriers"
+        )
+      );
+
+      await Promise.all(notificationTasks);
+    })
+  );
+};
