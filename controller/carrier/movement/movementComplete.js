@@ -1,6 +1,7 @@
 const Movement = require("../../../model/movement/movement");
 const User = require("../../../model/user/user");
 const Operator = require("../../../model/operator/operator");
+const Vehicle = require("../../../model/vehicle/vehicle");
 const Admin = require("../../../model/admin/admin");
 const Notification = require("../../../model/common/notification");
 const { handleException } = require("../../../helper/exception");
@@ -26,6 +27,11 @@ const movementComplete = async (req, res) => {
     let updateData = await Movement.findOneAndUpdate(
       { movementId: id },
       { status: "Completed" },
+      { new: true }
+    );
+    await Vehicle.findByIdAndUpdate(
+      updateData.vehicleId,
+      { status: "Active" },
       { new: true }
     );
 
