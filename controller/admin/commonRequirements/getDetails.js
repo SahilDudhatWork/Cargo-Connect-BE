@@ -27,7 +27,7 @@ const getDetails = async (req, res) => {
         }
         if (result) break;
       }
-    } else if (type === "port_bridge") {
+    } else if (type === "post_bridge") {
       const specialRequirementsInfo = await SpecialRequirements.findById(id);
       result = specialRequirementsInfo?.requirements.find(
         (r) => r._id.toString() === requirementId

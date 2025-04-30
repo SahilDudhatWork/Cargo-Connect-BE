@@ -22,7 +22,7 @@ const fetchService = async (req, res) => {
     }
     const getSpecialRequirements = await SpecialRequirements.find(
       {},
-      { port_bridge: 1 }
+      { post_bridge: 1 }
     );
 
     let modeOfTransportation = {};

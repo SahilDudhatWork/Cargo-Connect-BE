@@ -22,7 +22,7 @@ const update = async (req, res) => {
         }
       }
       await transitInfo.save();
-    } else if (type === "port_bridge") {
+    } else if (type === "post_bridge") {
       const specialRequirementsInfo = await SpecialRequirements.findById(id);
       const reqItem = specialRequirementsInfo.requirements.find(
         (r) => r._id.toString() === requirementId

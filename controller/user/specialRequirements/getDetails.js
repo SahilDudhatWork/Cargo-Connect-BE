@@ -31,8 +31,8 @@ const getDetails = async (req, res) => {
       if (specialRequirementsInfo?.requirements?.length > 0) {
         result = {
           _id: specialRequirementsInfo._id,
-          match: "port_bridge",
-          title: specialRequirementsInfo.port_bridge,
+          match: "post_bridge",
+          title: specialRequirementsInfo.post_bridge,
           requirements: specialRequirementsInfo.requirements,
         };
       }
