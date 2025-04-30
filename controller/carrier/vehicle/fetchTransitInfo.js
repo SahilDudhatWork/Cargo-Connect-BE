@@ -1,4 +1,4 @@
-const TransitInfo = require("../../../model/admin/transitInfo");
+const TransitInfo = require("../../../model/common/transitInfo");
 const SpecialRequirements = require("../../../model/common/specialRequirements");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
@@ -14,7 +14,7 @@ const fetchTransitInfo = async (req, res) => {
     let getData = await TransitInfo.findOne();
     const getSpecialRequirements = await SpecialRequirements.find(
       {},
-      { post_bridge: 1 }
+      { port_bridge: 1 }
     );
 
     let modeOfTransportation = {};

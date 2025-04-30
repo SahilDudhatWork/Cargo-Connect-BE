@@ -1,4 +1,4 @@
-const TransitInfo = require("../../../model/admin/transitInfo");
+const TransitInfo = require("../../../model/common/transitInfo");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
 const {

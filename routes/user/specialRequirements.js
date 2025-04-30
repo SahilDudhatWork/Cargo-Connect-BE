@@ -4,6 +4,6 @@ const {
   getDetails,
 } = require("../../controller/user/specialRequirements/getDetails");
 
-router.get("/:id", getDetails);
+router.post("/", getDetails);
 
 module.exports = router;
