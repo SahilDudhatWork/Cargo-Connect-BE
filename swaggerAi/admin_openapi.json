@@ -2429,7 +2429,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "port_bridge": "Value",
+                  "post_bridge": "Value",
                   "requirements": [
                     {
                       "type": "Hazmat",
@@ -2505,7 +2505,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "port_bridge": "Value",
+                  "post_bridge": "Value",
                   "requirements": [
                     {
                       "type": "Hazmat",
@@ -2609,7 +2609,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["transportation", "port_bridge"]
+              "enum": ["transportation", "post_bridge"]
             }
           }
         ],
@@ -2632,7 +2632,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["transportation", "port_bridge"]
+              "enum": ["transportation", "post_bridge"]
             }
           },
           {
@@ -2677,7 +2677,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["transportation", "port_bridge"]
+              "enum": ["transportation", "post_bridge"]
             }
           },
           {
@@ -2709,7 +2709,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["transportation", "port_bridge"]
+              "enum": ["transportation", "post_bridge"]
             }
           },
           {
@@ -2746,7 +2746,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["transportation", "port_bridge"]
+              "enum": ["transportation", "post_bridge"]
             }
           },
           {
@@ -2797,7 +2797,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["transportation", "port_bridge"]
+              "enum": ["transportation", "post_bridge"]
             }
           },
           {

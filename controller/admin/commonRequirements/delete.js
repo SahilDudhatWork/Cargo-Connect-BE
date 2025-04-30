@@ -21,7 +21,7 @@ const removeData = async (req, res) => {
         }
       }
       await transitInfo.save();
-    } else if (type === "port_bridge") {
+    } else if (type === "post_bridge") {
       const specialRequirementsInfo = await SpecialRequirements.findById(id);
       specialRequirementsInfo.requirements =
         specialRequirementsInfo.requirements.filter(

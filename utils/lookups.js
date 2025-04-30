@@ -377,7 +377,7 @@ const port_BridgeOfCrossing_Pipeline = () => [
         {
           $project: {
             _id: 0,
-            port_bridge: 1,
+            post_bridge: 1,
           },
         },
       ],
@@ -387,7 +387,7 @@ const port_BridgeOfCrossing_Pipeline = () => [
   {
     $addFields: {
       port_BridgeOfCrossing: {
-        $arrayElemAt: ["$port_BridgeOfCrossing.port_bridge", 0],
+        $arrayElemAt: ["$port_BridgeOfCrossing.post_bridge", 0],
       },
     },
   },

@@ -14,7 +14,7 @@ const fetchTransitInfo = async (req, res) => {
     let getData = await TransitInfo.findOne();
     const getSpecialRequirements = await SpecialRequirements.find(
       {},
-      { port_bridge: 1 }
+      { post_bridge: 1 }
     );
 
     let modeOfTransportation = {};

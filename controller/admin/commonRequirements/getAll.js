@@ -21,7 +21,7 @@ const getAll = async (req, res) => {
       );
       const mode = item.modes.find((m) => m._id.toString() === id);
       result = mode?.requirements || [];
-    } else if (type === "port_bridge") {
+    } else if (type === "post_bridge") {
       const specialRequirementsInfo = await SpecialRequirements.findById(id);
       result = specialRequirementsInfo?.requirements || [];
     }

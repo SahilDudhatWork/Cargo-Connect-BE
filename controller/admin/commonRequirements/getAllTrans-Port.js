@@ -31,14 +31,14 @@ const getAllTrans_Port = async (req, res) => {
       }
 
       result = array;
-    } else if (type === "port_bridge") {
+    } else if (type === "post_bridge") {
       const specialRequirementsInfo = await SpecialRequirements.find();
       // result = specialRequirementsInfo;
       let array = specialRequirementsInfo.map((i) => {
         return {
           _id: i._id,
-          type: "port_bridge",
-          title: i.port_bridge,
+          type: "post_bridge",
+          title: i.post_bridge,
           requirements: i.requirements,
         };
       });
