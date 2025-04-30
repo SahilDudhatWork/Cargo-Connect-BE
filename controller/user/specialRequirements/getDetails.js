@@ -11,21 +11,21 @@ const {
 const getDetails = async (req, res) => {
   const { logger, body } = req;
   try {
-    const { postBridgeId, transportationId } = body;
+    const { portBridgeId, transportationId } = body;
 
-    if (!postBridgeId && !transportationId) {
+    if (!portBridgeId && !transportationId) {
       return Response.error({
         res,
         status: STATUS_CODE.BAD_REQUEST,
-        msg: `Either postBridgeId or transportationId ${ERROR_MSGS.KEY_REQUIRED}`,
+        msg: `Either portBridgeId or transportationId ${ERROR_MSGS.KEY_REQUIRED}`,
       });
     }
 
     let result = null;
 
-    if (postBridgeId) {
+    if (portBridgeId) {
       const specialRequirementsInfo = await SpecialRequirements.findById(
-        postBridgeId
+        portBridgeId
       );
 
       if (specialRequirementsInfo?.requirements?.length > 0) {

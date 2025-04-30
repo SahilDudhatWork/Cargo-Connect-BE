@@ -907,7 +907,7 @@
               "schema": {
                 "type": "object",
                 "example": {
-                  "postBridgeId": "66fa4486b76ac71e890196df",
+                  "portBridgeId": "66fa4486b76ac71e890196df",
                   "transportationId": "6739ef5e50079fe19141c24d"
                 }
               }
@@ -1583,8 +1583,14 @@
                     "type": "string",
                     "format": "binary"
                   },
-                  "overweightPermitUser": { "type": "string", "format": "binary" },
-                  "overweightPermitCarrier": { "type": "string", "format": "binary" },
+                  "overweightPermitUser": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "overweightPermitCarrier": {
+                    "type": "string",
+                    "format": "binary"
+                  },
                   "temperatureControlIn": {
                     "type": "string",
                     "format": "binary"
