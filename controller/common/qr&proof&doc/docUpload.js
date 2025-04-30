@@ -92,7 +92,21 @@ const requiredConditions = {
     speReq: "Over Size",
     modeOfTrans: "",
   },
-  overweightPermit: {
+  overweightPermitUser: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "Over Weight",
+    modeOfTrans: "",
+  },
+  overweightPermitCarrier: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "Over Weight",
+    modeOfTrans: "",
+  },
+  overweightNotification: {
     typeOfService: ["Northbound Service", "Southbound"],
     userComForType: "",
     carrierComForType: "",
@@ -197,169 +211,183 @@ const requiredConditions = {
     speReq: "",
     modeOfTrans: "",
   },
+  cuadernoAta: {
+    typeOfService: ["Northbound Service", "Southbound"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "",
+  },
+  informalExport: {
+    typeOfService: ["Northbound Service"],
+    userComForType: "",
+    carrierComForType: "",
+    speReq: "",
+    modeOfTrans: "",
+  },
 };
-const rolePermissions = {
-  User: [
-    "cartaPorte",
-    "doda",
-    "entryPrefileInbond",
-    "itnInbondNoItnNeeded",
-    "letterWithInstructionsMemo",
-    "oversizeNotificationUser",
-    "overweightPermit",
-    "hazmatBol",
-    "hazmatSdsSafetyDataSheet",
-    "sagarpaPackageAgriculture",
-    "profepaPackageEnvironmental",
-    "intercambioTrailerRelease",
-    "sedenaPackage",
-    "damagesDiscrepanciesForUser",
-    "proofOfDeliveryForUser",
-  ],
-  Carrier: [
-    "cartaPorteFolio",
-    "aceEManifest",
-    "oversizePermitCarrier",
-    "overweightPermit",
-    "temperatureControlIn",
-    "temperatureControlOut",
-    "proofOfDelivery",
-    "damagesDiscrepanciesForCarrier",
-    "proofOfDeliveryForCarrier",
-  ],
-  Operator: [
-    "temperatureControlIn",
-    "temperatureControlOut",
-    "profepaPackageEnvironmental",
-    "proofOfDelivery",
-    "damagesDiscrepanciesForOperator",
-    "proofOfDeliveryForOperator",
-  ],
-};
-const servicePermissions = {
-  NorthboundService: [
-    "cartaPorte",
-    "cartaPorteFolio",
-    "doda",
-    "entryPrefileInbond",
-    "aceEManifest",
-    "letterWithInstructionsMemo",
-    "oversizeNotificationUser",
-    "overweightPermit",
-    "temperatureControlOut",
-    "hazmatBol",
-    "hazmatSdsSafetyDataSheet",
-    "sagarpaPackageAgriculture",
-    "profepaPackageEnvironmental",
-    "intercambioTrailerRelease",
-    "proofOfDeliveryForUser",
-    "proofOfDeliveryForCarrier",
-    "proofOfDeliveryForOperator",
-    "damagesDiscrepanciesForUser",
-    "damagesDiscrepanciesForCarrier",
-    "damagesDiscrepanciesForOperator",
-    "oversizePermitCarrier",
-  ],
-  Southbound: [
-    "cartaPorte",
-    "cartaPorteFolio",
-    "doda",
-    "aceEManifest",
-    "itnInbondNoItnNeeded",
-    "letterWithInstructionsMemo",
-    "oversizeNotificationUser",
-    "overweightPermit",
-    "temperatureControlOut",
-    "hazmatBol",
-    "hazmatSdsSafetyDataSheet",
-    "sagarpaPackageAgriculture",
-    "profepaPackageEnvironmental",
-    "intercambioTrailerRelease",
-    "sedenaPackage",
-    "proofOfDeliveryForUser",
-    "proofOfDeliveryForCarrier",
-    "proofOfDeliveryForOperator",
-    "damagesDiscrepanciesForUser",
-    "damagesDiscrepanciesForCarrier",
-    "oversizePermitCarrierForOperator",
-  ],
-  Other: ["oversizePermitCarrier"],
-};
+// const rolePermissions = {
+//   User: [
+//     "cartaPorte",
+//     "doda",
+//     "entryPrefileInbond",
+//     "itnInbondNoItnNeeded",
+//     "letterWithInstructionsMemo",
+//     "oversizeNotificationUser",
+//     "overweightPermit",
+//     "hazmatBol",
+//     "hazmatSdsSafetyDataSheet",
+//     "sagarpaPackageAgriculture",
+//     "profepaPackageEnvironmental",
+//     "intercambioTrailerRelease",
+//     "sedenaPackage",
+//     "damagesDiscrepanciesForUser",
+//     "proofOfDeliveryForUser",
+//   ],
+//   Carrier: [
+//     "cartaPorteFolio",
+//     "aceEManifest",
+//     "oversizePermitCarrier",
+//     "overweightPermit",
+//     "temperatureControlIn",
+//     "temperatureControlOut",
+//     "proofOfDelivery",
+//     "damagesDiscrepanciesForCarrier",
+//     "proofOfDeliveryForCarrier",
+//   ],
+//   Operator: [
+//     "temperatureControlIn",
+//     "temperatureControlOut",
+//     "profepaPackageEnvironmental",
+//     "proofOfDelivery",
+//     "damagesDiscrepanciesForOperator",
+//     "proofOfDeliveryForOperator",
+//   ],
+// };
+// const servicePermissions = {
+//   NorthboundService: [
+//     "cartaPorte",
+//     "cartaPorteFolio",
+//     "doda",
+//     "entryPrefileInbond",
+//     "aceEManifest",
+//     "letterWithInstructionsMemo",
+//     "oversizeNotificationUser",
+//     "overweightPermit",
+//     "temperatureControlOut",
+//     "hazmatBol",
+//     "hazmatSdsSafetyDataSheet",
+//     "sagarpaPackageAgriculture",
+//     "profepaPackageEnvironmental",
+//     "intercambioTrailerRelease",
+//     "proofOfDeliveryForUser",
+//     "proofOfDeliveryForCarrier",
+//     "proofOfDeliveryForOperator",
+//     "damagesDiscrepanciesForUser",
+//     "damagesDiscrepanciesForCarrier",
+//     "damagesDiscrepanciesForOperator",
+//     "oversizePermitCarrier",
+//   ],
+//   Southbound: [
+//     "cartaPorte",
+//     "cartaPorteFolio",
+//     "doda",
+//     "aceEManifest",
+//     "itnInbondNoItnNeeded",
+//     "letterWithInstructionsMemo",
+//     "oversizeNotificationUser",
+//     "overweightPermit",
+//     "temperatureControlOut",
+//     "hazmatBol",
+//     "hazmatSdsSafetyDataSheet",
+//     "sagarpaPackageAgriculture",
+//     "profepaPackageEnvironmental",
+//     "intercambioTrailerRelease",
+//     "sedenaPackage",
+//     "proofOfDeliveryForUser",
+//     "proofOfDeliveryForCarrier",
+//     "proofOfDeliveryForOperator",
+//     "damagesDiscrepanciesForUser",
+//     "damagesDiscrepanciesForCarrier",
+//     "oversizePermitCarrierForOperator",
+//   ],
+//   Other: ["oversizePermitCarrier"],
+// };
 
-const validateRoleFields = (role, docObj, obj) => {
-  const reqFields = rolePermissions[role];
-  const reqSer = servicePermissions[obj.typeOfService.replace(" ", "")];
-  const matchingKeys = reqFields.filter((key) => reqSer.includes(key));
-  const resultObj = {};
+// const validateRoleFields = (role, docObj, obj) => {
+//   const reqFields = rolePermissions[role];
+//   const reqSer = servicePermissions[obj.typeOfService.replace(" ", "")];
+//   const matchingKeys = reqFields.filter((key) => reqSer.includes(key));
+//   const resultObj = {};
 
-  const filteredKeys = matchingKeys.filter(
-    (key) => Array.isArray(docObj[key]) && docObj[key].length > 0
-  );
+//   const filteredKeys = matchingKeys.filter(
+//     (key) => Array.isArray(docObj[key]) && docObj[key].length > 0
+//   );
 
-  const filteredDocObj = Object.fromEntries(
-    Object.entries(docObj).filter(
-      ([key, value]) => Array.isArray(value) && value.length > 0
-    )
-  );
+//   const filteredDocObj = Object.fromEntries(
+//     Object.entries(docObj).filter(
+//       ([key, value]) => Array.isArray(value) && value.length > 0
+//     )
+//   );
 
-  filteredKeys.map((key) => {
-    const filDoc = filteredDocObj[key];
-    const filReqCond = requiredConditions[key];
-    const cleanedFilReqCond = Object.fromEntries(
-      Object.entries(filReqCond).filter(([_, value]) => {
-        return Array.isArray(value) ? value.length > 0 : value !== "";
-      })
-    );
+//   filteredKeys.map((key) => {
+//     const filDoc = filteredDocObj[key];
+//     const filReqCond = requiredConditions[key];
+//     const cleanedFilReqCond = Object.fromEntries(
+//       Object.entries(filReqCond).filter(([_, value]) => {
+//         return Array.isArray(value) ? value.length > 0 : value !== "";
+//       })
+//     );
 
-    console.log(
-      "------------------------------ ",
-      key,
-      "------------------------------:>> "
-    );
-    const finalObj = {};
-    Object.keys(cleanedFilReqCond).every((k) => {
-      let includesCheck = false;
+//     console.log(
+//       "------------------------------ ",
+//       key,
+//       "------------------------------:>> "
+//     );
+//     const finalObj = {};
+//     Object.keys(cleanedFilReqCond).every((k) => {
+//       let includesCheck = false;
 
-      if (filDoc.length >= 1) {
-        if (Array.isArray(cleanedFilReqCond[k])) {
-          if (Array.isArray(obj[k])) {
-            includesCheck = obj[k].some((val) =>
-              cleanedFilReqCond[k].includes(val)
-            );
-          } else {
-            includesCheck = cleanedFilReqCond[k].includes(obj[k]);
-          }
-        } else {
-          if (Array.isArray(obj[k])) {
-            includesCheck = obj[k].includes(cleanedFilReqCond[k]);
-          } else {
-            includesCheck = cleanedFilReqCond[k] === obj[k];
-          }
-        }
-      } else {
-        includesCheck = false;
-      }
-      console.log(
-        "Req:>> ",
-        cleanedFilReqCond[k],
-        "====",
-        obj[k],
-        "==> : ",
-        includesCheck
-      );
-      finalObj[k] = includesCheck;
-      return true;
-    });
-    const result = Object.values(finalObj).every((val) => val);
+//       if (filDoc.length >= 1) {
+//         if (Array.isArray(cleanedFilReqCond[k])) {
+//           if (Array.isArray(obj[k])) {
+//             includesCheck = obj[k].some((val) =>
+//               cleanedFilReqCond[k].includes(val)
+//             );
+//           } else {
+//             includesCheck = cleanedFilReqCond[k].includes(obj[k]);
+//           }
+//         } else {
+//           if (Array.isArray(obj[k])) {
+//             includesCheck = obj[k].includes(cleanedFilReqCond[k]);
+//           } else {
+//             includesCheck = cleanedFilReqCond[k] === obj[k];
+//           }
+//         }
+//       } else {
+//         includesCheck = false;
+//       }
+//       console.log(
+//         "Req:>> ",
+//         cleanedFilReqCond[k],
+//         "====",
+//         obj[k],
+//         "==> : ",
+//         includesCheck
+//       );
+//       finalObj[k] = includesCheck;
+//       return true;
+//     });
+//     const result = Object.values(finalObj).every((val) => val);
 
-    console.log("finalObj:", finalObj);
-    console.log("Final Result:", result);
-    resultObj[key] = result;
-  });
-  console.log("resultObj :>> ", resultObj);
-  const Finalresult = Object.values(resultObj).every((val) => val);
-  console.log("Finalresult :>> ", Finalresult);
-};
+//     console.log("finalObj:", finalObj);
+//     console.log("Final Result:", result);
+//     resultObj[key] = result;
+//   });
+//   console.log("resultObj :>> ", resultObj);
+//   const Finalresult = Object.values(resultObj).every((val) => val);
+//   console.log("Finalresult :>> ", Finalresult);
+// };
 
 const uploadDocsMiddleware = upload.fields(
   Object.keys(requiredConditions).map((field) => ({
@@ -423,9 +451,13 @@ const docUpload = async (req, res) => {
         documents?.oversizePermitCarrier ??
         fetchData?.documents["oversizePermitCarrier"] ??
         [],
-      overweightPermit:
-        documents?.overweightPermit ??
-        fetchData?.documents["overweightPermit"] ??
+      overweightPermitUser:
+        documents?.overweightPermitUser ??
+        fetchData?.documents["overweightPermitUser"] ??
+        [],
+      overweightPermitCarrier:
+        documents?.overweightPermitCarrier ??
+        fetchData?.documents["overweightPermitCarrier"] ??
         [],
       temperatureControlIn:
         documents?.temperatureControlIn ??
@@ -478,6 +510,16 @@ const docUpload = async (req, res) => {
       damagesDiscrepanciesForOperator:
         documents?.damagesDiscrepanciesForOperator ??
         fetchData?.documents["damagesDiscrepanciesForOperator"] ??
+        [],
+      overweightNotification:
+        documents?.overweightNotification ??
+        fetchData?.documents["overweightNotification"] ??
+        [],
+      cuadernoAta:
+        documents?.cuadernoAta ?? fetchData?.documents["cuadernoAta"] ?? [],
+      informalExport:
+        documents?.informalExport ??
+        fetchData?.documents["informalExport"] ??
         [],
     };
 

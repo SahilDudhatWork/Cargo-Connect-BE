@@ -589,7 +589,8 @@
                     "type": "string",
                     "format": "binary"
                   },
-                  "overweightPermit": { "type": "string", "format": "binary" },
+                  "overweightPermitUser": { "type": "string", "format": "binary" },
+                  "overweightPermitCarrier": { "type": "string", "format": "binary" },
                   "temperatureControlIn": {
                     "type": "string",
                     "format": "binary"

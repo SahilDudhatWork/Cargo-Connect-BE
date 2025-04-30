@@ -3,6 +3,7 @@ const User = require("../../../model/user/user");
 const Admin = require("../../../model/admin/admin");
 const Carrier = require("../../../model/carrier/carrier");
 const Operator = require("../../../model/operator/operator");
+const Vehicle = require("../../../model/vehicle/vehicle");
 const Notification = require("../../../model/common/notification");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
@@ -88,6 +89,11 @@ const hendleRequest = async (req, res) => {
         cartaPorteFolio: false,
       };
     }
+    await Vehicle.findByIdAndUpdate(
+      vehicleId,
+      { status: "Deactive" },
+      { new: true }
+    );
     let updateData = await Movement.findOneAndUpdate(
       { movementId: id },
       updatedData,
@@ -305,7 +311,11 @@ const sendOperatorNewLoadAssignedNotification = async (
         const reminderTasks = [];
         if (operatorData?.deviceToken) {
           reminderTasks.push(
-            sendNotificationInApp(operatorData?.deviceToken, reminderTitle, body)
+            sendNotificationInApp(
+              operatorData?.deviceToken,
+              reminderTitle,
+              body
+            )
           );
         }
         if (operatorData?.webToken) {

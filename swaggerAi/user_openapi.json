@@ -1575,11 +1575,16 @@
                     "type": "string",
                     "format": "binary"
                   },
+                  "overweightNotification": {
+                    "type": "string",
+                    "format": "binary"
+                  },
                   "oversizePermitCarrier": {
                     "type": "string",
                     "format": "binary"
                   },
-                  "overweightPermit": { "type": "string", "format": "binary" },
+                  "overweightPermitUser": { "type": "string", "format": "binary" },
+                  "overweightPermitCarrier": { "type": "string", "format": "binary" },
                   "temperatureControlIn": {
                     "type": "string",
                     "format": "binary"
@@ -1627,6 +1632,14 @@
                     "format": "binary"
                   },
                   "damagesDiscrepanciesForOperator": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "cuadernoAta": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "informalExport": {
                     "type": "string",
                     "format": "binary"
                   }

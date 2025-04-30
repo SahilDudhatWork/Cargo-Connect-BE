@@ -258,7 +258,12 @@ const createOrder = async (req, res) => {
         special: "Over Size",
       },
       {
-        fields: ["overweightPermit"],
+        fields: ["overweightPermitUser"],
+        condition: isNorthOrSouth,
+        special: "Over Weight",
+      },
+      {
+        fields: ["overweightNotification"],
         condition: isNorthOrSouth,
         special: "Over Weight",
       },
@@ -282,6 +287,14 @@ const createOrder = async (req, res) => {
         condition: isSouthbound,
         special: "Sedena Inspection MX (USD 0)",
       },
+      {
+        fields: ["cuadernoAta"],
+        condition: isNorthOrSouth,
+      },
+      {
+        fields: ["informalExport"],
+        condition: isNorthbound,
+      },
     ];
     const carrierConditions = [
       { fields: ["aceEManifest"], condition: isNorthOrSouth },
@@ -291,7 +304,7 @@ const createOrder = async (req, res) => {
         special: "Over Size",
       },
       {
-        fields: ["overweightPermit"],
+        fields: ["overweightPermitCarrier"],
         condition: isNorthOrSouth,
         special: "Over Weight",
       },
