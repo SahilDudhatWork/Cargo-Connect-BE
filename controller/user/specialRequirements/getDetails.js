@@ -39,17 +39,23 @@ const getDetails = async (req, res) => {
     }
 
     if (!result && transportationId) {
+      // const transitInfo = await TransitInfo.findOne();
+      // const item = transitInfo?.transportation?.find(
+      //   (i) => i._id.toString() === transportationId
+      // );
       const transitInfo = await TransitInfo.findOne();
-      const item = transitInfo?.transportation?.find(
-        (i) => i._id.toString() === transportationId
+      const item = transitInfo.transportation.find((i) =>
+        i.modes.some((mode) => mode._id.toString() === transportationId)
       );
-
-      if (item?.requirements?.length > 0) {
+      const mode = item.modes.find(
+        (m) => m._id.toString() === transportationId
+      );
+      if (mode?.requirements?.length > 0) {
         result = {
-          _id: item._id,
+          _id: mode._id,
           match: "transportation",
-          title: item.title,
-          requirements: item.requirements,
+          title: mode.title,
+          requirements: mode.requirements,
         };
       }
     }
