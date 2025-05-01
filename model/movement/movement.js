@@ -169,6 +169,10 @@ const collectionSchema = new Schema(
         default: {},
       },
     },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

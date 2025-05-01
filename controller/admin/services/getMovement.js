@@ -33,6 +33,8 @@ const fetchMovement = async (req, res) => {
     if (sortBy) {
       if (sortBy === "Pending") {
         qry.status = { $in: ["Pending", "NewAssignments"] };
+      } else if (sortBy === "Verified") {
+        qry.verify = true;
       } else {
         qry.status = sortBy;
       }

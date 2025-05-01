@@ -31,7 +31,13 @@ const fetchMovement = async (req, res) => {
 
     if (sortBy === "Requests") {
       qry = {
-        status: { $in: ["Pending", "NewAssignments"] },
+        $or: [
+          { status: "NewAssignments" },
+          {
+            status: "Pending",
+            carrierId: getCarrier._id,
+          },
+        ],
         isScheduleTriggered: true,
       };
     } else if (sortBy === "InProgress") {
