@@ -13,12 +13,12 @@ const response = {
       this.statusCode = STATUS_CODE.NO_CONTENT;
     }
 
-    logToFile(
-      "success",
-      res.req.originalUrl,
-      status || this.statusCode,
-      msg || this.msg
-    );
+    // logToFile(
+    //   "success",
+    //   res.req.originalUrl,
+    //   status || this.statusCode,
+    //   msg || this.msg
+    // );
 
     return res.status(status || this.statusCode).json({
       status: isSuccessful, // true if 200-299, false otherwise
@@ -32,12 +32,12 @@ const response = {
     const isSuccessful =
       (status || this.statusCode) >= 200 && (status || this.statusCode) < 300;
 
-    logToFile(
-      "error",
-      res.req.originalUrl,
-      status || this.statusCode,
-      msg || this.msg
-    );
+    // logToFile(
+    //   "error",
+    //   res.req.originalUrl,
+    //   status || this.statusCode,
+    //   msg || this.msg
+    // );
 
     return res.status(status || 400).json({
       status: isSuccessful,
