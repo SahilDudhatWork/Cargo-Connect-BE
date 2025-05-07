@@ -26,6 +26,14 @@ const create = async (req, res) => {
       const specialRequirementsInfo = await SpecialRequirements.findById(id);
       specialRequirementsInfo.requirements.push(...requirements);
       await specialRequirementsInfo.save();
+    } else if (type === "typeOfService") {
+      const transitInfo = await TransitInfo.findOne();
+      for (const i of transitInfo.typeOfService) {
+        if (i._id.toString() === id) {
+          i.requirements.push(...requirements);
+        }
+      }
+      await transitInfo.save();
     }
 
     return Response.success({

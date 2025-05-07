@@ -2678,7 +2678,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["transportation", "post_bridge"]
+              "enum": ["transportation", "post_bridge", "typeOfService"]
             }
           }
         ],
@@ -2701,7 +2701,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["transportation", "post_bridge"]
+              "enum": ["transportation", "post_bridge", "typeOfService"]
             }
           },
           {
@@ -2746,7 +2746,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["transportation", "post_bridge"]
+              "enum": ["transportation", "post_bridge", "typeOfService"]
             }
           },
           {
@@ -2778,7 +2778,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["transportation", "post_bridge"]
+              "enum": ["transportation", "post_bridge", "typeOfService"]
             }
           },
           {
@@ -2815,7 +2815,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["transportation", "post_bridge"]
+              "enum": ["transportation", "post_bridge", "typeOfService"]
             }
           },
           {
@@ -2866,7 +2866,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "enum": ["transportation", "post_bridge"]
+              "enum": ["transportation", "post_bridge", "typeOfService"]
             }
           },
           {

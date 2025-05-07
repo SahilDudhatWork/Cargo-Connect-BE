@@ -24,6 +24,12 @@ const getAll = async (req, res) => {
     } else if (type === "post_bridge") {
       const specialRequirementsInfo = await SpecialRequirements.findById(id);
       result = specialRequirementsInfo?.requirements || [];
+    } else if (type === "typeOfService") {
+      const transitInfo = await TransitInfo.findOne();
+      const item = transitInfo.typeOfService.find(
+        (i) => i._id.toString() === id
+      );
+      result = item?.requirements || [];
     }
     const statusCode = result ? STATUS_CODE.OK : STATUS_CODE.OK;
     const message = result ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;

@@ -11,17 +11,17 @@ const {
 const getDetails = async (req, res) => {
   const { logger, body } = req;
   try {
-    const { portBridgeId, transportationId } = body;
+    const { portBridgeId, transportationId, typeOfServiceId } = body;
 
-    if (!portBridgeId && !transportationId) {
+    if (!portBridgeId && !transportationId && !typeOfServiceId) {
       return Response.error({
         res,
         status: STATUS_CODE.BAD_REQUEST,
-        msg: `Either portBridgeId or transportationId ${ERROR_MSGS.KEY_REQUIRED}`,
+        msg: `Either portBridgeId and typeOfServiceId or transportationId ${ERROR_MSGS.KEY_REQUIRED}`,
       });
     }
 
-    let result = null;
+    let requirements = [];
 
     if (portBridgeId) {
       const specialRequirementsInfo = await SpecialRequirements.findById(
@@ -29,20 +29,11 @@ const getDetails = async (req, res) => {
       );
 
       if (specialRequirementsInfo?.requirements?.length > 0) {
-        result = {
-          _id: specialRequirementsInfo._id,
-          match: "post_bridge",
-          title: specialRequirementsInfo.post_bridge,
-          requirements: specialRequirementsInfo.requirements,
-        };
+        requirements.push(...specialRequirementsInfo.requirements);
       }
     }
 
-    if (!result && transportationId) {
-      // const transitInfo = await TransitInfo.findOne();
-      // const item = transitInfo?.transportation?.find(
-      //   (i) => i._id.toString() === transportationId
-      // );
+    if (transportationId) {
       const transitInfo = await TransitInfo.findOne();
       const item = transitInfo.transportation.find((i) =>
         i.modes.some((mode) => mode._id.toString() === transportationId)
@@ -51,31 +42,37 @@ const getDetails = async (req, res) => {
         (m) => m._id.toString() === transportationId
       );
       if (mode?.requirements?.length > 0) {
-        result = {
-          _id: mode._id,
-          match: "transportation",
-          title: mode.title,
-          requirements: mode.requirements,
-        };
+        requirements.push(...mode.requirements);
       }
     }
 
-    if (!result) {
-      return Response.success({
-        req,
-        res,
-        status: STATUS_CODE.OK,
-        msg: ERROR_MSGS.DATA_NOT_AVAILABLE,
-        data: [],
-      });
+    if (typeOfServiceId) {
+      const transitInfo = await TransitInfo.findOne();
+      const item = transitInfo.typeOfService.find(
+        (i) => i._id.toString() === typeOfServiceId
+      );
+      if (item?.requirements?.length > 0) {
+        requirements.push(...item.requirements);
+      }
     }
 
     return Response.success({
       req,
       res,
       status: STATUS_CODE.OK,
-      msg: INFO_MSGS.SUCCESS,
-      data: result,
+      msg:
+        requirements.length > 0
+          ? INFO_MSGS.SUCCESS
+          : ERROR_MSGS.DATA_NOT_AVAILABLE,
+      data:
+        requirements.length > 0
+          ? {
+              _id: null,
+              match: "All",
+              title: null,
+              requirements: requirements,
+            }
+          : [],
     });
   } catch (error) {
     return handleException(logger, res, error);

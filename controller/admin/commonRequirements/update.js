@@ -29,6 +29,17 @@ const update = async (req, res) => {
       );
       if (reqItem) Object.assign(reqItem, body);
       await specialRequirementsInfo.save();
+    } else if (type === "typeOfService") {
+      const transitInfo = await TransitInfo.findOne();
+      for (const service of transitInfo.typeOfService) {
+        if (service._id.toString() === id) {
+          const reqItem = service.requirements.find(
+            (r) => r._id.toString() === requirementId
+          );
+          if (reqItem) Object.assign(reqItem, body);
+        }
+      }
+      await transitInfo.save();
     }
 
     return Response.success({

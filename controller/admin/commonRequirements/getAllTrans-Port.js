@@ -43,6 +43,21 @@ const getAllTrans_Port = async (req, res) => {
         };
       });
       result = array;
+    } else if (type === "typeOfService") {
+      const { typeOfService } = await TransitInfo.findOne();
+
+      let array = [];
+
+      for (const i of typeOfService) {
+        array.push({
+          _id: i._id,
+          type: "typeOfService",
+          title: i.title,
+          requirements: i.requirements,
+        });
+      }
+
+      result = array;
     }
     const statusCode = result ? STATUS_CODE.OK : STATUS_CODE.OK;
     const message = result ? INFO_MSGS.SUCCESS : ERROR_MSGS.DATA_NOT_FOUND;

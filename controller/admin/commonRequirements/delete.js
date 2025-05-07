@@ -28,6 +28,16 @@ const removeData = async (req, res) => {
           (r) => r._id.toString() !== requirementId
         );
       await specialRequirementsInfo.save();
+    } else if (type === "typeOfService") {
+      const transitInfo = await TransitInfo.findOne();
+      for (const i of transitInfo.typeOfService) {
+        if (i._id.toString() === id) {
+          i.requirements = i.requirements.filter(
+            (r) => r._id.toString() !== requirementId
+          );
+        }
+      }
+      await transitInfo.save();
     }
 
     return Response.success({
