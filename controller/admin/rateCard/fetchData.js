@@ -23,11 +23,11 @@ const fetchData = async (req, res) => {
 
     const getData = await RateCard.aggregate([
       { $match: qry },
-      { $sort: { createdAt: -1 } },
       ...typeOfService(),
       ...typeOfTransportation_modeOfTransportation(),
       ...port_BridgeOfCrossing(),
       ...specialRequirements(),
+      { $sort: { createdAt: -1 } },
       {
         $facet: {
           paginatedResult: [
