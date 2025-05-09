@@ -11,13 +11,18 @@ const {
 const fetchData = async (req, res) => {
   const { logger, query } = req;
   try {
-    let { page, limit } = query;
+    let { page, limit, keyWord } = query;
 
+    let qry = {};
+    if (keyWord) {
+      qry.$or = [{ cardName: { $regex: keyWord, $options: "i" } }];
+    }
     offset = page || 1;
     limit = limit || 10;
     const skip = limit * (offset - 1);
 
     const getData = await RateCard.aggregate([
+      { $match: qry },
       { $sort: { createdAt: -1 } },
       ...typeOfService(),
       ...typeOfTransportation_modeOfTransportation(),
