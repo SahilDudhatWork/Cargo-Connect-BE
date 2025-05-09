@@ -17,6 +17,8 @@ const guidelinePagesRoute = require("./guidelinePages");
 const subAdminRoute = require("./subAdmin");
 const menuAccessRoute = require("./menuAccess");
 const rolesRoute = require("./roles");
+// const documentsRoute = require("./documents");
+const rateCardRoute = require("./rateCard");
 const { adminAuth } = require("../../middleware/authToken/adminAuth");
 
 router.get("/", (req, res) => {
@@ -41,5 +43,7 @@ router.use("/specialRequirements", specialRequirementsRoute);
 router.use("/commonRequirements", commonRequirementsRoute);
 router.use("/settings", settingsRoute);
 router.use("/guidelinePages", guidelinePagesRoute);
+// router.use("/documents", documentsRoute);
+router.use("/rateCard", rateCardRoute);
 
 module.exports = router;
