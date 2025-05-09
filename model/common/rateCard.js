@@ -1,79 +1,33 @@
-const { Schema, model, Types } = require("mongoose");
-const { ObjectId } = Types;
-const collectionSchema = new Schema(
+const mongoose = require("mongoose");
+const { Schema, Types } = mongoose;
+
+const pricePairSchema = new Schema(
   {
-    cardName: {
-      type: String,
-      default: null,
+    _id: {
+      type: Types.ObjectId,
+      required: true,
     },
-    carrierId: {
-      type: String,
-      default: null,
+    price: {
+      type: Number,
+      required: true,
     },
-    carrierAssign: {
-      type: Boolean,
-      default: false,
-    },
-    typeOfService: [
-      {
-        _id: {
-          type: ObjectId,
-        },
-        price: {
-          type: Number,
-          default: 0,
-        },
-      },
-    ],
-    typeOfTransportation: [
-      {
-        _id: {
-          type: ObjectId,
-        },
-        price: {
-          type: Number,
-          default: 0,
-        },
-      },
-    ],
-    modeOfTransportation: [
-      {
-        _id: {
-          type: ObjectId,
-          default: 0,
-        },
-        price: {
-          type: Number,
-          default: 0,
-        },
-      },
-    ],
-    port_BridgeOfCrossing: [
-      {
-        _id: {
-          type: ObjectId,
-          default: 0,
-        },
-        price: {
-          type: Number,
-          default: 0,
-        },
-      },
-    ],
-    specialRequirements: [
-      {
-        _id: {
-          type: ObjectId,
-          default: 0,
-        },
-        price: {
-          type: Number,
-          default: 0,
-        },
-      },
-    ],
+  },
+  { _id: false }
+);
+
+const rateCardSchema = new Schema(
+  {
+    cardName: { type: String, default: null },
+    carrierId: { type: String, default: null },
+    carrierAssign: { type: Boolean, default: false },
+
+    typeOfService: { type: [pricePairSchema], default: [] },
+    typeOfTransportation: { type: [pricePairSchema], default: [] },
+    modeOfTransportation: { type: [pricePairSchema], default: [] },
+    port_BridgeOfCrossing: { type: [pricePairSchema], default: [] },
+    specialRequirements: { type: [pricePairSchema], default: [] },
   },
   { timestamps: true }
 );
 
-module.exports = model("rateCard", collectionSchema);
+module.exports = mongoose.model("rateCard", rateCardSchema);

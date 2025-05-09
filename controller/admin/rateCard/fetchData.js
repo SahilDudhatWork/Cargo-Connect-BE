@@ -284,7 +284,7 @@ const port_BridgeOfCrossing = () => [
   {
     $addFields: {
       enrichedBridge: {
-        id: "$port_BridgeOfCrossing._id",
+        _id: "$port_BridgeOfCrossing._id",
         price: "$port_BridgeOfCrossing.price",
         post_bridge: "$bridgeInfo.post_bridge",
       },
@@ -297,7 +297,7 @@ const port_BridgeOfCrossing = () => [
       port_BridgeOfCrossing: {
         $push: {
           $cond: [
-            { $gt: ["$enrichedBridge.id", null] },
+            { $gt: ["$enrichedBridge._id", null] },
             "$enrichedBridge",
             "$$REMOVE",
           ],

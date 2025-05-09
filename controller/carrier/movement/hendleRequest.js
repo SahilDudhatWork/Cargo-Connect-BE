@@ -122,10 +122,10 @@ const hendleRequest = async (req, res) => {
     // Match multiple specialRequirements
     if (
       Array.isArray(getData.specialRequirements) &&
-      Array.isArray(rateCardInfo.specialRequirements)
+      Array.isArray(rateCardInfo?.specialRequirements)
     ) {
       getData.specialRequirements.forEach((reqId) => {
-        const match = rateCardInfo.specialRequirements.find(
+        const match = rateCardInfo?.specialRequirements.find(
           (item) => item._id.toString() === reqId.toString()
         );
         if (match?.price) rateCardPrice += match.price;
