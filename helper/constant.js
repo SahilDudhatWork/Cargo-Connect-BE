@@ -67,6 +67,7 @@ module.exports = {
     INVALID_SORTBY: "The sortBy parameter is invalid.",
     INVALID_ROLE: "The specified role value is invalid.",
     ALREADY_ASSIGN: "This movement has already been assigned to another user.",
+    CARD_ALREADY_ASSIGN: "This Card has already been assigned to another carrier.",
     UNSUPPORTED_FILE: "The provided file type is not supported.",
     FORGOT_PASSWORD_TOKEN_EXPIRED:
       "The password reset token has expired. Please initiate the process again.",

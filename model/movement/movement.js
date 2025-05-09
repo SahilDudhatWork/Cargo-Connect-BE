@@ -34,6 +34,10 @@ const collectionSchema = new Schema(
         type: String,
       },
     },
+    rateCardPrice: {
+      type: Number,
+      default: 0,
+    },
     typeOfService: {
       type: ObjectId,
       default: null,
@@ -48,6 +52,7 @@ const collectionSchema = new Schema(
     },
     port_BridgeOfCrossing: {
       type: ObjectId,
+      default: null,
     },
     userReference: {
       type: String,

@@ -4,6 +4,7 @@ const Admin = require("../../../model/admin/admin");
 const Carrier = require("../../../model/carrier/carrier");
 const Operator = require("../../../model/operator/operator");
 const Vehicle = require("../../../model/vehicle/vehicle");
+const RateCard = require("../../../model/common/rateCard");
 const Notification = require("../../../model/common/notification");
 const { handleException } = require("../../../helper/exception");
 const Response = require("../../../helper/response");
@@ -80,8 +81,8 @@ const hendleRequest = async (req, res) => {
     };
 
     updatedData.reqDocFields = getData.reqDocFields || {};
-    const { companyFormationType } = await Carrier.findById(carrierId);
-    if (companyFormationType === "MEXICO") {
+    const carrierInfo = await Carrier.findById(carrierId);
+    if (carrierInfo.companyFormationType === "MEXICO") {
       updatedData.reqDocFields.Carrier = {
         ...(getData.reqDocFields?.Carrier instanceof Map
           ? Object.fromEntries(getData.reqDocFields.Carrier)
@@ -89,6 +90,50 @@ const hendleRequest = async (req, res) => {
         cartaPorteFolio: false,
       };
     }
+
+    const rateCardInfo = await RateCard.findOne({
+      carrierId: carrierInfo.accountId,
+    });
+    let rateCardPrice = 0;
+
+    const addMatchedPrice = (rateList = [], selectedId) => {
+      if (!rateList || !selectedId) return;
+      const match = rateList.find(
+        (item) => item._id.toString() === selectedId.toString()
+      );
+      if (match?.price) rateCardPrice += match.price;
+    };
+
+    // Match individual selections
+    addMatchedPrice(rateCardInfo?.typeOfService, getData?.typeOfService);
+    addMatchedPrice(
+      rateCardInfo?.typeOfTransportation,
+      getData?.typeOfTransportation
+    );
+    addMatchedPrice(
+      rateCardInfo?.modeOfTransportation,
+      getData?.modeOfTransportation
+    );
+    addMatchedPrice(
+      rateCardInfo?.port_BridgeOfCrossing,
+      getData?.port_BridgeOfCrossing
+    );
+
+    // Match multiple specialRequirements
+    if (
+      Array.isArray(getData.specialRequirements) &&
+      Array.isArray(rateCardInfo.specialRequirements)
+    ) {
+      getData.specialRequirements.forEach((reqId) => {
+        const match = rateCardInfo.specialRequirements.find(
+          (item) => item._id.toString() === reqId.toString()
+        );
+        if (match?.price) rateCardPrice += match.price;
+      });
+    }
+
+    updatedData.rateCardPrice = rateCardPrice;
+
     await Vehicle.findByIdAndUpdate(
       vehicleId,
       { status: "Deactive" },
