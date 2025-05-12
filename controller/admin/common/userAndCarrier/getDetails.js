@@ -43,6 +43,20 @@ const getDetails = async (req, res) => {
           },
         },
         {
+          $lookup: {
+            from: "ratecards",
+            localField: "carrierId",
+            foreignField: "accountId",
+            as: "rateCards",
+          },
+        },
+        {
+          $unwind: {
+            path: "$rateCards",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
           $addFields: {
             "operator.total": { $size: "$operatorDetails" },
             "operator.active": {
