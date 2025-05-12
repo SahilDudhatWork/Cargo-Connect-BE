@@ -45,15 +45,28 @@ const getDetails = async (req, res) => {
         {
           $lookup: {
             from: "ratecards",
-            localField: "carrierId",
-            foreignField: "accountId",
+            let: { accIdStr: { $toString: "$accountId" } },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $eq: ["$carrierId", "$$accIdStr"],
+                  },
+                },
+              },
+            ],
             as: "rateCards",
           },
         },
         {
-          $unwind: {
-            path: "$rateCards",
-            preserveNullAndEmptyArrays: true,
+          $addFields: {
+            rateCards: {
+              $cond: {
+                if: { $gt: [{ $size: "$rateCards" }, 0] },
+                then: { $arrayElemAt: ["$rateCards", 0] },
+                else: null,
+              },
+            },
           },
         },
         {
