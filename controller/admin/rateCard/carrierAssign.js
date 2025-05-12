@@ -12,14 +12,15 @@ const carrierAssign = async (req, res) => {
   try {
     const { id, carrierAccId } = params;
 
-    const checkAlreadyAssign = await RateCard.find({ carrierId: carrierAccId });
-    if (checkAlreadyAssign.length > 0) {
-      const obj = {
-        res,
-        status: STATUS_CODE.BAD_REQUEST,
-        msg: ERROR_MSGS.CARD_ALREADY_ASSIGN,
-      };
-      return Response.error(obj);
+    const checkAlreadyAssign = await RateCard.findOne({
+      carrierId: carrierAccId,
+    });
+    if (checkAlreadyAssign) {
+      await RateCard.findByIdAndUpdate(
+        checkAlreadyAssign._id,
+        { carrierId: null, carrierAssign: false },
+        { new: true }
+      );
     }
     const updatedData = await RateCard.findByIdAndUpdate(
       id,
