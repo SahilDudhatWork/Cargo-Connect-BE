@@ -63,6 +63,20 @@ const fetchData = async (req, res) => {
       { $sort: sortCriteria },
       {
         $lookup: {
+          from: "ratecards",
+          localField: "carrierId",
+          foreignField: "accountId",
+          as: "rateCards",
+        },
+      },
+      {
+        $unwind: {
+          path: "$rateCards",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
           from: "movements",
           let: { newId: "$_id" },
           pipeline: [
